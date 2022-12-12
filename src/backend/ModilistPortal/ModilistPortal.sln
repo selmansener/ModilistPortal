@@ -1,0 +1,80 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.1.32407.343
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Apps", "Apps", "{11FE0C6A-AE06-4DDA-B34B-EEBF6B542E02}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Business", "Business", "{A76EC8D1-CD38-4BAB-A243-6A4FA8905471}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{E625B843-19F6-459F-A259-D7D9B1065F4E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domains", "Domains", "{E3B32507-6DDB-414E-ACC4-16B91DE90CD1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{234B801F-8813-4E60-998D-D68AC6705E25}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModilistPortal.API", "Apps\ModilistPortal.API\ModilistPortal.API.csproj", "{F84224F2-FA2E-4106-8C5E-1A81315447C0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModilistPortal.Business", "Business\ModilistPortal.Business\ModilistPortal.Business.csproj", "{EC6053F0-4803-4DA3-BF99-6536BF0EACFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModilistPortal.Business.Seed", "Business\ModilistPortal.Business.Seed\ModilistPortal.Business.Seed.csproj", "{6957D1D7-AB4C-4842-B9E2-864A3F5BA82E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModilistPortal.Data", "Data\ModilistPortal.Data\ModilistPortal.Data.csproj", "{07A36B96-26F8-45F3-9079-244A0EB8BBE0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModilistPortal.Domains", "Domains\ModilistPortal.Domains\ModilistPortal.Domains.csproj", "{829446BB-C74F-4130-93A8-07ADB00CC8A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModilistPortal.Infrastructure.Shared", "Infrastructure\ModilistPortal.Infrastructure.Shared\ModilistPortal.Infrastructure.Shared.csproj", "{B0E21E9A-FFEC-4EB6-BACF-F1EE436F0FA2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModilistPortal.Infrastructure.Azure.Extensions", "Infrastructure\ModilistPortal.Infrastructure.Azure.Extensions\ModilistPortal.Infrastructure.Azure.Extensions.csproj", "{E7F75085-C456-4E26-9F29-934757145FD4}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F84224F2-FA2E-4106-8C5E-1A81315447C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F84224F2-FA2E-4106-8C5E-1A81315447C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F84224F2-FA2E-4106-8C5E-1A81315447C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F84224F2-FA2E-4106-8C5E-1A81315447C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC6053F0-4803-4DA3-BF99-6536BF0EACFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC6053F0-4803-4DA3-BF99-6536BF0EACFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC6053F0-4803-4DA3-BF99-6536BF0EACFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC6053F0-4803-4DA3-BF99-6536BF0EACFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6957D1D7-AB4C-4842-B9E2-864A3F5BA82E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6957D1D7-AB4C-4842-B9E2-864A3F5BA82E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6957D1D7-AB4C-4842-B9E2-864A3F5BA82E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6957D1D7-AB4C-4842-B9E2-864A3F5BA82E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{07A36B96-26F8-45F3-9079-244A0EB8BBE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{07A36B96-26F8-45F3-9079-244A0EB8BBE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{07A36B96-26F8-45F3-9079-244A0EB8BBE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{07A36B96-26F8-45F3-9079-244A0EB8BBE0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{829446BB-C74F-4130-93A8-07ADB00CC8A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{829446BB-C74F-4130-93A8-07ADB00CC8A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{829446BB-C74F-4130-93A8-07ADB00CC8A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{829446BB-C74F-4130-93A8-07ADB00CC8A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B0E21E9A-FFEC-4EB6-BACF-F1EE436F0FA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B0E21E9A-FFEC-4EB6-BACF-F1EE436F0FA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B0E21E9A-FFEC-4EB6-BACF-F1EE436F0FA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B0E21E9A-FFEC-4EB6-BACF-F1EE436F0FA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7F75085-C456-4E26-9F29-934757145FD4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7F75085-C456-4E26-9F29-934757145FD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7F75085-C456-4E26-9F29-934757145FD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7F75085-C456-4E26-9F29-934757145FD4}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F84224F2-FA2E-4106-8C5E-1A81315447C0} = {11FE0C6A-AE06-4DDA-B34B-EEBF6B542E02}
+		{EC6053F0-4803-4DA3-BF99-6536BF0EACFA} = {A76EC8D1-CD38-4BAB-A243-6A4FA8905471}
+		{6957D1D7-AB4C-4842-B9E2-864A3F5BA82E} = {A76EC8D1-CD38-4BAB-A243-6A4FA8905471}
+		{07A36B96-26F8-45F3-9079-244A0EB8BBE0} = {E625B843-19F6-459F-A259-D7D9B1065F4E}
+		{829446BB-C74F-4130-93A8-07ADB00CC8A9} = {E3B32507-6DDB-414E-ACC4-16B91DE90CD1}
+		{B0E21E9A-FFEC-4EB6-BACF-F1EE436F0FA2} = {234B801F-8813-4E60-998D-D68AC6705E25}
+		{E7F75085-C456-4E26-9F29-934757145FD4} = {234B801F-8813-4E60-998D-D68AC6705E25}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {350A791C-7B0E-459E-B937-017F91BE4C59}
+	EndGlobalSection
+EndGlobal
