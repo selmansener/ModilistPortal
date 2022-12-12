@@ -23,7 +23,7 @@ namespace ModilistPortal.Business.Utils.AddressDomain
 
     internal class AddressService : IAddressService
     {
-        private readonly string _namespace = "Modilist.Business.Utils.AddressDomain.Resources";
+        private readonly string _namespace = "ModilistPortal.Business.Utils.AddressDomain.Resources";
         private readonly IMemoryCache _memoryCache;
         private readonly JsonSerializerSettings _jsonSerializerSettings;
 

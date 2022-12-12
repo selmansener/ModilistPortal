@@ -3,8 +3,17 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@azure/msal-browser": "^2.23.0",
+    "@azure/msal-react": "^1.3.2",
     "@babel/core": "^7.16.0",
+    "@date-io/date-fns": "^2.14.0",
+    "@emotion/react": "^11.9.0",
+    "@emotion/styled": "^11.8.1",
+    "@mui/icons-material": "^5.6.1",
+    "@mui/material": "^5.6.1",
+    "@mui/x-date-pickers": "^5.0.0-alpha.1",
     "@pmmmwh/react-refresh-webpack-plugin": "^0.5.3",
+    "@reduxjs/toolkit": "^1.9.0",
     "@svgr/webpack": "^5.5.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^13.0.0",
@@ -31,6 +40,9 @@
     "file-loader": "^6.2.0",
     "fs-extra": "^10.0.0",
     "html-webpack-plugin": "^5.5.0",
+    "i18next": "^21.6.16",
+    "i18next-browser-languagedetector": "^6.1.4",
+    "i18next-http-backend": "^1.4.0",
     "identity-obj-proxy": "^3.0.0",
     "jest": "^27.4.3",
     "jest-resolve": "^27.4.2",
@@ -46,7 +58,12 @@
     "react-app-polyfill": "^3.0.0",
     "react-dev-utils": "^12.0.1",
     "react-dom": "^18.2.0",
+    "react-helmet": "^6.1.0",
+    "react-i18next": "^11.16.7",
+    "react-imask": "^6.4.2",
+    "react-redux": "^8.0.1",
     "react-refresh": "^0.11.0",
+    "react-router-dom": "^6.4.3",
     "resolve": "^1.20.0",
     "resolve-url-loader": "^4.0.0",
     "sass-loader": "^12.3.0",
@@ -55,17 +72,19 @@
     "style-loader": "^3.3.1",
     "tailwindcss": "^3.0.2",
     "terser-webpack-plugin": "^5.2.5",
-    "typescript": "^4.4.2",
+    "typescript": "^4.8.4",
     "web-vitals": "^2.1.0",
     "webpack": "^5.64.4",
     "webpack-dev-server": "^4.6.0",
     "webpack-manifest-plugin": "^4.0.2",
-    "workbox-webpack-plugin": "^6.4.1"
+    "workbox-webpack-plugin": "^6.4.1",
+    "yup": "^0.32.11"
   },
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js"
+    "test": "node scripts/test.js",
+    "api:generate": "set \"NODE_TLS_REJECT_UNAUTHORIZED=0\" && npx @rtk-query/codegen-openapi openapi-config.ts"
   },
   "eslintConfig": {
     "extends": [
@@ -140,5 +159,10 @@
     "presets": [
       "react-app"
     ]
+  },
+  "devDependencies": {
+    "@rtk-query/codegen-openapi": "^1.0.0",
+    "@types/react-helmet": "^6.1.5",
+    "typescript": "^4.8.4"
   }
 }

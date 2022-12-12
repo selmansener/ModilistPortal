@@ -54,13 +54,13 @@ namespace ModilistPortal.Business.Seed
             }
 
             var assembly = typeof(SeedData).Assembly;
-            using (var stream = assembly.GetManifestResourceStream("Modilist.Business.Seed.ClearDatabase.sql"))
+            using (var stream = assembly.GetManifestResourceStream("ModilistPortal.Business.Seed.ClearDatabase.sql"))
             using (var reader = new StreamReader(stream, Encoding.UTF8))
             {
                 string sql = reader.ReadToEnd();
                 if (string.IsNullOrEmpty(sql))
                 {
-                    throw new InvalidOperationException($"Could not load ClearData file. (Modilist.Business.Seed.ClearDatabase.sql)");
+                    throw new InvalidOperationException($"Could not load ClearData file. (ModilistPortal.Business.Seed.ClearDatabase.sql)");
                 }
 
                 _dbContext.Database.ExecuteSqlRaw(sql);
@@ -144,7 +144,7 @@ namespace ModilistPortal.Business.Seed
             SeedData seedData;
             var assembly = typeof(SeedData).Assembly;
 
-            string resourceName = $"Modilist.Business.Seed.Data.DataFiles.SeedData.{environment}.json";
+            string resourceName = $"ModilistPortal.Business.Seed.Data.DataFiles.SeedData.{environment}.json";
 
             using (var stream = assembly.GetManifestResourceStream(resourceName))
             using (var reader = new StreamReader(stream, Encoding.UTF8))
