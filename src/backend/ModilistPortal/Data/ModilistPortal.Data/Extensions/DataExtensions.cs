@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Microsoft.Data.SqlClient;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 using ModilistPortal.Data.DataAccess;
+using ModilistPortal.Data.Repositories.AccountDomain;
 using ModilistPortal.Data.Transactions;
 using ModilistPortal.Infrastructure.Shared.Configurations;
 
@@ -44,6 +40,7 @@ namespace ModilistPortal.Data.Extensions
 
         public static IServiceCollection AddRepositories(this IServiceCollection services)
         {
+            services.AddScoped<IAccountRepository, AccountRepository>();
 
             return services;
         }

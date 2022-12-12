@@ -11,6 +11,7 @@ using MediatR;
 
 using Microsoft.Extensions.DependencyInjection;
 
+using ModilistPortal.Business.CQRS.AccountDomain.Commands;
 using ModilistPortal.Business.PipelineBehaviors;
 
 namespace ModilistPortal.Business.Extensions

@@ -1,15 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Linq.Expressions;
+using System.Reflection;
 
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+
+using ModilistPortal.Domains.Base;
+using ModilistPortal.Domains.Models.AccountDomain;
+using ModilistPortal.Infrastructure.Shared.Constants;
+using ModilistPortal.Infrastructure.Shared.Models;
 
 namespace ModilistPortal.Data.DataAccess
 {
-    internal class ModilistPortalDbContext
+    public class ModilistPortalDbContext : DbContext
     {
+        public DbSet<Account> Accounts { get; set; }
+
         public ModilistPortalDbContext(DbContextOptions<ModilistPortalDbContext> options)
             : base(options)
         {

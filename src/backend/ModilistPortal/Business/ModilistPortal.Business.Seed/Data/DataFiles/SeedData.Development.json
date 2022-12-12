@@ -1,0 +1,87 @@
+﻿{
+  "Products": [
+    {
+      "SKU": "231-424-323",
+      "Name": "5542503058"
+    }
+  ],
+  "Users": [
+    {
+      "Id": "e4d2fe04-2efe-4754-8d62-98dbf6013277",
+      "FirstName": "Selman",
+      "LastName": "Şener",
+      "BirthDate": "1989-07-16",
+      "Gender": "Male",
+      "InstagramUserName": "@aselmansener",
+      "Email": "selmansenerr@gmail.com",
+      "Phone": "5542503058",
+      "JobTitle": "Software Developer"
+    },
+    {
+      "Id": "38c1a896-7100-47bc-9426-36f4b05b975a",
+      "FirstName": "Harun",
+      "LastName": "Uğurlu",
+      "BirthDate": "1989-07-16",
+      "Gender": "Male",
+      "InstagramUserName": "@aselmansener",
+      "Email": "harunugurlu1@gmail.com",
+      "Phone": "5542503058",
+      "JobTitle": "Software Developer"
+    },
+    {
+      "Id": "dca2653c-f8b2-4752-8297-f83e33487afe",
+      "FirstName": "Beyza Naz",
+      "LastName": "Elçiçek",
+      "BirthDate": "1989-07-16",
+      "Gender": "Female",
+      "InstagramUserName": "@aselmansener",
+      "Email": "beyza.elcicek@modilist.com",
+      "Phone": "5542503058",
+      "JobTitle": "Product Owner"
+    },
+    {
+      "Id": "ffbebbff-ed0d-4d13-a1e6-a0215694af11",
+      "FirstName": "Tuğçe",
+      "LastName": "Ulusoy",
+      "BirthDate": "1989-07-16",
+      "Gender": "Female",
+      "InstagramUserName": "@aselmansener",
+      "Email": "tugceee1405@gmail.com",
+      "Phone": "5542503058",
+      "JobTitle": "Product Owner"
+    },
+    {
+      "Id": "f8dc6020-414b-459a-982a-0f804b9dd01a",
+      "FirstName": "Demet",
+      "LastName": "ÖZKAN ÇETİNKAYA",
+      "BirthDate": "1989-07-16",
+      "Gender": "Female",
+      "InstagramUserName": "@aselmansener",
+      "Email": "demet.cetinkaya@modilist.com",
+      "Phone": "5542503058",
+      "JobTitle": "UI/UX Designer"
+    },
+    {
+      "Id": "3237005b-64a1-4c3d-a98d-a78ae74ac8b8",
+      "FirstName": "Meltem",
+      "LastName": "Bedir",
+      "BirthDate": "1989-07-16",
+      "Gender": "Female",
+      "InstagramUserName": "@aselmansener",
+      "Email": "meltembe8686@gmail.com",
+      "Phone": "5542503058",
+      "JobTitle": "UI/UX Designer"
+    },
+    {
+      "Id": "8b732d56-c939-4398-bbc7-404c4b4b85a4",
+      "FirstName": "Gülce",
+      "LastName": "Yazıcı",
+      "BirthDate": "1989-07-16",
+      "Gender": "Female",
+      "InstagramUserName": "@aselmansener",
+      "Email": "gulceyazici285@gmail.com",
+      "Phone": "5542503058",
+      "JobTitle": "Software Developer"
+    }
+  ]
+}

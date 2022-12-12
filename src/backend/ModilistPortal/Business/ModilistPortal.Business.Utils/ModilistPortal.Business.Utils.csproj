@@ -1,0 +1,191 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="AddressDomain\Resources\Cities.json" />
+    <None Remove="AddressDomain\Resources\Districts\01.json" />
+    <None Remove="AddressDomain\Resources\Districts\02.json" />
+    <None Remove="AddressDomain\Resources\Districts\03.json" />
+    <None Remove="AddressDomain\Resources\Districts\04.json" />
+    <None Remove="AddressDomain\Resources\Districts\05.json" />
+    <None Remove="AddressDomain\Resources\Districts\06.json" />
+    <None Remove="AddressDomain\Resources\Districts\07.json" />
+    <None Remove="AddressDomain\Resources\Districts\08.json" />
+    <None Remove="AddressDomain\Resources\Districts\09.json" />
+    <None Remove="AddressDomain\Resources\Districts\10.json" />
+    <None Remove="AddressDomain\Resources\Districts\11.json" />
+    <None Remove="AddressDomain\Resources\Districts\12.json" />
+    <None Remove="AddressDomain\Resources\Districts\13.json" />
+    <None Remove="AddressDomain\Resources\Districts\14.json" />
+    <None Remove="AddressDomain\Resources\Districts\15.json" />
+    <None Remove="AddressDomain\Resources\Districts\16.json" />
+    <None Remove="AddressDomain\Resources\Districts\17.json" />
+    <None Remove="AddressDomain\Resources\Districts\18.json" />
+    <None Remove="AddressDomain\Resources\Districts\19.json" />
+    <None Remove="AddressDomain\Resources\Districts\20.json" />
+    <None Remove="AddressDomain\Resources\Districts\21.json" />
+    <None Remove="AddressDomain\Resources\Districts\22.json" />
+    <None Remove="AddressDomain\Resources\Districts\23.json" />
+    <None Remove="AddressDomain\Resources\Districts\24.json" />
+    <None Remove="AddressDomain\Resources\Districts\25.json" />
+    <None Remove="AddressDomain\Resources\Districts\26.json" />
+    <None Remove="AddressDomain\Resources\Districts\27.json" />
+    <None Remove="AddressDomain\Resources\Districts\28.json" />
+    <None Remove="AddressDomain\Resources\Districts\29.json" />
+    <None Remove="AddressDomain\Resources\Districts\30.json" />
+    <None Remove="AddressDomain\Resources\Districts\31.json" />
+    <None Remove="AddressDomain\Resources\Districts\32.json" />
+    <None Remove="AddressDomain\Resources\Districts\33.json" />
+    <None Remove="AddressDomain\Resources\Districts\34.json" />
+    <None Remove="AddressDomain\Resources\Districts\35.json" />
+    <None Remove="AddressDomain\Resources\Districts\36.json" />
+    <None Remove="AddressDomain\Resources\Districts\37.json" />
+    <None Remove="AddressDomain\Resources\Districts\38.json" />
+    <None Remove="AddressDomain\Resources\Districts\39.json" />
+    <None Remove="AddressDomain\Resources\Districts\40.json" />
+    <None Remove="AddressDomain\Resources\Districts\41.json" />
+    <None Remove="AddressDomain\Resources\Districts\42.json" />
+    <None Remove="AddressDomain\Resources\Districts\43.json" />
+    <None Remove="AddressDomain\Resources\Districts\44.json" />
+    <None Remove="AddressDomain\Resources\Districts\45.json" />
+    <None Remove="AddressDomain\Resources\Districts\46.json" />
+    <None Remove="AddressDomain\Resources\Districts\47.json" />
+    <None Remove="AddressDomain\Resources\Districts\48.json" />
+    <None Remove="AddressDomain\Resources\Districts\49.json" />
+    <None Remove="AddressDomain\Resources\Districts\50.json" />
+    <None Remove="AddressDomain\Resources\Districts\51.json" />
+    <None Remove="AddressDomain\Resources\Districts\52.json" />
+    <None Remove="AddressDomain\Resources\Districts\53.json" />
+    <None Remove="AddressDomain\Resources\Districts\54.json" />
+    <None Remove="AddressDomain\Resources\Districts\55.json" />
+    <None Remove="AddressDomain\Resources\Districts\56.json" />
+    <None Remove="AddressDomain\Resources\Districts\57.json" />
+    <None Remove="AddressDomain\Resources\Districts\58.json" />
+    <None Remove="AddressDomain\Resources\Districts\59.json" />
+    <None Remove="AddressDomain\Resources\Districts\60.json" />
+    <None Remove="AddressDomain\Resources\Districts\61.json" />
+    <None Remove="AddressDomain\Resources\Districts\62.json" />
+    <None Remove="AddressDomain\Resources\Districts\63.json" />
+    <None Remove="AddressDomain\Resources\Districts\64.json" />
+    <None Remove="AddressDomain\Resources\Districts\65.json" />
+    <None Remove="AddressDomain\Resources\Districts\66.json" />
+    <None Remove="AddressDomain\Resources\Districts\67.json" />
+    <None Remove="AddressDomain\Resources\Districts\68.json" />
+    <None Remove="AddressDomain\Resources\Districts\69.json" />
+    <None Remove="AddressDomain\Resources\Districts\70.json" />
+    <None Remove="AddressDomain\Resources\Districts\71.json" />
+    <None Remove="AddressDomain\Resources\Districts\72.json" />
+    <None Remove="AddressDomain\Resources\Districts\73.json" />
+    <None Remove="AddressDomain\Resources\Districts\74.json" />
+    <None Remove="AddressDomain\Resources\Districts\75.json" />
+    <None Remove="AddressDomain\Resources\Districts\76.json" />
+    <None Remove="AddressDomain\Resources\Districts\77.json" />
+    <None Remove="AddressDomain\Resources\Districts\78.json" />
+    <None Remove="AddressDomain\Resources\Districts\79.json" />
+    <None Remove="AddressDomain\Resources\Districts\80.json" />
+    <None Remove="AddressDomain\Resources\Districts\81.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="AddressDomain\Resources\Cities.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\01.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\02.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\03.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\04.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\05.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\06.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\07.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\08.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\09.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\10.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\11.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\12.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\13.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\14.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\15.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\16.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\17.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\18.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\19.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\20.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\21.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\22.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\23.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\24.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\25.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\26.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\27.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\28.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\29.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\30.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\31.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\32.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\33.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\34.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\35.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\36.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\37.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\38.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\39.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\40.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\41.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\42.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\43.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\44.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\45.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\46.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\47.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\48.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\49.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\50.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\51.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\52.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\53.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\54.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\55.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\56.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\57.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\58.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\59.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\60.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\61.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\62.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\63.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\64.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\65.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\66.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\67.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\68.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\69.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\70.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\71.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\72.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\73.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\74.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\75.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\76.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\77.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\78.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\79.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\80.json" />
+    <EmbeddedResource Include="AddressDomain\Resources\Districts\81.json" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="JsonNet.ContractResolvers" Version="2.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="2.2.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Options" Version="6.0.0" />
+    <PackageReference Include="SendGrid" Version="9.28.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\ModilistPortal.Infrastructure.Shared\ModilistPortal.Infrastructure.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

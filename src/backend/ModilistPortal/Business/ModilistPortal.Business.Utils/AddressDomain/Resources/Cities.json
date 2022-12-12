@@ -1,0 +1,326 @@
+﻿[
+  {
+    "name": "İSTANBUL",
+    "code": "34"
+  },
+  {
+    "name": "ANKARA",
+    "code": "06"
+  },
+  {
+    "name": "İZMİR",
+    "code": "35"
+  },
+  {
+    "name": "BURSA",
+    "code": "16"
+  },
+  {
+    "name": "ADANA",
+    "code": "01"
+  },
+  {
+    "name": "ADIYAMAN",
+    "code": "02"
+  },
+  {
+    "name": "AFYONKARAHİSAR",
+    "code": "03"
+  },
+  {
+    "name": "AĞRI",
+    "code": "04"
+  },
+  {
+    "name": "AKSARAY",
+    "code": "68"
+  },
+  {
+    "name": "AMASYA",
+    "code": "05"
+  },
+  {
+    "name": "ANTALYA",
+    "code": "07"
+  },
+  {
+    "name": "ARDAHAN",
+    "code": "75"
+  },
+  {
+    "name": "ARTVİN",
+    "code": "08"
+  },
+  {
+    "name": "AYDIN",
+    "code": "09"
+  },
+  {
+    "name": "BALIKESİR",
+    "code": "10"
+  },
+  {
+    "name": "BARTIN",
+    "code": "74"
+  },
+  {
+    "name": "BATMAN",
+    "code": "72"
+  },
+  {
+    "name": "BAYBURT",
+    "code": "69"
+  },
+  {
+    "name": "BİLECİK",
+    "code": "11"
+  },
+  {
+    "name": "BİNGÖL",
+    "code": "12"
+  },
+  {
+    "name": "BİTLİS",
+    "code": "13"
+  },
+  {
+    "name": "BOLU",
+    "code": "14"
+  },
+  {
+    "name": "BURDUR",
+    "code": "15"
+  },
+  {
+    "name": "ÇANAKKALE",
+    "code": "17"
+  },
+  {
+    "name": "ÇANKIRI",
+    "code": "18"
+  },
+  {
+    "name": "ÇORUM",
+    "code": "19"
+  },
+  {
+    "name": "DENİZLİ",
+    "code": "20"
+  },
+  {
+    "name": "DİYARBAKIR",
+    "code": "21"
+  },
+  {
+    "name": "DÜZCE",
+    "code": "81"
+  },
+  {
+    "name": "EDİRNE",
+    "code": "22"
+  },
+  {
+    "name": "ELAZIĞ",
+    "code": "23"
+  },
+  {
+    "name": "ERZİNCAN",
+    "code": "24"
+  },
+  {
+    "name": "ERZURUM",
+    "code": "25"
+  },
+  {
+    "name": "ESKİŞEHİR",
+    "code": "26"
+  },
+  {
+    "name": "GAZİANTEP",
+    "code": "27"
+  },
+  {
+    "name": "GİRESUN",
+    "code": "28"
+  },
+  {
+    "name": "GÜMÜŞHANE",
+    "code": "29"
+  },
+  {
+    "name": "HAKKARİ",
+    "code": "30"
+  },
+  {
+    "name": "HATAY",
+    "code": "31"
+  },
+  {
+    "name": "IĞDIR",
+    "code": "76"
+  },
+  {
+    "name": "ISPARTA",
+    "code": "32"
+  },
+  {
+    "name": "KAHRAMANMARAŞ",
+    "code": "46"
+  },
+  {
+    "name": "KARABÜK",
+    "code": "78"
+  },
+  {
+    "name": "KARAMAN",
+    "code": "70"
+  },
+  {
+    "name": "KARS",
+    "code": "36"
+  },
+  {
+    "name": "KASTAMONU",
+    "code": "37"
+  },
+  {
+    "name": "KAYSERİ",
+    "code": "38"
+  },
+  {
+    "name": "KIRIKKALE",
+    "code": "71"
+  },
+  {
+    "name": "KIRKLARELİ",
+    "code": "39"
+  },
+  {
+    "name": "KIRŞEHİR",
+    "code": "40"
+  },
+  {
+    "name": "KİLİS",
+    "code": "79"
+  },
+  {
+    "name": "KOCAELİ",
+    "code": "41"
+  },
+  {
+    "name": "KONYA",
+    "code": "42"
+  },
+  {
+    "name": "KÜTAHYA",
+    "code": "43"
+  },
+  {
+    "name": "MALATYA",
+    "code": "44"
+  },
+  {
+    "name": "MANİSA",
+    "code": "45"
+  },
+  {
+    "name": "MARDİN",
+    "code": "47"
+  },
+  {
+    "name": "MERSİN",
+    "code": "33"
+  },
+  {
+    "name": "MUĞLA",
+    "code": "48"
+  },
+  {
+    "name": "MUŞ",
+    "code": "49"
+  },
+  {
+    "name": "NEVŞEHİR",
+    "code": "50"
+  },
+  {
+    "name": "NİĞDE",
+    "code": "51"
+  },
+  {
+    "name": "ORDU",
+    "code": "52"
+  },
+  {
+    "name": "OSMANİYE",
+    "code": "80"
+  },
+  {
+    "name": "RİZE",
+    "code": "53"
+  },
+  {
+    "name": "SAKARYA",
+    "code": "54"
+  },
+  {
+    "name": "SAMSUN",
+    "code": "55"
+  },
+  {
+    "name": "SİİRT",
+    "code": "56"
+  },
+  {
+    "name": "SİNOP",
+    "code": "57"
+  },
+  {
+    "name": "SİVAS",
+    "code": "58"
+  },
+  {
+    "name": "ŞANLIURFA",
+    "code": "63"
+  },
+  {
+    "name": "ŞIRNAK",
+    "code": "73"
+  },
+  {
+    "name": "TEKİRDAĞ",
+    "code": "59"
+  },
+  {
+    "name": "TOKAT",
+    "code": "60"
+  },
+  {
+    "name": "TRABZON",
+    "code": "61"
+  },
+  {
+    "name": "TUNCELİ",
+    "code": "62"
+  },
+  {
+    "name": "UŞAK",
+    "code": "64"
+  },
+  {
+    "name": "VAN",
+    "code": "65"
+  },
+  {
+    "name": "YALOVA",
+    "code": "77"
+  },
+  {
+    "name": "YOZGAT",
+    "code": "66"
+  },
+  {
+    "name": "ZONGULDAK",
+    "code": "67"
+  }
+]

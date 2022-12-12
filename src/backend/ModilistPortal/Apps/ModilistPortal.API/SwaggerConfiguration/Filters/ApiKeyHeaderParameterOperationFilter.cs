@@ -3,6 +3,7 @@ using Microsoft.OpenApi.Any;
 using Microsoft.OpenApi.Models;
 
 using ModilistPortal.API.Configuration;
+using ModilistPortal.API.Filters;
 
 using Swashbuckle.AspNetCore.SwaggerGen;
 

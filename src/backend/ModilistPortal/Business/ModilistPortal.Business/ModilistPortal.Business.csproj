@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Mapster" Version="7.3.0" />
     <PackageReference Include="MediatR" Version="11.1.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="11.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Core" Version="2.2.5" />
@@ -15,6 +16,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Data\ModilistPortal.Data\ModilistPortal.Data.csproj" />
+    <ProjectReference Include="..\..\Infrastructure\ModilistPortal.Infrastructure.Azure.Extensions\ModilistPortal.Infrastructure.Azure.Extensions.csproj" />
     <ProjectReference Include="..\..\Infrastructure\ModilistPortal.Infrastructure.Shared\ModilistPortal.Infrastructure.Shared.csproj" />
   </ItemGroup>
 

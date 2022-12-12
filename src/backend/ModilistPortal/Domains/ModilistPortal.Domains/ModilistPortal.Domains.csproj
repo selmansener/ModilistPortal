@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Infrastructure\ModilistPortal.Infrastructure.Shared\ModilistPortal.Infrastructure.Shared.csproj" />
+  </ItemGroup>
+
 </Project>

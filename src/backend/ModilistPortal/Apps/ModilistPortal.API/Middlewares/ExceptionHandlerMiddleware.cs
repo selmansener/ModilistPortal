@@ -1,4 +1,11 @@
-﻿namespace ModilistPortal.API.Middlewares
+﻿using FluentValidation;
+
+using ModilistPortal.Infrastructure.Shared.Interfaces;
+
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+
+namespace ModilistPortal.API.Middlewares
 {
     public class ExceptionHandlerMiddleware
     {
