@@ -1,5 +1,6 @@
 import React from "react";
-import { verificationLayoutRoutes } from "../layouts/verification/VerificationLayout";
+import { dashboardRoutes } from "../layouts/dashboard/DashboardLayout";
+import { landingRoutes } from "../layouts/landing/LandingLayout";
 
 enum Environments {
     Production = "production",
@@ -29,5 +30,6 @@ export interface RouteConfig {
 }
 
 export const routes: RouteConfig[] = [
-    verificationLayoutRoutes
+    landingRoutes,
+    dashboardRoutes
 ];

@@ -10,4 +10,10 @@
     <ProjectReference Include="..\..\Infrastructure\ModilistPortal.Infrastructure.Shared\ModilistPortal.Infrastructure.Shared.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Models\ReturnDomain\" />
+    <Folder Include="Models\SalesOrderDomain\" />
+    <Folder Include="Models\ProductDomain\" />
+  </ItemGroup>
+
 </Project>
