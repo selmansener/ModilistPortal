@@ -3,7 +3,7 @@ import { AccountInfo } from '@azure/msal-browser';
 
 interface MsalState {
     token?: string,
-    account?: AccountInfo | null,
+    account?: AccountInfo,
 }
 
 const initialState: MsalState = {
@@ -18,7 +18,7 @@ export const authSlice = createSlice({
         setToken: (state, action: PayloadAction<string>) => {
             state.token = action.payload
         },
-        setActiveAccount: (state, action: PayloadAction<AccountInfo | null>) => {
+        setActiveAccount: (state, action: PayloadAction<AccountInfo | undefined>) => {
             state.account = action.payload
         }
     }

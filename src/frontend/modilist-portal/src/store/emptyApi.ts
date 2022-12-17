@@ -14,8 +14,6 @@ export const emptySplitApi = createApi({
             const state = getState() as RootState;
             const { token, account } = state.auth;
 
-            console.log("token", state.auth.token);
-
             if (!token) {
                 return headers;
             }
@@ -34,13 +32,9 @@ export const emptySplitApi = createApi({
                 });
             }
 
-
-            console.log("account", state.auth.account);
-
             headers.set("Authorization", `Bearer ${state.auth.token}`);
 
             return headers;
-
         },
     }),
     endpoints: () => ({}),

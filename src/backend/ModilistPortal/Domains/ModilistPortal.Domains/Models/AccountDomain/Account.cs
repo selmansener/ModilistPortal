@@ -1,4 +1,5 @@
 ﻿using ModilistPortal.Domains.Base;
+using ModilistPortal.Domains.Models.TenantDomain;
 using ModilistPortal.Infrastructure.Shared.Enums;
 
 namespace ModilistPortal.Domains.Models.AccountDomain
@@ -11,6 +12,10 @@ namespace ModilistPortal.Domains.Models.AccountDomain
         }
 
         public new Guid Id { get; private set; }
+
+        public int? TenantId { get; private set; }
+
+        public Tenant? Tenant { get; private set; }
 
         public string? Email { get; private set; }
 
@@ -41,6 +46,16 @@ namespace ModilistPortal.Domains.Models.AccountDomain
         {
             IsVerified = true;
             VerifiedAt = DateTime.UtcNow;
+        }
+
+        public void AssignTenant(int tenantId)
+        {
+            if (tenantId == default)
+            {
+                throw new ArgumentException(nameof(tenantId));
+            }
+
+            TenantId = tenantId;
         }
     }
 }

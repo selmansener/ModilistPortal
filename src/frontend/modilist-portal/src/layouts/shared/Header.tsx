@@ -1,11 +1,12 @@
 import { AuthenticatedTemplate, UnauthenticatedTemplate, useMsal } from "@azure/msal-react"
 import { AppBar, Box, Button, Toolbar } from "@mui/material"
 import React from "react"
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { config } from "../../config";
 
 function AuthenticationButton() {
     const { instance: msal } = useMsal();
+    const navigate = useNavigate();
 
     const logout = () => {
         const account = msal.getAllAccounts()[0];
@@ -24,6 +25,9 @@ function AuthenticationButton() {
 
     return <React.Fragment>
         <AuthenticatedTemplate>
+            <Button onClick={() => navigate("/dashboard")}>
+                Dashboard
+            </Button>
             <Button onClick={logout}>
                 Logout
             </Button>

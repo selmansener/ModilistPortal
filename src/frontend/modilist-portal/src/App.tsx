@@ -14,9 +14,9 @@ import i18n from "i18next";
 import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from "react-i18next";
 import Backend from 'i18next-http-backend';
+import { Authentication } from './store/auth/Authentication';
 
 export const msal = new PublicClientApplication(config.msalConfig);
-
 
 declare module '@mui/material/styles' {
   interface PaletteColor {
@@ -27,8 +27,6 @@ declare module '@mui/material/styles' {
     transparent?: string;
   }
 }
-
-const msalInstance = new PublicClientApplication(config.msalConfig);
 
 const mdTheme = createTheme({
   palette: {
@@ -215,12 +213,15 @@ function App() {
       <CssBaseline enableColorScheme />
       <Provider store={store}>
         <MsalProvider instance={msal}>
-          <AuthenticatedTemplate>
-            <Router routes={routes} isPublic={false} currentAccountRole="user" environment={config.environment} />
-          </AuthenticatedTemplate>
-          <UnauthenticatedTemplate>
-            <Router routes={routes} isPublic={true} currentAccountRole="user" environment={config.environment} />
-          </UnauthenticatedTemplate>
+          <Authentication />
+          <ThemeProvider theme={theme} >
+            <AuthenticatedTemplate>
+              <Router routes={routes} isPublic={false} currentAccountRole="user" environment={config.environment} />
+            </AuthenticatedTemplate>
+            <UnauthenticatedTemplate>
+              <Router routes={routes} isPublic={true} currentAccountRole="user" environment={config.environment} />
+            </UnauthenticatedTemplate>
+          </ThemeProvider>
         </MsalProvider>
       </Provider>
     </div>

@@ -11,9 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Models\ReturnDomain\" />
-    <Folder Include="Models\SalesOrderDomain\" />
-    <Folder Include="Models\ProductDomain\" />
+    <Folder Include="Models\CustomerDomain\" />
   </ItemGroup>
 
 </Project>

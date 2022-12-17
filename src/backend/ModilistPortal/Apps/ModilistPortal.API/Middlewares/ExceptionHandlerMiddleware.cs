@@ -1,5 +1,6 @@
 ﻿using FluentValidation;
 
+using ModilistPortal.API.Models;
 using ModilistPortal.Infrastructure.Shared.Interfaces;
 
 using Newtonsoft.Json;
@@ -30,23 +31,14 @@ namespace ModilistPortal.API.Middlewares
             }
             catch (Exception exception) when (exception is IClientException clientException)
             {
-                var exceptionResponse = new ExceptionResponse
-                {
-                    ErrorType = exception.GetType().Name,
-                    Message = exception.Message
-                };
+                var exceptionResponse = new ResponseModel<object>(clientException.StatusCode, null, exception.Message, exception.GetType().Name, null);
 
                 context.Response.StatusCode = clientException.StatusCode;
                 await SendErrorResponse(context, exceptionResponse);
             }
             catch (Exception exception) when (exception is ValidationException validationException)
             {
-                var exceptionResponse = new ExceptionResponse
-                {
-                    ErrorType = validationException.GetType().Name,
-                    Message = validationException.Message,
-                    Errors = GetErrors(validationException)
-                };
+                var exceptionResponse = new ResponseModel<object>(400, null, validationException.Message, validationException.GetType().Name, GetErrors(validationException));
 
                 context.Response.StatusCode = 400;
                 await SendErrorResponse(context, exceptionResponse);
@@ -55,18 +47,14 @@ namespace ModilistPortal.API.Middlewares
             {
                 _logger.LogError(ex, ex.Message);
 
-                var exceptionResponse = new ExceptionResponse
-                {
-                    ErrorType = _environment.IsProduction() ? "Unexpected" : ex.GetType().Name,
-                    Message = _environment.IsProduction() ? null : ex.Message
-                };
+                var exceptionResponse = new ResponseModel<object>(500, null, _environment.IsProduction() ? null : ex.Message, _environment.IsProduction() ? "Unexpected" : ex.GetType().Name, null);
 
                 context.Response.StatusCode = 500;
                 await SendErrorResponse(context, exceptionResponse);
             }
         }
 
-        private async Task SendErrorResponse(HttpContext context, ExceptionResponse exceptionResponse)
+        private async Task SendErrorResponse(HttpContext context, ResponseModel<object> exceptionResponse)
         {
             var exceptionResponseBody = JsonConvert.SerializeObject(exceptionResponse, new JsonSerializerSettings
             {
@@ -105,15 +93,6 @@ namespace ModilistPortal.API.Middlewares
             }
 
             return errors;
-        }
-
-        private sealed class ExceptionResponse
-        {
-            public string ErrorType { get; set; }
-
-            public string Message { get; set; }
-
-            public IDictionary<string, List<string>> Errors { get; set; }
         }
     }
 

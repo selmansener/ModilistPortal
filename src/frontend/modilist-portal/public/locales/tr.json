@@ -1,4 +1,16 @@
 {
+    "FormValidation": {
+        "RequiredField": "*Gerekli Alan",
+        "MinCharacters": "*Lütfen başında 0 olmadan 10 haneli bir telefon numarası giriniz",
+        "MustBeInteger": "*Lütfen bir tamsayı giriniz",
+        "MustBeGreaterThanZero": "*Lütfen sıfırdan büyük bir tamsayı giriniz",
+        "MustBeNumber": "*Lütfen bir sayı giriniz",
+        "Email": "*Lütfen geçerli bir email adresi giriniz.",
+        "CardNumber": "*Lütfen geçerli bir kart numarası giriniz",
+        "OverMaxCharLimit": "*Maksimum karakter sayısını aştınız",
+        "InvalidTaxNumber": "Geçersiz Vergi No",
+        "InvalidIdNumber": "Geçersiz TC Kimlik No"
+    },
     "Generic": {
         "Forms": {
             "Other": "Diğer",
@@ -18,9 +30,7 @@
             "Delete": "Kaldır",
             "CharactersLeft": "karakter kaldı",
             "Add": "Ekle",
-            "UnexpectedError": "Beklenmedik bir hatayla karşılaştık.",
-            "InvalidIdNumber": "Geçersiz TC Kimlik No",
-            "InvalidTaxNumber": "Geçersiz Vergi No"
+            "UnexpectedError": "Beklenmedik bir hatayla karşılaştık."
         },
         "PersonalInfo": {
             "Address": "Adres",
@@ -39,6 +49,30 @@
                 "Female": "Kadın"
             },
             "Email": "E-Posta"
+        },
+        "Address": {
+            "FirstName": "Ad",
+            "LastName": "Soyad",
+            "Phone": "Telefon",
+            "City": "İl",
+            "District": "İlçe",
+            "Address": "Adres",
+            "ZipCode": "Posta Kodu (Opsiyonel)"
+        },
+        "TenantTypes": {
+            "Title": "Şirket Türü",
+            "Individual": "Şahıs Şirketi",
+            "LimitedLiability": "Limited Şirket",
+            "IncorporatedCompany": "Anonim Şirket"
+        },
+        "Tenant": {
+            "Name": "Ticari Ünvan",
+            "TaxNumber": "Vergi Numarası",
+            "Phone": "Telefon Numarası",
+            "Email": "E-Posta",
+            "City": "İl",
+            "District": "İlçe",
+            "TaxOffice": "Vergi Dairesi"
         }
     }
 }

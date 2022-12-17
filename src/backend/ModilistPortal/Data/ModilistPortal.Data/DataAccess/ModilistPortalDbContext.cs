@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 using ModilistPortal.Domains.Base;
 using ModilistPortal.Domains.Models.AccountDomain;
+using ModilistPortal.Domains.Models.TenantDomain;
 using ModilistPortal.Infrastructure.Shared.Constants;
 using ModilistPortal.Infrastructure.Shared.Models;
 
@@ -13,8 +14,6 @@ namespace ModilistPortal.Data.DataAccess
 {
     public class ModilistPortalDbContext : DbContext
     {
-        public DbSet<Account> Accounts { get; set; }
-
         public ModilistPortalDbContext(DbContextOptions<ModilistPortalDbContext> options)
             : base(options)
         {
@@ -22,6 +21,10 @@ namespace ModilistPortal.Data.DataAccess
             ChangeTracker.LazyLoadingEnabled = false;
             ChangeTracker.AutoDetectChangesEnabled = false;
         }
+
+        public DbSet<Account> Accounts { get; set; }
+
+        public DbSet<Tenant> Tenants { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -39,7 +42,7 @@ namespace ModilistPortal.Data.DataAccess
 
         private IEnumerable<IMutableEntityType> GetEntityTypes(ModelBuilder builder)
         {
-            return builder.Model.GetEntityTypes().Where(x => typeof(IBaseEntity).IsAssignableFrom(x.ClrType));
+            return builder.Model.GetEntityTypes().Where(x => typeof(IBaseEntity).IsAssignableFrom(x.ClrType) && x.ClrType != typeof(BaseEntity));
         }
 
         private void AddDefaultMaxLength(ModelBuilder builder, IEnumerable<IMutableEntityType> entityTypes)

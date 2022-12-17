@@ -9,7 +9,9 @@ import { Header } from "../shared/Header";
 export function DashboardLayout() {
     return <React.Fragment>
         <Header />
-        <Container>
+        <Container sx={{
+            mt: 15
+        }}>
             <AuthenticatedTemplate>
                 <Outlet />
             </AuthenticatedTemplate>
@@ -21,10 +23,12 @@ export function DashboardLayout() {
     </React.Fragment>
 }
 
+const MainPage = React.lazy(() => import("../../pages/dashboard/main/Main"));
 const SalesOrdersPage = React.lazy(() => import("../../pages/dashboard/salesOrders/SalesOrders"));
 const ProductsPage = React.lazy(() => import("../../pages/dashboard/products/Products"));
 const ReturnsPage = React.lazy(() => import("../../pages/dashboard/returns/Returns"));
 const TenantPage = React.lazy(() => import("../../pages/dashboard/tenant/Tenant"));
+
 
 export const dashboardRoutes: RouteConfig = {
     path: "/dashboard",
@@ -32,19 +36,23 @@ export const dashboardRoutes: RouteConfig = {
     isPublic: false,
     leafNodes: [
         {
-            path: "/sales-orders",
+            path: "",
+            element: <MainPage />
+        },
+        {
+            path: "sales-orders",
             element: <SalesOrdersPage />
         },
         {
-            path: "/products",
+            path: "products",
             element: <ProductsPage />
         },
         {
-            path: "/returns",
+            path: "returns",
             element: <ReturnsPage />
         },
         {
-            path: "/products",
+            path: "tenant",
             element: <TenantPage />
         }
     ]

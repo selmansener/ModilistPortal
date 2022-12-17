@@ -2,12 +2,11 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using ModilistPortal.API.Configuration;
+using ModilistPortal.API.Models;
 using ModilistPortal.Business.CQRS.AccountDomain.Commands;
 using ModilistPortal.Business.CQRS.AccountDomain.DTOs;
 using ModilistPortal.Business.CQRS.AccountDomain.Queries;
 using ModilistPortal.Infrastructure.Shared.Exntensions;
-
-using System.Security.Principal;
 
 namespace ModilistPortal.API.Area.API.Controllers
 {
@@ -22,12 +21,12 @@ namespace ModilistPortal.API.Area.API.Controllers
 
         [Authorize(nameof(AuthorizationPermissions.Accounts))]
         [HttpGet("Get")]
-        [ProducesResponseType(typeof(AccountDTO), 200)]
+        [ProducesResponseType(typeof(ResponseModel<AccountDTO>), 200)]
         public async Task<IActionResult> Get(CancellationToken cancellationToken)
         {
             var account = await _mediator.Send(new GetAccount { Id = User.GetUserId() }, cancellationToken);
 
-            return Ok(account);
+            return Ok(new ResponseModel<AccountDTO>(account));
         }
 
         [HttpGet("Verify/{email}")]
@@ -44,17 +43,17 @@ namespace ModilistPortal.API.Area.API.Controllers
 
         [Authorize(nameof(AuthorizationPermissions.Accounts))]
         [HttpPost("Create")]
-        [ProducesResponseType(typeof(AccountDTO), 200)]
+        [ProducesResponseType(typeof(ResponseModel<AccountDTO>), 200)]
         public async Task<IActionResult> Create(CreateAccount input, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(input, cancellationToken);
 
-            return Ok(response);
+            return Ok(new ResponseModel<AccountDTO>(response));
         }
 
         [Authorize(nameof(AuthorizationPermissions.Accounts))]
         [HttpPost("Activate")]
-        [ProducesResponseType(typeof(AccountDTO), 200)]
+        [ProducesResponseType(typeof(ResponseModel<AccountDTO>), 200)]
         public async Task<IActionResult> Activate(CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(new ActivateAccount
@@ -62,7 +61,7 @@ namespace ModilistPortal.API.Area.API.Controllers
                 AccountId = User.GetUserId()
             }, cancellationToken);
 
-            return Ok(response);
+            return Ok(new ResponseModel<AccountDTO>(response));
         }
     }
 }
