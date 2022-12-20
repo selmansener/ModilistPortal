@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 using ModilistPortal.Domains.Base;
 using ModilistPortal.Domains.Models.AccountDomain;
+using ModilistPortal.Domains.Models.ProductDomain;
 using ModilistPortal.Domains.Models.TenantDomain;
 using ModilistPortal.Infrastructure.Shared.Constants;
 using ModilistPortal.Infrastructure.Shared.Models;
@@ -25,6 +26,8 @@ namespace ModilistPortal.Data.DataAccess
         public DbSet<Account> Accounts { get; set; }
 
         public DbSet<Tenant> Tenants { get; set; }
+
+        public DbSet<ProductExcelUpload> ProductExcelUploads { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

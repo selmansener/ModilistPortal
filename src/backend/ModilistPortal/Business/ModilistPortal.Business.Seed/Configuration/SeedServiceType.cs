@@ -2,6 +2,7 @@
 {
     public enum SeedServiceType
     {
-        Accounts = 0,
+        Tenants = 0,
+        Accounts = 1,
     }
 }

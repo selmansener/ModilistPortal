@@ -5,6 +5,7 @@ using Microsoft.Extensions.Hosting;
 
 using ModilistPortal.Data.DataAccess;
 using ModilistPortal.Data.Repositories.AccountDomain;
+using ModilistPortal.Data.Repositories.ProductDomain;
 using ModilistPortal.Data.Repositories.TenantDomain;
 using ModilistPortal.Data.Transactions;
 using ModilistPortal.Infrastructure.Shared.Configurations;
@@ -43,6 +44,7 @@ namespace ModilistPortal.Data.Extensions
         {
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<ITenantRepository, TenantRepository>();
+            services.AddScoped<IProductExcelUploadRepository, ProductExcelUploadRepository>();
 
             return services;
         }

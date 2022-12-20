@@ -1,7 +1,9 @@
 ﻿using MediatR;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
+using ModilistPortal.API.Configuration;
 using ModilistPortal.Business.CQRS.ProductDomain.Commands;
 using ModilistPortal.Infrastructure.Shared.Exntensions;
 
@@ -16,14 +18,16 @@ namespace ModilistPortal.API.Area.API.Controllers
             _mediator = mediator;
         }
 
+        [Authorize(nameof(AuthorizationPermissions.Products))]
         [HttpPost("UploadProductExcel")]
-        public async Task<IActionResult> UploadProductExcel([FromForm] IFormFile file, CancellationToken cancellationToken)
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> UploadProductExcel(IFormFile file, CancellationToken cancellationToken)
         {
             await _mediator.Send(new UploadProductExcel
             {
                 AccountId = User.GetUserId(),
                 File = file,
-            });
+            }, cancellationToken);
 
             return Ok();
         }
