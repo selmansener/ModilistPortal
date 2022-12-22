@@ -29,7 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModilistPortal.Infrastructu
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModilistPortal.Business.Utils", "Business\ModilistPortal.Business.Utils\ModilistPortal.Business.Utils.csproj", "{E361B96F-D966-40C8-9889-E6B1F18D4CB7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModilistPortal.Functions.BlobTriggered", "Apps\ModilistPortal.Functions.BlobTriggered\ModilistPortal.Functions.BlobTriggered.csproj", "{34FC0751-DECB-4C1E-A32D-69ECC73A8F2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModilistPortal.Functions.BlobTriggered", "Apps\ModilistPortal.Functions.BlobTriggered\ModilistPortal.Functions.BlobTriggered.csproj", "{34FC0751-DECB-4C1E-A32D-69ECC73A8F2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModilistPortal.Functions.EventHandlers", "Apps\ModilistPortal.Functions.EventHandlers\ModilistPortal.Functions.EventHandlers.csproj", "{DB7BB374-AC86-4202-B46B-2A9E81D90387}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -73,6 +75,10 @@ Global
 		{34FC0751-DECB-4C1E-A32D-69ECC73A8F2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34FC0751-DECB-4C1E-A32D-69ECC73A8F2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34FC0751-DECB-4C1E-A32D-69ECC73A8F2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DB7BB374-AC86-4202-B46B-2A9E81D90387}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DB7BB374-AC86-4202-B46B-2A9E81D90387}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DB7BB374-AC86-4202-B46B-2A9E81D90387}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DB7BB374-AC86-4202-B46B-2A9E81D90387}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -87,6 +93,7 @@ Global
 		{E7F75085-C456-4E26-9F29-934757145FD4} = {234B801F-8813-4E60-998D-D68AC6705E25}
 		{E361B96F-D966-40C8-9889-E6B1F18D4CB7} = {A76EC8D1-CD38-4BAB-A243-6A4FA8905471}
 		{34FC0751-DECB-4C1E-A32D-69ECC73A8F2D} = {11FE0C6A-AE06-4DDA-B34B-EEBF6B542E02}
+		{DB7BB374-AC86-4202-B46B-2A9E81D90387} = {11FE0C6A-AE06-4DDA-B34B-EEBF6B542E02}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {350A791C-7B0E-459E-B937-017F91BE4C59}

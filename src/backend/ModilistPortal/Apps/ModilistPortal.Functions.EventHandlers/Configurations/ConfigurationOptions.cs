@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 using ModilistPortal.Infrastructure.Shared.Configurations;
 
-namespace ModilistPortal.Functions.BlobTriggered.Configurations
+namespace ModilistPortal.Functions.EventHandlers.Configurations
 {
     internal class ConfigurationOptions
     {
         public DbConnectionOptions ModilistDbConnectionOptions { get; set; }
 
         public string AppStorage { get; set; }
-    }    
+    }
 }

@@ -28,5 +28,6 @@
     public static class EventPublishers
     {
         public const string WebAPI = "WebAPI";
+        public const string EventHandlers = "EventHandlers";
     }
 }

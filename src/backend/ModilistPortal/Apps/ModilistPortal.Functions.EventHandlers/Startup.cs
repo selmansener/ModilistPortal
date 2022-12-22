@@ -9,14 +9,14 @@ using Microsoft.Azure.Functions.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
-using ModilistPortal.Functions.BlobTriggered.Configurations;
+using ModilistPortal.Functions.EventHandlers.Configurations;
 using ModilistPortal.Infrastructure.Azure.Extensions;
 using ModilistPortal.Infrastructure.Shared.Configurations;
 
 using Newtonsoft.Json;
 
-[assembly: FunctionsStartup(typeof(ModilistPortal.Functions.BlobTriggered.Startup))]
-namespace ModilistPortal.Functions.BlobTriggered
+[assembly: FunctionsStartup(typeof(ModilistPortal.Functions.EventHandlers.Startup))]
+namespace ModilistPortal.Functions.EventHandlers
 {
     internal class Startup : FunctionsStartup
     {
@@ -38,7 +38,7 @@ namespace ModilistPortal.Functions.BlobTriggered
         public ConfigurationOptions GetConfigurations(string environmentName)
         {
             var assembly = typeof(Startup).Assembly;
-            using (var stream = assembly.GetManifestResourceStream($"ModilistPortal.Functions.BlobTriggered.Settings.appsettings.{environmentName}.json"))
+            using (var stream = assembly.GetManifestResourceStream($"ModilistPortal.Functions.EventHandlers.Settings.appsettings.{environmentName}.json"))
             using (var reader = new StreamReader(stream, Encoding.UTF8))
             {
                 string options = reader.ReadToEnd();

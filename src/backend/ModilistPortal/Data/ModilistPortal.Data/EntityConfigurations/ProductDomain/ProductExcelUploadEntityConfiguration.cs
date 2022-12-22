@@ -15,6 +15,7 @@ namespace ModilistPortal.Data.EntityConfigurations.ProductDomain
         public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<ProductExcelUpload> builder)
         {
             builder.HasKey(x => x.Id);
+            builder.Property(x => x.Id).UseHiLo($"{nameof(ProductExcelUpload)}_Seq");
 
             builder.HasOne(x => x.Tenant)
                 .WithMany()

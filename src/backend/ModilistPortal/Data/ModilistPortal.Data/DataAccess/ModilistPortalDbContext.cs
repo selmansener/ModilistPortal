@@ -29,6 +29,8 @@ namespace ModilistPortal.Data.DataAccess
 
         public DbSet<ProductExcelUpload> ProductExcelUploads { get; set; }
 
+        public DbSet<ProductExcelRow> ProductExcelRows { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             var entityTypes = GetEntityTypes(builder).ToList();

@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "ModilistPortal.Functions.EventHandlers": {
+      "commandName": "Project",
+      "commandLineArgs": "--port 7174",
+      "launchBrowser": false
+    }
+  }
+}

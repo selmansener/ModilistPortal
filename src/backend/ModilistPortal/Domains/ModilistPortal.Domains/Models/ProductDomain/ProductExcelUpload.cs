@@ -11,6 +11,8 @@ namespace ModilistPortal.Domains.Models.ProductDomain
 {
     public class ProductExcelUpload : BaseEntity
     {
+        private readonly List<ProductExcelRow> _rows = new List<ProductExcelRow>();
+
         public ProductExcelUpload(int tenantId, Guid blobId, string originalFileName, string extension, string url, string contentType, int fileSizeInMB)
         {
             TenantId = tenantId;
@@ -37,5 +39,22 @@ namespace ModilistPortal.Domains.Models.ProductDomain
         public string ContentType { get; private set; }
 
         public int FileSizeInMB { get; private set; }
+
+        public IReadOnlyList<ProductExcelRow> Rows => _rows;
+
+        public void UpsertRow(int rowId, string name, string sku, string barcode, string brand, string category, string price, string salesPrice, string stockAmount)
+        {
+            var row = _rows.FirstOrDefault(x => x.RowId == rowId);
+
+            if (row == null)
+            {
+                row = new ProductExcelRow(Id, rowId, name, sku, barcode, brand, category, price, salesPrice, stockAmount);
+                _rows.Add(row);
+            }
+            else
+            {
+                row.Update(rowId, name, sku, barcode, brand, category, price, salesPrice, stockAmount);
+            }
+        }
     }
 }
