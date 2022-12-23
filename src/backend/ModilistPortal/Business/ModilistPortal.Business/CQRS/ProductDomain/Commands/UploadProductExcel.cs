@@ -46,7 +46,7 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.Commands
         public UploadProductExcelValidator()
         {
             RuleFor(x => x.AccountId).NotEmpty();
-            RuleFor(x => x.File).NotEmpty().Must(x => _acceptedContentTypes.Contains(x.ContentType)).WithMessage("InvalidFileType");
+            RuleFor(x => x.File).NotEmpty().Must(x => _acceptedContentTypes.Contains(x.ContentType)).WithErrorCode("InvalidFileType");
         }
     }
 

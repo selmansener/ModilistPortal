@@ -31,6 +31,8 @@ namespace ModilistPortal.Data.DataAccess
 
         public DbSet<ProductExcelRow> ProductExcelRows { get; set; }
 
+        public DbSet<ProductPropertyError> ProductPropertyErrors { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             var entityTypes = GetEntityTypes(builder).ToList();

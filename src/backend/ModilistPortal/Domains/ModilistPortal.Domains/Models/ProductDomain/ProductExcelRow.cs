@@ -11,6 +11,8 @@ namespace ModilistPortal.Domains.Models.ProductDomain
 {
     public class ProductExcelRow : BaseEntity
     {
+        private readonly List<ProductPropertyError> _errorMappings = new List<ProductPropertyError>();
+
         public ProductExcelRow(int productExcelUploadId, int rowId, string name, string sKU, string barcode, string brand, string category, string price, string salesPrice, string stockAmount)
         {
             ProductExcelUploadId = productExcelUploadId;
@@ -49,6 +51,8 @@ namespace ModilistPortal.Domains.Models.ProductDomain
         public string StockAmount { get; private set; }
 
         public ProductExcelRowState State { get; private set; }
+
+        public IReadOnlyList<ProductPropertyError> ErrorMappings => _errorMappings;
 
         public void Update(int rowId, string name, string sKU, string barcode, string brand, string category, string price, string salesPrice, string stockAmount)
         {
