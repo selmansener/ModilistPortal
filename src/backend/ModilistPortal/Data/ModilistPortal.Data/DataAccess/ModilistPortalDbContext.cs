@@ -27,6 +27,10 @@ namespace ModilistPortal.Data.DataAccess
 
         public DbSet<Tenant> Tenants { get; set; }
 
+        public DbSet<Product> Products { get; set; }
+
+        public DbSet<Brand> Brands { get; set; }
+
         public DbSet<ProductExcelUpload> ProductExcelUploads { get; set; }
 
         public DbSet<ProductExcelRow> ProductExcelRows { get; set; }

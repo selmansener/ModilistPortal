@@ -36,5 +36,10 @@ namespace ModilistPortal.Domains.Models.ProductDomain
 
             _errors.Add(error);
         }
+
+        public void ClearErrors()
+        {
+            _errors.Clear();
+        }
     }
 }

@@ -34,21 +34,21 @@ namespace ModilistPortal.Domains.Models.ProductDomain
 
         public int RowId { get; private set; }
 
-        public string Name { get; private set; }
+        public string? Name { get; private set; }
 
-        public string SKU { get; private set; }
+        public string? SKU { get; private set; }
 
-        public string Barcode { get; private set; }
+        public string? Barcode { get; private set; }
 
-        public string Brand { get; private set; }
+        public string? Brand { get; private set; }
 
-        public string Category { get; private set; }
+        public string? Category { get; private set; }
 
-        public string Price { get; private set; }
+        public string? Price { get; private set; }
 
-        public string SalesPrice { get; private set; }
+        public string? SalesPrice { get; private set; }
 
-        public string StockAmount { get; private set; }
+        public string? StockAmount { get; private set; }
 
         public ProductExcelRowState State { get; private set; }
 
@@ -65,6 +65,61 @@ namespace ModilistPortal.Domains.Models.ProductDomain
             Price = price;
             SalesPrice = salesPrice;
             StockAmount = stockAmount;
+        }
+
+        public void ClearErrors()
+        {
+            _errorMappings.Clear();
+        }
+
+        public void SetErrors(IDictionary<string, IReadOnlyList<string>> errors)
+        {
+            State = ProductExcelRowState.ValidationFailed;
+
+            var propertyNames = Enum.GetNames<ProductPropertyName>();
+
+            foreach (var property in propertyNames)
+            {
+                if (property == "None")
+                {
+                    continue;
+                }
+
+                var errorMapping = _errorMappings.FirstOrDefault(x => x.PropertyName.ToString() == property);
+                // if we don't have any error for that property
+                if (errorMapping == null)
+                {
+                    // then we check if there's new one
+                    if (!errors.ContainsKey(property))
+                    {
+                        // if there isn't, then continue
+                        continue;
+                    }
+                    else
+                    {
+                        // create new error mapping and add errors
+                        errorMapping = new ProductPropertyError(Id, (ProductPropertyName)Enum.Parse(typeof(ProductPropertyName), property));
+
+                        foreach (var error in errors[property])
+                        {
+                            errorMapping.AddError(error);
+                        }
+                    }
+                }
+                else
+                {
+                    // if we have errors for that property previously, we gonna override all of it, so clear the errors
+                    errorMapping.ClearErrors();
+
+                    if (errors.ContainsKey(property))
+                    {
+                        foreach (var error in errors[property])
+                        {
+                            errorMapping.AddError(error);
+                        }
+                    }
+                }
+            }
         }
     }
 }

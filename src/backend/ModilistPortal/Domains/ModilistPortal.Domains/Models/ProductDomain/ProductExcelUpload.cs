@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using ModilistPortal.Domains.Base;
+using ModilistPortal.Domains.Exceptions;
 using ModilistPortal.Domains.Models.TenantDomain;
 
 namespace ModilistPortal.Domains.Models.ProductDomain
@@ -55,6 +56,18 @@ namespace ModilistPortal.Domains.Models.ProductDomain
             {
                 row.Update(rowId, name, sku, barcode, brand, category, price, salesPrice, stockAmount);
             }
+        }
+
+        public void SetRowValidationFailures(int rowId, IDictionary<string, IReadOnlyList<string>> errors)
+        {
+            var row = _rows.FirstOrDefault(x => x.RowId == rowId);
+
+            if (row == null)
+            {
+                throw new ProductExcelRowNotFoundException(TenantId, BlobId, rowId);
+            }
+
+            row.SetErrors(errors);
         }
     }
 }

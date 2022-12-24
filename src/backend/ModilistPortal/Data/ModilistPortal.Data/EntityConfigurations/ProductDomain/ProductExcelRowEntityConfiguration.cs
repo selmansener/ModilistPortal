@@ -26,6 +26,10 @@ namespace ModilistPortal.Data.EntityConfigurations.ProductDomain
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.HasIndex(x => new { x.ProductExcelUploadId, x.RowId, x.DeletedAt })
+                .IsUnique()
+                .IsClustered(false);
+
             builder.Property(x => x.State).IsRequired().HasDefaultValue(ProductExcelRowState.None).HasConversion<string>();
         }
     }
