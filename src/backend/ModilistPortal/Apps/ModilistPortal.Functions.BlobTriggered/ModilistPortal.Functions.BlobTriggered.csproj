@@ -45,4 +45,8 @@
       <CopyToPublishDirectory>Never</CopyToPublishDirectory>
     </None>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="BlobHandlers\" />
+    <Folder Include="Models\" />
+  </ItemGroup>
 </Project>

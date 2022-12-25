@@ -20,8 +20,4 @@
     <ProjectReference Include="..\..\Infrastructure\ModilistPortal.Infrastructure.Shared\ModilistPortal.Infrastructure.Shared.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="CQRS\ProductDomain\Queries\" />
-  </ItemGroup>
-
 </Project>

@@ -4,10 +4,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ModilistPortal.Functions.BlobTriggered.Models
+namespace ModilistPortal.Business.CQRS.ProductDomain.DTOs
 {
-    internal class RawProductData
+    public class ProductExcelRowDTO
     {
+        public int TenantId { get; set; }
+
+        public Guid BlobId { get; set; }
+
+        public int RowId { get; set; }
+
         public string Name { get; set; }
 
         public string SKU { get; set; }

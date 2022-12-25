@@ -15,7 +15,9 @@ namespace ModilistPortal.Data.Repositories.ProductDomain
     {
         Task<ProductExcelUpload?> GetByBlobId(int tenantId, Guid blobId, CancellationToken cancellationToken);
 
-        Task<ProductExcelUpload?> GetByBlobIdWithErrors(int tenantId, Guid blobId, CancellationToken cancellationToken);    
+        Task<ProductExcelUpload?> GetByBlobIdWithErrors(int tenantId, Guid blobId, CancellationToken cancellationToken);
+
+        Task<ProductExcelRow?> GetProductExcelRow(int tenantId, Guid blobId, int rowId, CancellationToken cancellationToken);
     }
 
     internal class ProductExcelUploadRepository : BaseRepository<ProductExcelUpload>, IProductExcelUploadRepository
@@ -38,6 +40,11 @@ namespace ModilistPortal.Data.Repositories.ProductDomain
                 .Include(x => x.Rows)
                 .ThenInclude(x => x.ErrorMappings)
                 .FirstOrDefaultAsync(x => x.TenantId == tenantId && x.BlobId == blobId);
+        }
+
+        public async Task<ProductExcelRow?> GetProductExcelRow(int tenantId, Guid blobId, int rowId, CancellationToken cancellationToken)
+        {
+            return (await _baseDb.ProductExcelUploads.Include(x => x.Rows.FirstOrDefault(x => x.RowId == rowId)).FirstOrDefaultAsync(x => x.BlobId == blobId && x.TenantId == tenantId))?.Rows.FirstOrDefault(x => x.RowId == rowId);
         }
     }
 }
