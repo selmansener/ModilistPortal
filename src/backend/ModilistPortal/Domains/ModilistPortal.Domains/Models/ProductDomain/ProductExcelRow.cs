@@ -105,6 +105,8 @@ namespace ModilistPortal.Domains.Models.ProductDomain
                             errorMapping.AddError(error);
                         }
                     }
+
+                    _errorMappings.Add(errorMapping);
                 }
                 else
                 {
