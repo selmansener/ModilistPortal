@@ -5,6 +5,7 @@ using MediatR;
 
 using ModilistPortal.Business.Exceptions;
 using ModilistPortal.Data.Repositories.ProductDomain;
+using ModilistPortal.Domains.Models.ProductDomain;
 
 namespace ModilistPortal.Business.CQRS.ProductDomain.Commands
 {
@@ -45,15 +46,22 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.Commands
 
     internal class UpsertProductExcelRowHandler : IRequestHandler<UpsertProductExcelRow, Unit>
     {
-        private readonly IProductExcelUploadRepository _productExcelUploadRepository;
+        private readonly IProductExcelRowRepository _productExcelRowRepository;
 
-        public UpsertProductExcelRowHandler(IProductExcelUploadRepository productExcelUploadRepository)
+        public UpsertProductExcelRowHandler(IProductExcelRowRepository productExcelRowRepository)
         {
-            _productExcelUploadRepository = productExcelUploadRepository;
+            _productExcelRowRepository = productExcelRowRepository;
         }
 
         public async Task<Unit> Handle(UpsertProductExcelRow request, CancellationToken cancellationToken)
         {
+            var productExcelRow = await _productExcelRowRepository.GetByRowId(request.TenantId, request.BlobId, request.RowId);
+
+            if (productExcelRow == null)
+            {
+                productExcelRow = new ProductExcelRow();
+            }
+
             var productExcelUpload = await _productExcelUploadRepository.GetByBlobId(request.TenantId, request.BlobId, cancellationToken);
 
             if (productExcelUpload == null)
