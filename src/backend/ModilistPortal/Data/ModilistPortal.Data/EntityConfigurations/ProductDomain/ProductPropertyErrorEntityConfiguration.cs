@@ -19,6 +19,8 @@ namespace ModilistPortal.Data.EntityConfigurations.ProductDomain
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
 
+            builder.Property(x => x.PropertyName).IsRequired().HasConversion<string>();
+
             builder.Property(x => x.Errors).IsRequired().HasConversion<string>(
                 v => v.Count > 0 ? string.Join(",", v) : string.Empty,
                 v => !string.IsNullOrEmpty(v) ? v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList() : new List<string>()

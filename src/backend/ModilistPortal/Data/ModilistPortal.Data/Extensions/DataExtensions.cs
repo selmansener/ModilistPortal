@@ -45,6 +45,7 @@ namespace ModilistPortal.Data.Extensions
             services.AddScoped<IAccountRepository, AccountRepository>();
             services.AddScoped<ITenantRepository, TenantRepository>();
             services.AddScoped<IProductExcelUploadRepository, ProductExcelUploadRepository>();
+            services.AddScoped<IProductExcelRowRepository, ProductExcelRowRepository>();
             services.AddScoped<IBrandRepository, BrandRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
 

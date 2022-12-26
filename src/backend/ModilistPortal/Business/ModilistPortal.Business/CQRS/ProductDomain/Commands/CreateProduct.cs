@@ -63,7 +63,7 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.Commands
 
             if (brand == null)
             {
-                brand = new Brand(request.Name);
+                brand = new Brand(request.Brand);
                 await _brandRepository.AddAsync(brand, cancellationToken);
             }
 
