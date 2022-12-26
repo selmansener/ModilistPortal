@@ -22,8 +22,8 @@ namespace ModilistPortal.Functions.BlobTriggered
     {
         public override void Configure(IFunctionsHostBuilder builder)
         {
-            var environment = builder.Services.BuildServiceProvider().GetService<IHostEnvironment>();
-            var options = GetConfigurations(environment.EnvironmentName);
+            var env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            var options = GetConfigurations(env);
 
             builder.Services.Configure<StorageConnectionStrings>(config =>
             {

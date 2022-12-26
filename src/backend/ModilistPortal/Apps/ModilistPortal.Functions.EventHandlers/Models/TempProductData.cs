@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ModilistPortal.Functions.EventHandlers.Models
 {
-    internal class TempProductData
+    public class TempProductData
     {
         public int TenantId { get; set; }
 

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using ModilistPortal.Domains.Base;
 using ModilistPortal.Domains.Exceptions;
 using ModilistPortal.Domains.Models.TenantDomain;
+using ModilistPortal.Infrastructure.Shared.Utils;
 
 namespace ModilistPortal.Domains.Models.ProductDomain
 {
@@ -14,7 +15,7 @@ namespace ModilistPortal.Domains.Models.ProductDomain
     {
         private readonly List<ProductExcelRow> _rows = new List<ProductExcelRow>();
 
-        public ProductExcelUpload(int tenantId, Guid blobId, string originalFileName, string extension, string url, string contentType, int fileSizeInMB)
+        public ProductExcelUpload(int tenantId, Guid blobId, string originalFileName, string extension, string url, string contentType, long fileSizeInBytes)
         {
             TenantId = tenantId;
             BlobId = blobId;
@@ -22,7 +23,8 @@ namespace ModilistPortal.Domains.Models.ProductDomain
             Extension = extension;
             Url = url;
             ContentType = contentType;
-            FileSizeInMB = fileSizeInMB;
+            FileSizeInBytes = fileSizeInBytes;
+            FileSize = FileSizeConverter.Convert(fileSizeInBytes);
         }
 
         public int TenantId { get; private set; }
@@ -39,7 +41,9 @@ namespace ModilistPortal.Domains.Models.ProductDomain
 
         public string ContentType { get; private set; }
 
-        public int FileSizeInMB { get; private set; }
+        public long FileSizeInBytes { get; private set; }
+
+        public string FileSize { get; private set; }
 
         public IReadOnlyList<ProductExcelRow> Rows => _rows;
 

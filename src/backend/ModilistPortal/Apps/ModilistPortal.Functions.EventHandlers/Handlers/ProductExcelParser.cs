@@ -29,7 +29,7 @@ using System.Linq;
 
 namespace ModilistPortal.Functions.EventHandlers.Handlers
 {
-    internal class ProductExcelParser
+    public class ProductExcelParser
     {
         private readonly EventGridPublisherClient _eventGridPublisherClient;
         private readonly BlobServiceClient _blobServiceClient;
@@ -85,7 +85,7 @@ namespace ModilistPortal.Functions.EventHandlers.Handlers
                     NullValueHandling = NullValueHandling.Ignore,
                 });
 
-                BlobContainerClient container = _blobServiceClient.GetBlobContainerClient(StorageContainerNames.RAW_PRODUCT_DATA);
+                BlobContainerClient container = _blobServiceClient.GetBlobContainerClient(StorageContainerNames.PRODUCT_EXCEL_UPLOADS);
                 await container.CreateIfNotExistsAsync(publicAccessType: Azure.Storage.Blobs.Models.PublicAccessType.None);
 
                 var fullBlobPath = productExcelUploaded.BlobFullPath.Replace(productExcelUploaded.FileExtension, "json");
@@ -104,7 +104,7 @@ namespace ModilistPortal.Functions.EventHandlers.Handlers
                     PublisherType.System,
                     productExcelUploaded.TenantId,
                     productExcelUploaded.BlobId,
-                    StorageContainerNames.RAW_PRODUCT_DATA,
+                    StorageContainerNames.PRODUCT_EXCEL_UPLOADS,
                     blobName,
                     fullBlobPath,
                     "json",
@@ -147,7 +147,7 @@ namespace ModilistPortal.Functions.EventHandlers.Handlers
 
                     var cellValue = cell.CellType == CellType.String ? cell.StringCellValue : cell.CellType == CellType.Numeric ? cell.NumericCellValue.ToString() : "InvalidType";
 
-                    _productPropertyMap[i].Invoke(rawProductData, new[] { cellValue });
+                    _productPropertyMap[j].Invoke(rawProductData, new[] { cellValue });
                 }
 
                 tempProductData.Products.Add(rawProductData);

@@ -14,7 +14,7 @@ using Newtonsoft.Json;
 
 namespace ModilistPortal.Functions.EventHandlers.Handlers
 {
-    internal class ProductInsertionFailedHandler
+    public class ProductInsertionFailedHandler
     {
         [FunctionName(nameof(ProductInsertionFailedHandler))]
         public async Task RunAsync([EventGridTrigger] EventGridEvent eventGridEvent, ILogger log, CancellationToken cancellationToken)

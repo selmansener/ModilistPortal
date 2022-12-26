@@ -44,7 +44,7 @@ namespace ModilistPortal.Data.Repositories.ProductDomain
 
         public async Task<ProductExcelRow?> GetProductExcelRow(int tenantId, Guid blobId, int rowId, CancellationToken cancellationToken)
         {
-            return (await _baseDb.ProductExcelUploads.Include(x => x.Rows.FirstOrDefault(x => x.RowId == rowId)).FirstOrDefaultAsync(x => x.BlobId == blobId && x.TenantId == tenantId))?.Rows.FirstOrDefault(x => x.RowId == rowId);
+            return (await _baseDb.ProductExcelUploads.Include(x => x.Rows.Where(x => x.RowId == rowId)).FirstOrDefaultAsync(x => x.BlobId == blobId && x.TenantId == tenantId))?.Rows.FirstOrDefault(x => x.RowId == rowId);
         }
     }
 }

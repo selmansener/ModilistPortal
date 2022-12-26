@@ -95,7 +95,7 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.Commands
 
             await blobClient.UploadAsync(request.File.OpenReadStream(), cancellationToken);
 
-            var productExcelUpload = new ProductExcelUpload(tenant.Id, blobId, fileName, extension, blobClient.Uri.AbsoluteUri, request.File.ContentType, (int)request.File.Length / 1024 * 1024);
+            var productExcelUpload = new ProductExcelUpload(tenant.Id, blobId, fileName, extension, blobClient.Uri.AbsoluteUri, request.File.ContentType, request.File.Length);
             
             await _productExcelUploadRepository.AddAsync(productExcelUpload, cancellationToken);
 

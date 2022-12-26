@@ -23,7 +23,7 @@ using Newtonsoft.Json;
 
 namespace ModilistPortal.Functions.EventHandlers.Handlers
 {
-    internal class ProductDataValidator
+    public class ProductDataValidator
     {
         private readonly EventGridPublisherClient _eventGridPublisherClient;
         private readonly ProductValidator _validator = new ProductValidator();

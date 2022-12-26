@@ -20,6 +20,8 @@ using Azure.Storage.Blobs.Models;
 using ModilistPortal.Infrastructure.Shared.Constants;
 using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
 
 namespace ModilistPortal.Functions.EventHandlers.Handlers
 {
@@ -56,9 +58,17 @@ namespace ModilistPortal.Functions.EventHandlers.Handlers
 
                 var blobContentResult = await blobClient.DownloadContentAsync(cancellationToken);
 
-                var tempProductData = blobContentResult.Value.Content.ToObjectFromJson<TempProductData>();
+                //using (StreamReader streamReader = new StreamReader(blobContentResult.Value.Content.ToStream(), Encoding.UTF8))
+                //{
+                //    var result = streamReader.ReadToEnd();
+                //}
 
-                BlobContainerClient container = _blobServiceClient.GetBlobContainerClient(StorageContainerNames.PARSED_PRODUCT_DATA);
+                var tempProductData = blobContentResult.Value.Content.ToObjectFromJson<TempProductData>(new System.Text.Json.JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase
+                });
+
+                BlobContainerClient container = _blobServiceClient.GetBlobContainerClient(StorageContainerNames.PRODUCT_EXCEL_UPLOADS);
                 await container.CreateIfNotExistsAsync(publicAccessType: Azure.Storage.Blobs.Models.PublicAccessType.None);
 
                 var tasks = new List<Task>();

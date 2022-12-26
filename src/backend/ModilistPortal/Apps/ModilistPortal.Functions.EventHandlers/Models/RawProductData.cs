@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ModilistPortal.Functions.EventHandlers.Models
 {
-    internal class RawProductData
+    public class RawProductData
     {
         public RawProductData(int rowId)
         {

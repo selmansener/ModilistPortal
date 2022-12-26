@@ -8,8 +8,6 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.DTOs
 {
     public class ProductExcelRowDTO
     {
-        public int TenantId { get; set; }
-
         public Guid BlobId { get; set; }
 
         public int RowId { get; set; }

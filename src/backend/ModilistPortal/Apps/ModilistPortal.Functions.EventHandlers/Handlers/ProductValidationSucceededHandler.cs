@@ -31,7 +31,7 @@ using NPOI.SS.Formula.Functions;
 
 namespace ModilistPortal.Functions.EventHandlers.Handlers
 {
-    internal class ProductValidationSucceededHandler
+    public class ProductValidationSucceededHandler
     {
         private readonly EventGridPublisherClient _eventGridPublisherClient;
         private readonly string _barcodeIndexName = "IX_Products_TenantId_Barcode_DeletedAt";
@@ -63,7 +63,7 @@ namespace ModilistPortal.Functions.EventHandlers.Handlers
 
                 var productId = await _mediator.Send(new CreateProduct
                 {
-                    TenantId = productExcelRow.TenantId,
+                    TenantId = productValidationSucceeded.TenantId,
                     Name = productExcelRow.Name,
                     SKU = productExcelRow.SKU,
                     Barcode = productExcelRow.Barcode,
