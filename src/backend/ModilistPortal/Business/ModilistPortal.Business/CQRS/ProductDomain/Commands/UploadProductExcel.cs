@@ -102,6 +102,7 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.Commands
             var productExcelUploaded = new ProductExcelUploaded(
                 request.AccountId.ToString(),
                 PublisherType.Account,
+                productExcelUpload.Id,
                 tenant.Id,
                 blobId,
                 StorageContainerNames.PRODUCT_EXCEL_UPLOADS,

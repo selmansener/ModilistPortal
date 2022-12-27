@@ -22,11 +22,15 @@ using Newtonsoft.Json.Serialization;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Linq;
+using MediatR;
+using ModilistPortal.Business.CQRS.ProductDomain.Commands;
 
 namespace ModilistPortal.Functions.EventHandlers.Handlers
 {
     public class RawProductDataParser
     {
+        private readonly IMediator _mediator;
         private readonly EventGridPublisherClient _eventGridPublisherClient;
         private readonly BlobServiceClient _blobServiceClient;
         private readonly JsonSerializerSettings _jsonSerializerSettings = new JsonSerializerSettings
@@ -39,10 +43,12 @@ namespace ModilistPortal.Functions.EventHandlers.Handlers
             IBlobClientFactory blobClientFactory,
             IOptions<StorageConnectionStrings> options,
             IEventGridPublisherClientFactory eventGridPublisherClientFactory,
-            IOptions<EventGridClientOptions> eventGridOptions)
+            IOptions<EventGridClientOptions> eventGridOptions, 
+            IMediator mediator)
         {
             _blobServiceClient = blobClientFactory.GetClient(options.Value.AppStorage);
             _eventGridPublisherClient = eventGridPublisherClientFactory.GetClient(eventGridOptions.Value);
+            _mediator = mediator;
         }
 
         [FunctionName(nameof(RawProductDataParser))]
@@ -58,15 +64,15 @@ namespace ModilistPortal.Functions.EventHandlers.Handlers
 
                 var blobContentResult = await blobClient.DownloadContentAsync(cancellationToken);
 
-                //using (StreamReader streamReader = new StreamReader(blobContentResult.Value.Content.ToStream(), Encoding.UTF8))
-                //{
-                //    var result = streamReader.ReadToEnd();
-                //}
-
                 var tempProductData = blobContentResult.Value.Content.ToObjectFromJson<TempProductData>(new System.Text.Json.JsonSerializerOptions
                 {
                     PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase
                 });
+
+                var brands = tempProductData.Products.Select(x => x.Brand).Distinct().ToList();
+
+                // To prevent race condition we create brands here.
+                await _mediator.Send(new CreateBrandsIfNotExists((IReadOnlyList<string>)brands));
 
                 BlobContainerClient container = _blobServiceClient.GetBlobContainerClient(StorageContainerNames.PRODUCT_EXCEL_UPLOADS);
                 await container.CreateIfNotExistsAsync(publicAccessType: Azure.Storage.Blobs.Models.PublicAccessType.None);
@@ -93,6 +99,7 @@ namespace ModilistPortal.Functions.EventHandlers.Handlers
                         var rawProductDataParsed = new RawProductDataParsed(
                             EventPublishers.EventHandlers,
                             PublisherType.System,
+                            rawProductDataUploaded.ProductExcelUploadId,
                             rawProductDataUploaded.TenantId,
                             rawProductDataUploaded.BlobId,
                             rawProductData.RowId,

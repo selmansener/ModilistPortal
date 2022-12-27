@@ -26,6 +26,8 @@ using NPOI.XSSF.UserModel;
 using ModilistPortal.Infrastructure.Azure.Extensions.Configurations;
 using ModilistPortal.Infrastructure.Azure.Extensions.EventGrid;
 using System.Linq;
+using NPOI.SS.Util;
+using NPOI.OpenXmlFormats.Spreadsheet;
 
 namespace ModilistPortal.Functions.EventHandlers.Handlers
 {
@@ -102,6 +104,7 @@ namespace ModilistPortal.Functions.EventHandlers.Handlers
                 var rawProductDataUploaded = new RawProductDataUploaded(
                     EventPublishers.EventHandlers,
                     PublisherType.System,
+                    productExcelUploaded.ProductExcelUploadId,
                     productExcelUploaded.TenantId,
                     productExcelUploaded.BlobId,
                     StorageContainerNames.PRODUCT_EXCEL_UPLOADS,
@@ -128,22 +131,31 @@ namespace ModilistPortal.Functions.EventHandlers.Handlers
         public void ReadExcel(Stream stream, TempProductData tempProductData, string fileExtension)
         {
             IWorkbook workbook = fileExtension == "xls" ? new HSSFWorkbook(stream) : new XSSFWorkbook(stream);
-
+            workbook.MissingCellPolicy = MissingCellPolicy.RETURN_NULL_AND_BLANK;
             // We assume there is one sheet atleast
             ISheet sheet = workbook.GetSheetAt(0);
 
             var rowsLength = sheet.LastRowNum + 1;
+            // This must be hardcoded since we have to read empty cells.
+            var columnCount = 8;
 
             // Skip first row because it's headers
             for (int i = 1; i < rowsLength; i++)
             {
                 var row = sheet.GetRow(i);
 
-                var rawProductData = new RawProductData(i);
+                var rawProductData = new RawProductData(i + 1);
 
-                for (int j = 0; j < row.Cells.Count; j++)
+                for (int j = 0; j < columnCount; j++)
                 {
-                    var cell = row.Cells[j];
+                    // var cell = row.Cells[j];
+
+                    var cell = row.GetCell(j, MissingCellPolicy.RETURN_BLANK_AS_NULL);
+
+                    if (cell == null)
+                    {
+                        continue;
+                    }
 
                     var cellValue = cell.CellType == CellType.String ? cell.StringCellValue : cell.CellType == CellType.Numeric ? cell.NumericCellValue.ToString() : "InvalidType";
 

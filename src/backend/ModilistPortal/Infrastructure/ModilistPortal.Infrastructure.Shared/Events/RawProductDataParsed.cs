@@ -1,16 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ModilistPortal.Infrastructure.Shared.Events
+﻿namespace ModilistPortal.Infrastructure.Shared.Events
 {
     public class RawProductDataParsed : BaseEvent
     {
         public RawProductDataParsed(
             string publisherId,
             PublisherType publisherType,
+            int productExcelUploadId,
             int tenantId,
             Guid blobId,
             int rowId,
@@ -35,7 +30,10 @@ namespace ModilistPortal.Infrastructure.Shared.Events
             Price = price;
             SalesPrice = salesPrice;
             StockAmount = stockAmount;
+            ProductExcelUploadId = productExcelUploadId;
         }
+
+        public int ProductExcelUploadId { get; set; }
 
         public int TenantId { get; set; }
 

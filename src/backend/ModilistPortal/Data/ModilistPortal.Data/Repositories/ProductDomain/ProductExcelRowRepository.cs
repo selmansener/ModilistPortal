@@ -13,7 +13,6 @@ namespace ModilistPortal.Data.Repositories.ProductDomain
 {
     public interface IProductExcelRowRepository : IBaseRepository<ProductExcelRow>
     {
-        Task<ProductExcelRow?> GetByRowId(int tenantId, Guid blobId, int rowId);
     }
 
     internal class ProductExcelRowRepository : BaseRepository<ProductExcelRow>, IProductExcelRowRepository
@@ -23,7 +22,7 @@ namespace ModilistPortal.Data.Repositories.ProductDomain
         {
         }
 
-        public async Task<ProductExcelRow?> GetByRowId(int tenantId, Guid blobId, int rowId)
+        public async Task<ProductExcelRow?> GetByRowId(int tenantId, Guid blobId, int rowId, CancellationToken cancellationToken)
         {
             return await _baseDb.ProductExcelRows
                 .FirstOrDefaultAsync(x => x.ProductExcelUpload.TenantId == tenantId && x.ProductExcelUpload.BlobId == blobId && x.RowId == rowId, cancellationToken);

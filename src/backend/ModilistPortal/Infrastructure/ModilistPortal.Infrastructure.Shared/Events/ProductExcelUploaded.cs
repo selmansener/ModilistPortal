@@ -8,7 +8,7 @@ namespace ModilistPortal.Infrastructure.Shared.Events
 {
     public class ProductExcelUploaded : BaseEvent
     {
-        public ProductExcelUploaded(string publisherId, PublisherType publisherType, int tenantId, Guid blobId, string containerName, string blobName, string blobFullPath, string fileExtension, string timestamp)
+        public ProductExcelUploaded(string publisherId, PublisherType publisherType, int productExcelUploadId, int tenantId, Guid blobId, string containerName, string blobName, string blobFullPath, string fileExtension, string timestamp)
             : base(publisherId, publisherType)
         {
             TenantId = tenantId;
@@ -18,7 +18,10 @@ namespace ModilistPortal.Infrastructure.Shared.Events
             FileExtension = fileExtension;
             Timestamp = timestamp;
             BlobId = blobId;
+            ProductExcelUploadId = productExcelUploadId;
         }
+
+        public int ProductExcelUploadId { get; set; }
 
         public int TenantId { get; set; }
 

@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -17,8 +16,6 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 
 using ModilistPortal.Business.CQRS.ProductDomain.Commands;
-using ModilistPortal.Business.CQRS.ProductDomain.DTOs;
-using ModilistPortal.Business.CQRS.ProductDomain.Queries;
 using ModilistPortal.Business.Exceptions;
 using ModilistPortal.Infrastructure.Azure.Extensions.Configurations;
 using ModilistPortal.Infrastructure.Azure.Extensions.EventGrid;
@@ -26,8 +23,6 @@ using ModilistPortal.Infrastructure.Shared.Enums;
 using ModilistPortal.Infrastructure.Shared.Events;
 
 using Newtonsoft.Json;
-
-using NPOI.SS.Formula.Functions;
 
 namespace ModilistPortal.Functions.EventHandlers.Handlers
 {
@@ -54,31 +49,22 @@ namespace ModilistPortal.Functions.EventHandlers.Handlers
 
             try
             {
-                var productExcelRow = await _mediator.Send(new GetProductExcelRow
-                {
-                    TenantId = productValidationSucceeded.TenantId,
-                    BlobId = productValidationSucceeded.BlobId,
-                    RowId = productValidationSucceeded.RowId,
-                });
-
                 var productId = await _mediator.Send(new CreateProduct
                 {
                     TenantId = productValidationSucceeded.TenantId,
-                    Name = productExcelRow.Name,
-                    SKU = productExcelRow.SKU,
-                    Barcode = productExcelRow.Barcode,
-                    Brand = productExcelRow.Brand,
-                    Category = productExcelRow.Category,
-                    Price = decimal.Parse(productExcelRow.Price),
-                    SalesPrice = decimal.Parse(productExcelRow.SalesPrice),
+                    Name = productValidationSucceeded.Name,
+                    SKU = productValidationSucceeded.SKU,
+                    Barcode = productValidationSucceeded.Barcode,
+                    Brand = productValidationSucceeded.Brand,
+                    Category = productValidationSucceeded.Category,
+                    Price = decimal.Parse(productValidationSucceeded.Price),
+                    SalesPrice = decimal.Parse(productValidationSucceeded.SalesPrice),
                 });
 
             }
             catch (Exception ex) when (ex is ProductAlreadyExistsException alreadyExistsException)
             {
                 await TriggerProductInsertionFailedEvent(productValidationSucceeded, "AlreadyExists", cancellationToken, alreadyExistsException.UniqueValue == UniqueValue.SKU ? ProductPropertyName.SKU : ProductPropertyName.Barcode);
-
-                throw;
             }
             catch (Exception ex) when (ex is DbUpdateException dbUpdateException)
             {
@@ -98,19 +84,23 @@ namespace ModilistPortal.Functions.EventHandlers.Handlers
                         else
                         {
                             await TriggerProductInsertionFailedEvent(productValidationSucceeded, sqlException.Message, cancellationToken, ProductPropertyName.None);
+
+                            throw;
                         }
                     }
                     else
                     {
                         await TriggerProductInsertionFailedEvent(productValidationSucceeded, sqlException.Message, cancellationToken, ProductPropertyName.None);
+
+                        throw;
                     }
                 }
                 else
                 {
                     await TriggerProductInsertionFailedEvent(productValidationSucceeded, dbUpdateException.Message, cancellationToken, ProductPropertyName.None);
-                }
 
-                throw;
+                    throw;
+                }
             }
             catch (Exception ex)
             {
@@ -124,7 +114,7 @@ namespace ModilistPortal.Functions.EventHandlers.Handlers
         {
             var errors = new Dictionary<string, List<string>>
             {
-                { 
+                {
                     productPropertyName.ToString(), new List<string>
                     {
                         reason
@@ -132,7 +122,7 @@ namespace ModilistPortal.Functions.EventHandlers.Handlers
                 }
             };
 
-            var productInsertionFailed = new ProductInsertionFailed(EventPublishers.EventHandlers, PublisherType.System, productValidationSucceeded.TenantId, productValidationSucceeded.BlobId, productValidationSucceeded.RowId, errors.ToDictionary(x => x.Key, y => (IReadOnlyList<string>)y.Value));
+            var productInsertionFailed = new ProductInsertionFailed(EventPublishers.EventHandlers, PublisherType.System, productValidationSucceeded.ProductExcelRowId, productValidationSucceeded.TenantId, productValidationSucceeded.BlobId, productValidationSucceeded.RowId, errors.ToDictionary(x => x.Key, y => (IReadOnlyList<string>)y.Value));
 
 
             var productInsertionFailedEvent = new EventGridEvent(

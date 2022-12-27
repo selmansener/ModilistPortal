@@ -74,17 +74,12 @@ namespace ModilistPortal.Domains.Models.ProductDomain
 
         public void SetErrors(IDictionary<string, IReadOnlyList<string>> errors)
         {
-            State = ProductExcelRowState.ValidationFailed;
+            State = errors.Any(x => x.Key == "None") ? ProductExcelRowState.InsertionFailed : ProductExcelRowState.ValidationFailed;
 
             var propertyNames = Enum.GetNames<ProductPropertyName>();
 
             foreach (var property in propertyNames)
             {
-                if (property == "None")
-                {
-                    continue;
-                }
-
                 var errorMapping = _errorMappings.FirstOrDefault(x => x.PropertyName.ToString() == property);
                 // if we don't have any error for that property
                 if (errorMapping == null)

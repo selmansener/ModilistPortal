@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using System.Threading.Tasks;
 using Azure.Messaging.EventGrid;
 
 using FluentValidation;
+using FluentValidation.Results;
 
 using MediatR;
 
@@ -45,8 +47,9 @@ namespace ModilistPortal.Functions.EventHandlers.Handlers
 
             try
             {
-                await _mediator.Send(new UpsertProductExcelRow
+                var productExcelRowId = await _mediator.Send(new CreateProductExcelRow
                 {
+                    ProductExcelUploadId = rawProductDataParsed.ProductExcelUploadId,
                     TenantId = rawProductDataParsed.TenantId,
                     BlobId = rawProductDataParsed.BlobId,
                     Name = rawProductDataParsed.Name,
@@ -64,12 +67,15 @@ namespace ModilistPortal.Functions.EventHandlers.Handlers
 
                 if (validationResult.Errors.Any())
                 {
-                    await _mediator.Send(new SetRowValidationFailures
+                    var errors = GetErrors(validationResult.Errors);
+
+                    await _mediator.Send(new SetRowErrors
                     {
+                        ProductExcelRowId = productExcelRowId,
                         TenantId = rawProductDataParsed.TenantId,
                         BlobId = rawProductDataParsed.BlobId,
                         RowId = rawProductDataParsed.RowId,
-                        ValidationFailures = validationResult.Errors
+                        Errors = errors
                     });
                 }
                 else
@@ -78,9 +84,18 @@ namespace ModilistPortal.Functions.EventHandlers.Handlers
                     var productValidationSucceeded = new ProductValidationSucceeded(
                         EventPublishers.EventHandlers,
                         PublisherType.System,
+                        productExcelRowId,
                         rawProductDataParsed.TenantId,
                         rawProductDataParsed.BlobId,
-                        rawProductDataParsed.RowId);
+                        rawProductDataParsed.RowId,
+                        rawProductDataParsed.Name,
+                        rawProductDataParsed.SKU,
+                        rawProductDataParsed.Barcode,
+                        rawProductDataParsed.Brand,
+                        rawProductDataParsed.Category,
+                        rawProductDataParsed.Price,
+                        rawProductDataParsed.SalesPrice,
+                        rawProductDataParsed.StockAmount);
 
                     var productDataValidationSucceededEvent = new EventGridEvent(
                         nameof(ProductValidationSucceeded),
@@ -96,6 +111,33 @@ namespace ModilistPortal.Functions.EventHandlers.Handlers
                 log.LogError(ex, "Validating product data failed. AdditionalData: TenantId: {TenantId}, BlobId: {BlobId}", rawProductDataParsed.TenantId, rawProductDataParsed.BlobId);
                 throw;
             }
+        }
+
+        private IDictionary<string, IReadOnlyList<string>> GetErrors(IReadOnlyList<ValidationFailure> validationFailures)
+        {
+            Dictionary<string, List<string>> errors = new Dictionary<string, List<string>>();
+
+            var groupedErrors = validationFailures.GroupBy(x => x.PropertyName);
+
+            foreach (var groupedError in groupedErrors)
+            {
+                foreach (var error in groupedError)
+                {
+                    if (errors.ContainsKey(groupedError.Key))
+                    {
+                        errors[groupedError.Key].Add(error.ErrorCode);
+                    }
+                    else
+                    {
+                        errors.Add(groupedError.Key, new List<string>()
+                            {
+                                error.ErrorCode
+                            });
+                    }
+                }
+            }
+
+            return errors.ToDictionary(x => x.Key, y => (IReadOnlyList<string>)y.Value);
         }
 
         internal class ProductValidator : AbstractValidator<RawProductDataParsed>

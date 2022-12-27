@@ -8,9 +8,10 @@ namespace ModilistPortal.Infrastructure.Shared.Events
 {
     public class RawProductDataUploaded : BaseEvent
     {
-        public RawProductDataUploaded(string publisherId, PublisherType publisherType, int tenantId, Guid blobId, string containerName, string blobName, string blobFullPath, string fileExtension, string timestamp)
+        public RawProductDataUploaded(string publisherId, PublisherType publisherType, int productExcelUploadId, int tenantId, Guid blobId, string containerName, string blobName, string blobFullPath, string fileExtension, string timestamp)
             : base(publisherId, publisherType)
         {
+            ProductExcelUploadId = productExcelUploadId;
             TenantId = tenantId;
             ContainerName = containerName;
             BlobName = blobName;
@@ -19,6 +20,8 @@ namespace ModilistPortal.Infrastructure.Shared.Events
             Timestamp = timestamp;
             BlobId = blobId;
         }
+
+        public int ProductExcelUploadId { get; set; }
 
         public int TenantId { get; set; }
 

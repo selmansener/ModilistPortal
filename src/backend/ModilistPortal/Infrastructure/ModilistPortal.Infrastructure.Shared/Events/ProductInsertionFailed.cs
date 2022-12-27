@@ -8,14 +8,17 @@ namespace ModilistPortal.Infrastructure.Shared.Events
 {
     public class ProductInsertionFailed : BaseEvent
     {
-        public ProductInsertionFailed(string publisherId, PublisherType publisherType, int tenantId, Guid blobId, int rowId, IDictionary<string, IReadOnlyList<string>> errors)
+        public ProductInsertionFailed(string publisherId, PublisherType publisherType, int productExcelRowId, int tenantId, Guid blobId, int rowId, IDictionary<string, IReadOnlyList<string>> errors)
             : base(publisherId, publisherType)
         {
             TenantId = tenantId;
             BlobId = blobId;
             RowId = rowId;
             Errors = errors;
+            ProductExcelRowId = productExcelRowId;
         }
+
+        public int ProductExcelRowId { get; set; }
 
         public int TenantId { get; set; }
 
