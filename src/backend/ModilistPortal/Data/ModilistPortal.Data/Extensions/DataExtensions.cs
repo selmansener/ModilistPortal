@@ -52,26 +52,9 @@ namespace ModilistPortal.Data.Extensions
             return services;
         }
 
-        public static IServiceCollection AddTransactionManager(this IServiceCollection services, RegistrationType registrationType = RegistrationType.Scoped)
+        public static IServiceCollection AddTransactionManager(this IServiceCollection services)
         {
-            switch (registrationType)
-            {
-                case RegistrationType.Singleton:
-                    services.AddSingleton<ITransactionManager, TransactionManager>();
-                    break;
-                case RegistrationType.Scoped:
-                    services.AddScoped<ITransactionManager, TransactionManager>();
-                    break;
-                case RegistrationType.Transient:
-                    services.AddTransient<ITransactionManager, TransactionManager>(provider =>
-                    {
-                        return new TransactionManager(provider.GetRequiredService<ModilistPortalDbContext>(), shouldDisposeDbContext: false);
-                    });
-                    break;
-                default:
-                    throw new InvalidOperationException($"Unknown registration type sent: {registrationType}");
-            }
-
+            services.AddScoped<ITransactionManager, TransactionManager>();
             return services;
         }
     }
