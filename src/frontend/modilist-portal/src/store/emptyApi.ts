@@ -9,7 +9,7 @@ import { config } from '../config';
 // initialize an empty api service that we'll inject endpoints into later as needed
 export const emptySplitApi = createApi({
     baseQuery: fetchBaseQuery({
-        baseUrl: 'https://localhost:5088/',
+        baseUrl: config.webApi,
         prepareHeaders: (headers, { getState }) => {
             const state = getState() as RootState;
             const { token, account } = state.auth;

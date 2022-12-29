@@ -7,7 +7,7 @@ namespace ModilistPortal.Data.Repositories.AccountDomain
 {
     public interface IAccountRepository : IBaseRepository<Account>
     {
-        Task<Account?> GetByIdAsync(Guid id, CancellationToken cancellationToken);
+        Task<Account?> GetByIdAsync(Guid id, CancellationToken cancellationToken, bool includeTenant = false);
 
         Task<Account?> GetByMail(string mail, CancellationToken cancellationToken);
     }
@@ -19,9 +19,16 @@ namespace ModilistPortal.Data.Repositories.AccountDomain
         {
         }
 
-        public async Task<Account?> GetByIdAsync(Guid id, CancellationToken cancellationToken)
+        public async Task<Account?> GetByIdAsync(Guid id, CancellationToken cancellationToken, bool includeTenant = false)
         {
-            return await _baseDb.Accounts.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
+            var accounts = _baseDb.Accounts;
+
+            if (includeTenant)
+            {
+                accounts.Include(x => x.Tenant);
+            }
+
+            return await accounts.FirstOrDefaultAsync(x => x.Id == id, cancellationToken);
         }
 
         public async Task<Account?> GetByMail(string mail, CancellationToken cancellationToken)

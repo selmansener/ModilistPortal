@@ -1,10 +1,17 @@
-﻿using MediatR;
+﻿using DynamicQueryBuilder;
+using DynamicQueryBuilder.Models;
+
+using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 using ModilistPortal.API.Configuration;
+using ModilistPortal.API.Models;
 using ModilistPortal.Business.CQRS.ProductDomain.Commands;
+using ModilistPortal.Business.CQRS.ProductDomain.DTOs;
+using ModilistPortal.Business.CQRS.ProductDomain.Queries;
+using ModilistPortal.Business.DTOs;
 using ModilistPortal.Infrastructure.Shared.Exntensions;
 
 namespace ModilistPortal.API.Area.API.Controllers
@@ -30,6 +37,17 @@ namespace ModilistPortal.API.Area.API.Controllers
             }, cancellationToken);
 
             return Ok();
+        }
+
+        [Authorize(nameof(AuthorizationPermissions.Products))]
+        [HttpGet("QueryUploadHistory")]
+        [DynamicQuery]
+        [ProducesResponseType(typeof(ResponseModel<DQBResultDTO<ProductExcelUploadDTO>>), 200)]
+        public async Task<IActionResult> QueryUploadHistory([FromQuery] DynamicQueryOptions dqb, CancellationToken cancellationToken)
+        {
+            var result = await _mediator.Send(new QueryProductExcelUploadHistory(User.GetUserId(), dqb), cancellationToken);
+
+            return Ok(new ResponseModel<DQBResultDTO<ProductExcelUploadDTO>>(result));
         }
     }
 }

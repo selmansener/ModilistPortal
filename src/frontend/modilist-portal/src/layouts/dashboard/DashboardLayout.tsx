@@ -26,6 +26,7 @@ export function DashboardLayout() {
 const MainPage = React.lazy(() => import("../../pages/dashboard/main/Main"));
 const SalesOrdersPage = React.lazy(() => import("../../pages/dashboard/salesOrders/SalesOrders"));
 const ProductsPage = React.lazy(() => import("../../pages/dashboard/products/Products"));
+const ProductUploadHistoryPage = React.lazy(() => import("../../pages/dashboard/products/UploadHistory"));
 const ReturnsPage = React.lazy(() => import("../../pages/dashboard/returns/Returns"));
 const TenantPage = React.lazy(() => import("../../pages/dashboard/tenant/Tenant"));
 
@@ -45,7 +46,13 @@ export const dashboardRoutes: RouteConfig = {
         },
         {
             path: "products",
-            element: <ProductsPage />
+            element: <ProductsPage />,
+            leafNodes: [
+                {
+                    path: "upload-history",
+                    element: <ProductUploadHistoryPage />
+                }
+            ]
         },
         {
             path: "returns",
