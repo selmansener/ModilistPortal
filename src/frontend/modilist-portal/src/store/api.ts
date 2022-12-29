@@ -81,6 +81,26 @@ const injectedRtkApi = api.injectEndpoints({
         headers: { "X-ApiKey": queryArg["X-ApiKey"] },
       }),
     }),
+    postApiV1ProductUploadProductExcel: build.mutation<
+      PostApiV1ProductUploadProductExcelApiResponse,
+      PostApiV1ProductUploadProductExcelApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/api/v1/Product/UploadProductExcel`,
+        method: "POST",
+        body: queryArg.body,
+        params: { "api-version": queryArg["api-version"] },
+      }),
+    }),
+    getApiV1ProductQueryUploadHistory: build.query<
+      GetApiV1ProductQueryUploadHistoryApiResponse,
+      GetApiV1ProductQueryUploadHistoryApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/api/v1/Product/QueryUploadHistory`,
+        params: { dqb: queryArg.dqb },
+      }),
+    }),
     getApiV1TenantGet: build.query<
       GetApiV1TenantGetApiResponse,
       GetApiV1TenantGetApiArg
@@ -149,6 +169,19 @@ export type GetDevV1GetClientIpApiArg = {
   /** X-ApiKey */
   "X-ApiKey": string;
 };
+export type PostApiV1ProductUploadProductExcelApiResponse = unknown;
+export type PostApiV1ProductUploadProductExcelApiArg = {
+  "api-version"?: string;
+  body: {
+    file?: Blob;
+  };
+};
+export type GetApiV1ProductQueryUploadHistoryApiResponse =
+  /** status 200 Success */ ProductExcelUploadDtodqbResultDtoResponseModel;
+export type GetApiV1ProductQueryUploadHistoryApiArg = {
+  /** DynamicQuery */
+  dqb?: string;
+};
 export type GetApiV1TenantGetApiResponse =
   /** status 200 Success */ TenantDtoResponseModel;
 export type GetApiV1TenantGetApiArg = {
@@ -186,7 +219,31 @@ export type District = {
   cityName?: string;
   cityCode?: string;
 };
-export type SeedServiceType = "Accounts";
+export type SeedServiceType = "Tenants" | "Accounts";
+export type ProductExcelUploadDto = {
+  id?: number;
+  tenantId?: number;
+  blobId?: string;
+  originalFileName?: string;
+  extension?: string;
+  url?: string;
+  contentType?: string;
+  fileSizeInBytes?: number;
+  fileSize?: string;
+};
+export type ProductExcelUploadDtodqbResultDto = {
+  data?: ProductExcelUploadDto[];
+  count?: number;
+};
+export type ProductExcelUploadDtodqbResultDtoResponseModel = {
+  statusCode?: number;
+  data?: ProductExcelUploadDtodqbResultDto;
+  message?: string | null;
+  errorType?: string | null;
+  errors?: {
+    [key: string]: string[];
+  } | null;
+};
 export type TenantType =
   | "None"
   | "Individual"
@@ -197,7 +254,7 @@ export type TenantDto = {
   tckn?: string;
   taxNumber?: string;
   taxOffice?: string;
-  phone?: number;
+  phone?: string;
   email?: string;
   city?: string;
   district?: string;
@@ -218,7 +275,7 @@ export type UpsertTenant = {
   tckn?: string;
   taxNumber?: string;
   taxOffice?: string;
-  phone?: number;
+  phone?: string;
   email?: string;
   city?: string;
   district?: string;
@@ -233,6 +290,8 @@ export const {
   useGetApiV1AddressGetDistrictsByCityCodeQuery,
   usePostDevV1SeedMutation,
   useGetDevV1GetClientIpQuery,
+  usePostApiV1ProductUploadProductExcelMutation,
+  useGetApiV1ProductQueryUploadHistoryQuery,
   useGetApiV1TenantGetQuery,
   usePostApiV1TenantUpsertMutation,
 } = injectedRtkApi;
