@@ -8,6 +8,7 @@ using Microsoft.Extensions.Hosting;
 
 using ModilistPortal.Business.Extensions;
 using ModilistPortal.Data.Extensions;
+using ModilistPortal.Data.Transactions;
 using ModilistPortal.Functions.EventHandlers.Configurations;
 using ModilistPortal.Infrastructure.Azure.Extensions;
 using ModilistPortal.Infrastructure.Azure.Extensions.Configurations;
@@ -45,13 +46,13 @@ namespace ModilistPortal.Functions.EventHandlers
 
             builder.Services.AddCQRS();
 
-            builder.Services.AddTransactionManager(RegistrationType.Transient);
-
             builder.Services.AddLoggingBehavior();
 
             builder.Services.AddValidationBehavior();
 
             builder.Services.AddTransactionBehavior();
+
+            builder.Services.AddTransactionManager();
 
             builder.Services.BuildServiceProvider();
         }

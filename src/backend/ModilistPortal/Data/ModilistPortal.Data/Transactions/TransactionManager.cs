@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 
 using ModilistPortal.Data.DataAccess;
@@ -23,19 +24,19 @@ namespace ModilistPortal.Data.Transactions
     {
         private readonly ModilistPortalDbContext _dbContext;
         private IDbContextTransaction _dbTransaction;
-        private readonly bool _shouldDisposeDbContext;
+        //private readonly bool _shouldDisposeDbContext;
 
-        public TransactionManager(ModilistPortalDbContext dbContext, bool shouldDisposeDbContext = true)
+        public TransactionManager(ModilistPortalDbContext dbContext)
         {
             _dbContext = dbContext;
-            _shouldDisposeDbContext = shouldDisposeDbContext;
+            //_shouldDisposeDbContext = true;
         }
 
         public async Task BeginTransactionAsync(CancellationToken cancellationToken)
         {
             if (_dbTransaction == null)
             {
-                _dbTransaction = await _dbContext.Database.BeginTransactionAsync(cancellationToken);
+                _dbTransaction = _dbContext.Database.CurrentTransaction ?? await _dbContext.Database.BeginTransactionAsync(cancellationToken);
             }
         }
 
@@ -75,10 +76,10 @@ namespace ModilistPortal.Data.Transactions
                     _dbTransaction.Dispose();
                 }
 
-                if (_shouldDisposeDbContext)
-                {
-                    _dbContext.Dispose();
-                }
+                //if (_shouldDisposeDbContext)
+                //{
+                //    _dbContext.Dispose();
+                //}
             }
         }
     }

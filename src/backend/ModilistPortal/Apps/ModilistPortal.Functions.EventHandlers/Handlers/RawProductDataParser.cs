@@ -1,30 +1,40 @@
 // Default URL for triggering event grid function in the local environment.
 // http://localhost:7071/runtime/webhooks/EventGrid?functionName={functionname}
 using System;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.EventGrid;
-using Microsoft.Extensions.Logging;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+
 using Azure.Messaging.EventGrid;
 using Azure.Storage.Blobs;
+
+using FluentValidation;
+using FluentValidation.Results;
+
+using MediatR;
+
+using Microsoft.Azure.WebJobs;
+using Microsoft.Azure.WebJobs.Extensions.EventGrid;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+
+using ModilistPortal.Business.CQRS.ProductDomain.Commands;
+using ModilistPortal.Business.Exceptions;
+using ModilistPortal.Functions.EventHandlers.Models;
 using ModilistPortal.Infrastructure.Azure.Extensions.BlobStorage;
 using ModilistPortal.Infrastructure.Azure.Extensions.Configurations;
 using ModilistPortal.Infrastructure.Azure.Extensions.EventGrid;
 using ModilistPortal.Infrastructure.Shared.Configurations;
-using ModilistPortal.Infrastructure.Shared.Events;
-using Newtonsoft.Json;
-using System.Threading;
-using System.Threading.Tasks;
-using ModilistPortal.Functions.EventHandlers.Models;
-using Azure.Storage.Blobs.Models;
 using ModilistPortal.Infrastructure.Shared.Constants;
+using ModilistPortal.Infrastructure.Shared.Enums;
+using ModilistPortal.Infrastructure.Shared.Events;
+
+using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
-using System.Linq;
-using MediatR;
-using ModilistPortal.Business.CQRS.ProductDomain.Commands;
 
 namespace ModilistPortal.Functions.EventHandlers.Handlers
 {
@@ -43,7 +53,7 @@ namespace ModilistPortal.Functions.EventHandlers.Handlers
             IBlobClientFactory blobClientFactory,
             IOptions<StorageConnectionStrings> options,
             IEventGridPublisherClientFactory eventGridPublisherClientFactory,
-            IOptions<EventGridClientOptions> eventGridOptions, 
+            IOptions<EventGridClientOptions> eventGridOptions,
             IMediator mediator)
         {
             _blobServiceClient = blobClientFactory.GetClient(options.Value.AppStorage);
@@ -52,7 +62,7 @@ namespace ModilistPortal.Functions.EventHandlers.Handlers
         }
 
         [FunctionName(nameof(RawProductDataParser))]
-        public async Task RunAsync([EventGridTrigger]EventGridEvent eventGridEvent, ILogger log, CancellationToken cancellationToken)
+        public async Task RunAsync([EventGridTrigger] EventGridEvent eventGridEvent, ILogger logger, CancellationToken cancellationToken)
         {
             var rawProductDataUploaded = JsonConvert.DeserializeObject<RawProductDataUploaded>(eventGridEvent.Data.ToString());
 
@@ -74,60 +84,25 @@ namespace ModilistPortal.Functions.EventHandlers.Handlers
                 // To prevent race condition we create brands here.
                 await _mediator.Send(new CreateBrandsIfNotExists((IReadOnlyList<string>)brands));
 
-                BlobContainerClient container = _blobServiceClient.GetBlobContainerClient(StorageContainerNames.PRODUCT_EXCEL_UPLOADS);
-                await container.CreateIfNotExistsAsync(publicAccessType: Azure.Storage.Blobs.Models.PublicAccessType.None);
-
                 var tasks = new List<Task>();
-                foreach (var _rawProductData in tempProductData.Products)
+                foreach (var rawProductData in tempProductData.Products)
                 {
-                    var task = Task.Factory.StartNew(async (data) =>
-                    {
-                        var rawProductData = (RawProductData)data;
+                    var productDataParsed = new ProductDataParsed(EventPublishers.EventHandlers, PublisherType.System, rawProductDataUploaded.ProductExcelUploadId, rawProductDataUploaded.TenantId, rawProductData.RowId, rawProductData.Name, rawProductData.SKU, rawProductData.Barcode, rawProductData.Brand, rawProductData.Category, rawProductData.Price, rawProductData.SalesPrice, rawProductData.StockAmount);
 
-                        var blobFullPath = $"{rawProductDataUploaded.TenantId}/{rawProductDataUploaded.Timestamp}/{rawProductDataUploaded.BlobId}/{rawProductData.RowId}.json";
-                        BlobClient jsonBlobClient = container.GetBlobClient(blobFullPath);
+                    var productDataParsedEvent = new EventGridEvent(
+                        nameof(ProductDataParsed),
+                        nameof(ProductDataParsed),
+                        productDataParsed.Version,
+                        productDataParsed);
 
-                        var productDataJson = JsonConvert.SerializeObject(rawProductData, Formatting.Indented, _jsonSerializerSettings);
-
-                        await jsonBlobClient.UploadAsync(BinaryData.FromString(productDataJson), cancellationToken);
-                        jsonBlobClient.SetHttpHeaders(new BlobHttpHeaders
-                        {
-                            ContentType = "application/json",
-                            ContentEncoding = "utf8"
-                        });
-
-                        var rawProductDataParsed = new RawProductDataParsed(
-                            EventPublishers.EventHandlers,
-                            PublisherType.System,
-                            rawProductDataUploaded.ProductExcelUploadId,
-                            rawProductDataUploaded.TenantId,
-                            rawProductDataUploaded.BlobId,
-                            rawProductData.RowId,
-                            rawProductData.Name,
-                            rawProductData.SKU,
-                            rawProductData.Barcode,
-                            rawProductData.Brand,
-                            rawProductData.Category,
-                            rawProductData.Price,
-                            rawProductData.SalesPrice,
-                            rawProductData.StockAmount);
-
-                        var rawProductDataParsedEvent = new EventGridEvent(
-                           nameof(RawProductDataParsed),
-                           nameof(RawProductDataParsed),
-                           rawProductDataParsed.Version,
-                           rawProductDataParsed);
-
-                        await _eventGridPublisherClient.SendEventAsync(rawProductDataParsedEvent, cancellationToken);
-
-                    }, _rawProductData, cancellationToken);
+                    tasks.Add(_eventGridPublisherClient.SendEventAsync(productDataParsedEvent, cancellationToken));
                 }
 
                 await Task.WhenAll(tasks);
             }
             catch (Exception ex)
             {
-                log.LogError(ex, "Parsing raw product file {name} failed", rawProductDataUploaded.BlobName);
+                logger.LogError(ex, "Parsing raw product file {name} failed", rawProductDataUploaded.BlobName);
                 throw;
             }
         }

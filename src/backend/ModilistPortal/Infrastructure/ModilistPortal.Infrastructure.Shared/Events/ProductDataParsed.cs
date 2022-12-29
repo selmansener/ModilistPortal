@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 
 namespace ModilistPortal.Infrastructure.Shared.Events
 {
-    public class ProductValidationSucceeded : BaseEvent
+    public class ProductDataParsed : BaseEvent
     {
-        public ProductValidationSucceeded(string publisherId, PublisherType publisherType, int productExcelRowId, int tenantId, Guid blobId, int rowId, string name, string sKU, string barcode, string brand, string category, string price, string salesPrice, string stockAmount)
+        public ProductDataParsed(string publisherId, PublisherType publisherType, int productExcelUploadId, int tenantId, int rowId, string name, string sKU, string barcode, string brand, string category, string price, string salesPrice, string stockAmount)
             : base(publisherId, publisherType)
         {
-            ProductExcelRowId = productExcelRowId;
+            ProductExcelUploadId = productExcelUploadId;
             TenantId = tenantId;
-            BlobId = blobId;
             RowId = rowId;
             Name = name;
             SKU = sKU;
@@ -25,11 +24,9 @@ namespace ModilistPortal.Infrastructure.Shared.Events
             StockAmount = stockAmount;
         }
 
-        public int ProductExcelRowId { get; set; }
+        public int ProductExcelUploadId { get; set; }
 
         public int TenantId { get; set; }
-
-        public Guid BlobId { get; set; }
 
         public int RowId { get; set; }
 
