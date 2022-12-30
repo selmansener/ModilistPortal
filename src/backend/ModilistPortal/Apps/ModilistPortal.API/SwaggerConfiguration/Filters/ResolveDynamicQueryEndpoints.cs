@@ -14,6 +14,7 @@ namespace ModilistPortal.API.SwaggerConfiguration.Filters
     {
         private readonly string _description;
         private readonly string _dqbResolveParam;
+        private IReadOnlyList<string> _dqbParameterNames;
 
         public ResolveDynamicQueryEndpoints(
             string dqbResolveParam = "",
@@ -21,6 +22,17 @@ namespace ModilistPortal.API.SwaggerConfiguration.Filters
         {
             _description = description;
             _dqbResolveParam = dqbResolveParam;
+            _dqbParameterNames = new List<string>
+            {
+                "Filters",
+                "SortOptions",
+                "PaginationOption.Count",
+                "PaginationOption.Offset",
+                "PaginationOption.DataSetCount",
+                "PaginationOption.AssignDataSetCount",
+                "UsesCaseInsensitiveSource",
+                "IgnorePredefinedOrders"
+            };
         }
 
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
@@ -32,7 +44,14 @@ namespace ModilistPortal.API.SwaggerConfiguration.Filters
                 OpenApiSchema apiSchema;
                 if (operation.Parameters != null)
                 {
+                    var otherParams = operation.Parameters.Where(p => !_dqbParameterNames.Contains(p.Name)).ToList();
+
                     operation.Parameters.Clear();
+
+                    foreach (var otherParam in otherParams)
+                    {
+                        operation.Parameters.Add(otherParam);
+                    }
 
                     apiSchema = context.SchemaGenerator.GenerateSchema(typeof(string), context.SchemaRepository);
                     operation.Parameters.Add(new OpenApiParameter

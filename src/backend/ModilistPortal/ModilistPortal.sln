@@ -31,7 +31,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModilistPortal.Business.Uti
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModilistPortal.Functions.BlobTriggered", "Apps\ModilistPortal.Functions.BlobTriggered\ModilistPortal.Functions.BlobTriggered.csproj", "{34FC0751-DECB-4C1E-A32D-69ECC73A8F2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModilistPortal.Functions.EventHandlers", "Apps\ModilistPortal.Functions.EventHandlers\ModilistPortal.Functions.EventHandlers.csproj", "{DB7BB374-AC86-4202-B46B-2A9E81D90387}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModilistPortal.Functions.EventHandlers", "Apps\ModilistPortal.Functions.EventHandlers\ModilistPortal.Functions.EventHandlers.csproj", "{DB7BB374-AC86-4202-B46B-2A9E81D90387}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

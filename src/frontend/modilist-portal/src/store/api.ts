@@ -98,7 +98,16 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/api/v1/Product/QueryUploadHistory`,
-        params: { dqb: queryArg.dqb },
+        params: { "api-version": queryArg["api-version"], dqb: queryArg.dqb },
+      }),
+    }),
+    getApiV1ProductQueryUploadHistoryDetailsByProductExcelUploadId: build.query<
+      GetApiV1ProductQueryUploadHistoryDetailsByProductExcelUploadIdApiResponse,
+      GetApiV1ProductQueryUploadHistoryDetailsByProductExcelUploadIdApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/api/v1/Product/QueryUploadHistoryDetails/${queryArg.productExcelUploadId}`,
+        params: { "api-version": queryArg["api-version"], dqb: queryArg.dqb },
       }),
     }),
     getApiV1TenantGet: build.query<
@@ -179,9 +188,19 @@ export type PostApiV1ProductUploadProductExcelApiArg = {
 export type GetApiV1ProductQueryUploadHistoryApiResponse =
   /** status 200 Success */ ProductExcelUploadDtodqbResultDtoResponseModel;
 export type GetApiV1ProductQueryUploadHistoryApiArg = {
+  "api-version"?: string;
   /** DynamicQuery */
   dqb?: string;
 };
+export type GetApiV1ProductQueryUploadHistoryDetailsByProductExcelUploadIdApiResponse =
+  /** status 200 Success */ QueryProductExcelRowDtodqbResultDtoResponseModel;
+export type GetApiV1ProductQueryUploadHistoryDetailsByProductExcelUploadIdApiArg =
+  {
+    productExcelUploadId: number;
+    "api-version"?: string;
+    /** DynamicQuery */
+    dqb?: string;
+  };
 export type GetApiV1TenantGetApiResponse =
   /** status 200 Success */ TenantDtoResponseModel;
 export type GetApiV1TenantGetApiArg = {
@@ -219,7 +238,7 @@ export type District = {
   cityName?: string;
   cityCode?: string;
 };
-export type SeedServiceType = "Tenants" | "Accounts";
+export type SeedServiceType = "Tenants" | "Accounts" | "ProductExcelUpload";
 export type ProductExcelUploadDto = {
   id?: number;
   tenantId?: number;
@@ -230,6 +249,7 @@ export type ProductExcelUploadDto = {
   contentType?: string;
   fileSizeInBytes?: number;
   fileSize?: string;
+  createdAt?: string;
 };
 export type ProductExcelUploadDtodqbResultDto = {
   data?: ProductExcelUploadDto[];
@@ -238,6 +258,47 @@ export type ProductExcelUploadDtodqbResultDto = {
 export type ProductExcelUploadDtodqbResultDtoResponseModel = {
   statusCode?: number;
   data?: ProductExcelUploadDtodqbResultDto;
+  message?: string | null;
+  errorType?: string | null;
+  errors?: {
+    [key: string]: string[];
+  } | null;
+};
+export type ProductPropertyName =
+  | "None"
+  | "Name"
+  | "SKU"
+  | "Barcode"
+  | "Brand"
+  | "Category"
+  | "Price"
+  | "SalesPrice"
+  | "StockAmount";
+export type ProductErrorMappingsDto = {
+  propertyName?: ProductPropertyName;
+  errors?: string[];
+};
+export type QueryProductExcelRowDto = {
+  id?: number;
+  rowId?: number;
+  name?: string;
+  sku?: string;
+  barcode?: string;
+  brand?: string;
+  category?: string;
+  price?: string;
+  salesPrice?: string;
+  stockAmount?: string;
+  createdAt?: string;
+  errorMappings?: ProductErrorMappingsDto[];
+};
+export type QueryProductExcelRowDtodqbResultDto = {
+  data?: QueryProductExcelRowDto[];
+  count?: number;
+};
+export type QueryProductExcelRowDtodqbResultDtoResponseModel = {
+  statusCode?: number;
+  data?: QueryProductExcelRowDtodqbResultDto;
   message?: string | null;
   errorType?: string | null;
   errors?: {
@@ -292,6 +353,7 @@ export const {
   useGetDevV1GetClientIpQuery,
   usePostApiV1ProductUploadProductExcelMutation,
   useGetApiV1ProductQueryUploadHistoryQuery,
+  useGetApiV1ProductQueryUploadHistoryDetailsByProductExcelUploadIdQuery,
   useGetApiV1TenantGetQuery,
   usePostApiV1TenantUpsertMutation,
 } = injectedRtkApi;

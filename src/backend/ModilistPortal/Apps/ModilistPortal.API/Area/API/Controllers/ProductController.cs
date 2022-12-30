@@ -49,5 +49,16 @@ namespace ModilistPortal.API.Area.API.Controllers
 
             return Ok(new ResponseModel<DQBResultDTO<ProductExcelUploadDTO>>(result));
         }
+
+        [Authorize(nameof(AuthorizationPermissions.Products))]
+        [HttpGet("QueryUploadHistoryDetails/{productExcelUploadId}")]
+        [DynamicQuery]
+        [ProducesResponseType(typeof(ResponseModel<DQBResultDTO<QueryProductExcelRowDTO>>), 200)]
+        public async Task<IActionResult> QueryUploadHistory(int productExcelUploadId, [FromQuery] DynamicQueryOptions dqb, CancellationToken cancellationToken)
+        {
+            var result = await _mediator.Send(new QueryProductExcelUploadHistoryDetails(productExcelUploadId, User.GetUserId(), dqb), cancellationToken);
+
+            return Ok(new ResponseModel<DQBResultDTO<QueryProductExcelRowDTO>>(result));
+        }
     }
 }

@@ -28,6 +28,7 @@ const SalesOrdersPage = React.lazy(() => import("../../pages/dashboard/salesOrde
 const ProductsPage = React.lazy(() => import("../../pages/dashboard/products/Products"));
 const ProductListPage = React.lazy(() => import("../../pages/dashboard/products/ProductList"));
 const ProductUploadHistoryPage = React.lazy(() => import("../../pages/dashboard/products/UploadHistory"));
+const ProductUploadHistoryDetailsPage = React.lazy(() => import("../../pages/dashboard/products/UploadHistoryDetails"));
 const ReturnsPage = React.lazy(() => import("../../pages/dashboard/returns/Returns"));
 const TenantPage = React.lazy(() => import("../../pages/dashboard/tenant/Tenant"));
 
@@ -56,6 +57,10 @@ export const dashboardRoutes: RouteConfig = {
                 {
                     path: "upload-history",
                     element: <ProductUploadHistoryPage />
+                },
+                {
+                    path: "upload-history/:productExcelUploadId",
+                    element: <ProductUploadHistoryDetailsPage />
                 }
             ]
         },

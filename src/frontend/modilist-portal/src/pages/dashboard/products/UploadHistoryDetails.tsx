@@ -1,18 +1,21 @@
-import { Box, Button, Grid } from "@mui/material";
-import { useEffect, useState } from "react";
-import { api, ProductExcelUploadDto, useGetApiV1ProductQueryUploadHistoryQuery } from "../../../store/api";
+import { Box, Grid } from "@mui/material";
+import { useParams } from "react-router-dom";
 import { DataGrid, GridCellParams, GridColDef, GridSortModel, GridValueGetterParams } from '@mui/x-data-grid';
-import { Pagination, QueryBuilder, SortDirection, SortField, StringFilter, StringFilterOperation } from "dynamic-query-builder-client";
+import { useEffect, useState } from "react";
 import { useAppDispatch } from "../../../store/hooks";
 import format from "date-fns/format";
 import { tr } from "date-fns/locale";
 import { useNavigate } from "react-router-dom";
+import { api, QueryProductExcelRowDto } from "../../../store/api";
+import { Pagination, QueryBuilder, SortDirection, SortField, StringFilter, StringFilterOperation } from "dynamic-query-builder-client";
 
-export default function UploadHistory() {
-    const navigate = useNavigate();
+export default function UploadHistoryDetails() {
+    const { productExcelUploadId } = useParams();
+
     const dispatch = useAppDispatch();
     const [queryString, setQueryString] = useState("");
-    const { data: queryResult, error, isLoading, isFetching } = api.endpoints.getApiV1ProductQueryUploadHistory.useQueryState({
+    const { data: queryResult, error, isLoading, isFetching } = api.endpoints.getApiV1ProductQueryUploadHistoryDetailsByProductExcelUploadId.useQueryState({
+        productExcelUploadId: productExcelUploadId ? parseInt(productExcelUploadId) : 0,
         dqb: queryString
     });
     const [totalCount, setTotalCount] = useState(0);
@@ -25,7 +28,7 @@ export default function UploadHistory() {
         }
     ]);
 
-    const [data, setData] = useState<ProductExcelUploadDto[]>([]);
+    const [data, setData] = useState<QueryProductExcelRowDto[]>([]);
 
     useEffect(() => {
         var sortBy = sortModel.map(x => {
@@ -47,7 +50,8 @@ export default function UploadHistory() {
         var queryString = queryBuilder.build();
         setQueryString(queryString);
 
-        dispatch(api.endpoints.getApiV1ProductQueryUploadHistory.initiate({
+        dispatch(api.endpoints.getApiV1ProductQueryUploadHistoryDetailsByProductExcelUploadId.initiate({
+            productExcelUploadId: productExcelUploadId ? parseInt(productExcelUploadId) : 0,
             dqb: queryString
         }));
 
@@ -67,48 +71,62 @@ export default function UploadHistory() {
     }, [queryResult]);
 
     const columns: GridColDef[] = [
-        { field: 'id', headerName: 'ID', width: 90 },
         {
-            field: 'originalFileName',
-            headerName: 'File Name',
-            width: 150,
-            valueGetter: (params: GridValueGetterParams) => {
-                return `${params.row.originalFileName}.${params.row.extension}`
-            }
+            field: 'id',
+            headerName: 'ID',
         },
         {
-            field: 'fileSize',
-            headerName: 'File Size',
-            width: 250,
+            field: 'rowId',
+            headerName: 'Satır No.',
+        },
+        {
+            field: 'name',
+            headerName: 'Ürün Adı',
+
+        },
+        {
+            field: 'sku',
+            headerName: 'Stok Kodu',
+
+        },
+        {
+            field: 'barcode',
+            headerName: 'Barkod',
+
+        },
+        {
+            field: 'brand',
+            headerName: 'Marka',
+
+        },
+        {
+            field: 'category',
+            headerName: 'Kategori',
+
+        },
+        {
+            field: 'price',
+            headerName: 'Fiyat',
+
+        },
+        {
+            field: 'salesPrice',
+            headerName: 'Satış Fiyatı',
+
         },
         {
             field: 'createdAt',
-            headerName: 'Upload Date',
-            width: 250,
+            headerName: 'Oluşturulma Tarihi',
+
             valueGetter: (params: GridValueGetterParams) => {
                 return format(new Date(params?.row.createdAt), 'dd.MM.yyyy', { locale: tr })
             }
         },
-        {
-            field: 'details',
-            headerName: 'Actions',
-            width: 150,
-            renderCell: (params: GridCellParams) => {
-                return <Button onClick={() => {
-                    navigate(`/dashboard/products/upload-history/${params.row.id}`);
-                }}>
-                    Details
-                </Button>
-            },
-            valueGetter: (params: GridValueGetterParams) => {
-                return params.row.id;
-            }
-        }
     ];
 
     return <Grid item container spacing={2}>
         <Grid item xs={12}>
-            <Box sx={{ height: 400, width: '100%' }}>
+            <Box sx={{ height: 400 }}>
                 <DataGrid
                     loading={isLoading || isFetching}
                     rowCount={totalCount}

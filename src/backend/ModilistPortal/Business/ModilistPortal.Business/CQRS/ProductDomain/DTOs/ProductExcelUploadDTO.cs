@@ -19,5 +19,7 @@
         public long FileSizeInBytes { get; set; }
 
         public string FileSize { get; set; }
+
+        public DateTime CreatedAt { get; set; }
     }
 }
