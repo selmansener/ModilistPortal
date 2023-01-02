@@ -11,6 +11,8 @@ namespace ModilistPortal.Data.Repositories.ProductDomain
         Task<bool> DoesExistsWithSKU(int tenantId, string sku, CancellationToken cancellationToken);
 
         Task<bool> DoesExistsWithBarcode(int tenantId, string barcode, CancellationToken cancellationToken);
+
+        Task<Product?> GetByIdAsync(int productId, int tenantId, CancellationToken cancellationToken);
     }
 
     internal class ProductRepository : BaseRepository<Product>, IProductRepository
@@ -28,6 +30,13 @@ namespace ModilistPortal.Data.Repositories.ProductDomain
         public async Task<bool> DoesExistsWithSKU(int tenantId, string sku, CancellationToken cancellationToken)
         {
             return await _baseDb.Products.AnyAsync(x => x.TenantId == tenantId && x.SKU == sku, cancellationToken);
+        }
+
+        public async Task<Product?> GetByIdAsync(int productId, int tenantId, CancellationToken cancellationToken)
+        {
+            return await _baseDb.Products
+                .Include(x => x.Brand)
+                .FirstOrDefaultAsync(x => x.Id == productId && x.TenantId == tenantId, cancellationToken);
         }
     }
 }

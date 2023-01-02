@@ -1,5 +1,6 @@
 ﻿
 using ModilistPortal.Domains.Base;
+using ModilistPortal.Domains.Models.InventoryDomain;
 using ModilistPortal.Domains.Models.TenantDomain;
 using ModilistPortal.Infrastructure.Shared.Enums;
 
@@ -44,5 +45,7 @@ namespace ModilistPortal.Domains.Models.ProductDomain
         public int TenantId { get; private set; }
 
         public Tenant Tenant { get; private set; }
+
+        public InventoryItem? Inventory { get; set; }
     }
 }

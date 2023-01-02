@@ -60,5 +60,27 @@ namespace ModilistPortal.API.Area.API.Controllers
 
             return Ok(new ResponseModel<DQBResultDTO<QueryProductExcelRowDTO>>(result));
         }
+
+        [Authorize(nameof(AuthorizationPermissions.Products))]
+        [HttpGet("Query")]
+        [DynamicQuery]
+        [ProducesResponseType(typeof(ResponseModel<DQBResultDTO<QueryProductDTO>>), 200)]
+        public async Task<IActionResult> Query([FromQuery] DynamicQueryOptions dqb, CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(new QueryProducts(User.GetUserId(), dqb), cancellationToken);
+
+            return Ok(new ResponseModel<DQBResultDTO<QueryProductDTO>>(response));
+        }
+
+
+        [Authorize(nameof(AuthorizationPermissions.Products))]
+        [HttpGet("Get/{productId}")]
+        [ProducesResponseType(typeof(ResponseModel<ProductDetailsDTO>), 200)]
+        public async Task<IActionResult> Get(int productId, CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(new GetProductDetails(User.GetUserId(), productId), cancellationToken);
+
+            return Ok(new ResponseModel<ProductDetailsDTO>(response));
+        }
     }
 }

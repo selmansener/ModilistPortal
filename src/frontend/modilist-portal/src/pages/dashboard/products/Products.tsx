@@ -12,6 +12,12 @@ export default function Products() {
             <Button onClick={() => navigate("/dashboard/products/upload-history")}>
                 Upload History
             </Button>
+            <Button onClick={() => navigate("/dashboard/products/new")}>
+                New Product
+            </Button>
+            <Button onClick={() => navigate("/dashboard/products/new-upload")}>
+                New Upload
+            </Button>
         </Grid>
         <Grid item xs={12}>
             <Outlet />

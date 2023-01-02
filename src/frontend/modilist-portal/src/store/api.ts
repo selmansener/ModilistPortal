@@ -110,6 +110,24 @@ const injectedRtkApi = api.injectEndpoints({
         params: { "api-version": queryArg["api-version"], dqb: queryArg.dqb },
       }),
     }),
+    getApiV1ProductQuery: build.query<
+      GetApiV1ProductQueryApiResponse,
+      GetApiV1ProductQueryApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/api/v1/Product/Query`,
+        params: { "api-version": queryArg["api-version"], dqb: queryArg.dqb },
+      }),
+    }),
+    getApiV1ProductGetByProductId: build.query<
+      GetApiV1ProductGetByProductIdApiResponse,
+      GetApiV1ProductGetByProductIdApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/api/v1/Product/Get/${queryArg.productId}`,
+        params: { "api-version": queryArg["api-version"] },
+      }),
+    }),
     getApiV1TenantGet: build.query<
       GetApiV1TenantGetApiResponse,
       GetApiV1TenantGetApiArg
@@ -201,6 +219,19 @@ export type GetApiV1ProductQueryUploadHistoryDetailsByProductExcelUploadIdApiArg
     /** DynamicQuery */
     dqb?: string;
   };
+export type GetApiV1ProductQueryApiResponse =
+  /** status 200 Success */ QueryProductDtodqbResultDtoResponseModel;
+export type GetApiV1ProductQueryApiArg = {
+  "api-version"?: string;
+  /** DynamicQuery */
+  dqb?: string;
+};
+export type GetApiV1ProductGetByProductIdApiResponse =
+  /** status 200 Success */ ProductDetailsDtoResponseModel;
+export type GetApiV1ProductGetByProductIdApiArg = {
+  productId: number;
+  "api-version"?: string;
+};
 export type GetApiV1TenantGetApiResponse =
   /** status 200 Success */ TenantDtoResponseModel;
 export type GetApiV1TenantGetApiArg = {
@@ -238,7 +269,12 @@ export type District = {
   cityName?: string;
   cityCode?: string;
 };
-export type SeedServiceType = "Tenants" | "Accounts" | "ProductExcelUpload";
+export type SeedServiceType =
+  | "Tenants"
+  | "Accounts"
+  | "ProductExcelUpload"
+  | "Brands"
+  | "Products";
 export type ProductExcelUploadDto = {
   id?: number;
   tenantId?: number;
@@ -305,6 +341,64 @@ export type QueryProductExcelRowDtodqbResultDtoResponseModel = {
     [key: string]: string[];
   } | null;
 };
+export type ProductState =
+  | "None"
+  | "InReview"
+  | "Available"
+  | "OutOfStock"
+  | "MissingInfo"
+  | "Rejected"
+  | "Passive";
+export type QueryProductDto = {
+  id?: number;
+  name?: string;
+  sku?: string;
+  barcode?: string;
+  brandId?: number;
+  brand?: string;
+  category?: string;
+  price?: number;
+  salesPrice?: number;
+  taxRatio?: number;
+  state?: ProductState;
+  createdAt?: string;
+};
+export type QueryProductDtodqbResultDto = {
+  data?: QueryProductDto[];
+  count?: number;
+};
+export type QueryProductDtodqbResultDtoResponseModel = {
+  statusCode?: number;
+  data?: QueryProductDtodqbResultDto;
+  message?: string | null;
+  errorType?: string | null;
+  errors?: {
+    [key: string]: string[];
+  } | null;
+};
+export type ProductDetailsDto = {
+  id?: number;
+  name?: string;
+  sku?: string;
+  barcode?: string;
+  brandId?: number;
+  brand?: string;
+  category?: string;
+  price?: number;
+  salesPrice?: number;
+  taxRatio?: number;
+  state?: ProductState;
+  createdAt?: string;
+};
+export type ProductDetailsDtoResponseModel = {
+  statusCode?: number;
+  data?: ProductDetailsDto;
+  message?: string | null;
+  errorType?: string | null;
+  errors?: {
+    [key: string]: string[];
+  } | null;
+};
 export type TenantType =
   | "None"
   | "Individual"
@@ -354,6 +448,8 @@ export const {
   usePostApiV1ProductUploadProductExcelMutation,
   useGetApiV1ProductQueryUploadHistoryQuery,
   useGetApiV1ProductQueryUploadHistoryDetailsByProductExcelUploadIdQuery,
+  useGetApiV1ProductQueryQuery,
+  useGetApiV1ProductGetByProductIdQuery,
   useGetApiV1TenantGetQuery,
   usePostApiV1TenantUpsertMutation,
 } = injectedRtkApi;

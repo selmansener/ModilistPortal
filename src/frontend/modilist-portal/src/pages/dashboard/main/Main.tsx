@@ -12,6 +12,9 @@ export default function Main() {
             <Button onClick={() => navigate("/dashboard/products")}>
                 Products
             </Button>
+            <Button onClick={() => navigate("/dashboard/sales-orders")}>
+                SalesOrders
+            </Button>
         </Grid>
     </Grid>
 }
