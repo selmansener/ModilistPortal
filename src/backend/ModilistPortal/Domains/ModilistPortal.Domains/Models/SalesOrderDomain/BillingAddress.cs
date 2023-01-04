@@ -12,6 +12,8 @@ namespace ModilistPortal.Domains.Models.SalesOrderDomain
 {
     public class BillingAddress : BaseEntity
     {
+        protected BillingAddress() { }
+
         public BillingAddress(int salesOrderId, BillingType type, string fullName, string phone, string email, string? tCKN, string? taxNumber, string? taxOffice, string city, string district, string zipCode, string fullAddress)
         {
             SalesOrderId = salesOrderId;
@@ -22,7 +24,7 @@ namespace ModilistPortal.Domains.Models.SalesOrderDomain
             TCKN = tCKN;
             TaxNumber = taxNumber;
             TaxOffice = taxOffice;
-            Address = new Address(city, district, "Turkey", zipCode, fullAddress);
+            Details = new Address(city, district, "Turkey", zipCode, fullAddress);
         }
 
         public int SalesOrderId { get; private set; }
@@ -43,6 +45,6 @@ namespace ModilistPortal.Domains.Models.SalesOrderDomain
 
         public string? TaxOffice { get; private set; }
 
-        public Address Address { get; private set; }
+        public Address Details { get; private set; }
     }
 }

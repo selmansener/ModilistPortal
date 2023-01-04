@@ -22,7 +22,7 @@ namespace ModilistPortal.Data.EntityConfigurations.SalesOrderDomain
                 .WithMany(x => x.LineItems)
                 .HasForeignKey(x => x.SalesOrderId)
                 .IsRequired()
-                .OnDelete(DeleteBehavior.Cascade);
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

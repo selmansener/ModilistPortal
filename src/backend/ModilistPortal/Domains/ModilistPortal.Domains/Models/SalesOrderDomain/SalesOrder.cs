@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 using ModilistPortal.Domains.Base;
 using ModilistPortal.Domains.Exceptions;
 using ModilistPortal.Domains.Models.ShipmentDomain;
@@ -16,12 +11,19 @@ namespace ModilistPortal.Domains.Models.SalesOrderDomain
     {
         private readonly List<SalesOrderLineItem> _lineItems = new List<SalesOrderLineItem>();
 
-        public SalesOrder(int tenantId, DeliveryAddress deliveryAddress, BillingAddress billingAddress)
+        protected SalesOrder()
+        {
+        }
+
+        public SalesOrder(int tenantId, int marketplaceSalesOrderId, DateTime marketplaceOrderCreatedAt)
         {
             TenantId = tenantId;
-            DeliveryAddress = deliveryAddress;
-            BillingAddress = billingAddress;
+            MarketplaceSalesOrderId = marketplaceSalesOrderId;
+            State = SalesOrderState.Created;
+            MarketplaceOrderCreatedAt = marketplaceOrderCreatedAt;
         }
+
+        public int MarketplaceSalesOrderId { get; private set; }
 
         public int TenantId { get; private set; }
 
@@ -37,6 +39,8 @@ namespace ModilistPortal.Domains.Models.SalesOrderDomain
 
         public string? InvoiceUrl { get; private set; }
 
+        public DateTime MarketplaceOrderCreatedAt { get; private set; }
+
         public IReadOnlyList<SalesOrderLineItem> LineItems => _lineItems;
 
         public void AddLineItem(int productId, int amount, decimal price, decimal salesPrice)
@@ -49,6 +53,26 @@ namespace ModilistPortal.Domains.Models.SalesOrderDomain
             }
 
             _lineItems.Add(new SalesOrderLineItem(Id, productId, amount, price, salesPrice));
+        }
+
+        public void AssignDeliveryAddress(DeliveryAddress deliveryAddress)
+        {
+            if (DeliveryAddress != null)
+            {
+                // TODO: throw exception
+            }
+
+            DeliveryAddress = deliveryAddress;
+        }
+
+        public void AssignBillingAddress(BillingAddress billingAddress)
+        {
+            if (BillingAddress != null)
+            {
+                // TODO: throw exception
+            }
+
+            BillingAddress = billingAddress;
         }
     }
 }

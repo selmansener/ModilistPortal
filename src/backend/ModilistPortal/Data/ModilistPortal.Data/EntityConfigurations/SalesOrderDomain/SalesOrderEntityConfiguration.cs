@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,7 +13,9 @@ namespace ModilistPortal.Data.EntityConfigurations.SalesOrderDomain
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).UseHiLo($"{nameof(SalesOrder)}_Seq");
 
-
+            builder.HasIndex(x => new { x.TenantId, x.MarketplaceSalesOrderId, x.DeletedAt })
+                .IsUnique()
+                .IsClustered(false);
         }
     }
 }

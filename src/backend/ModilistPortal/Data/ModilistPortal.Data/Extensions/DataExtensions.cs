@@ -5,7 +5,9 @@ using Microsoft.Extensions.Hosting;
 
 using ModilistPortal.Data.DataAccess;
 using ModilistPortal.Data.Repositories.AccountDomain;
+using ModilistPortal.Data.Repositories.InventoryDomain;
 using ModilistPortal.Data.Repositories.ProductDomain;
+using ModilistPortal.Data.Repositories.SalesOrderDomain;
 using ModilistPortal.Data.Repositories.TenantDomain;
 using ModilistPortal.Data.Transactions;
 using ModilistPortal.Infrastructure.Shared.Configurations;
@@ -48,6 +50,8 @@ namespace ModilistPortal.Data.Extensions
             services.AddScoped<IProductExcelRowRepository, ProductExcelRowRepository>();
             services.AddScoped<IBrandRepository, BrandRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ISalesOrderRepository, SalesOrderRepository>();
+            services.AddScoped<IInventoryRepository, InventoryRepository>();
 
             return services;
         }

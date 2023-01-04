@@ -11,6 +11,12 @@ namespace ModilistPortal.Business.Exceptions
             AccountId = accountId;
         }
 
+        public TenantNotFoundException(int tenantId)
+            : base($"Tenant not found with Id: {tenantId}")
+        {
+            TenantId = tenantId;
+        }
+
         public Guid? AccountId { get; private set; }
 
         public int? TenantId { get; private set; }
