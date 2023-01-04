@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Immutable;
 
 using Bogus;
 
@@ -12,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using ModilistPortal.Business.Seed.Configuration;
 using ModilistPortal.Business.Seed.Services.Base;
 using ModilistPortal.Data.DataAccess;
+using ModilistPortal.Domains.Models.InventoryDomain;
 using ModilistPortal.Domains.Models.ProductDomain;
 using ModilistPortal.Infrastructure.Shared.Enums;
 
@@ -51,6 +47,16 @@ namespace ModilistPortal.Business.Seed.Services
             }
 
             await _dbContext.AddRangeAsync(products);
+
+            var availableProducts = products.Where(x => x.State == ProductState.Available).ToList();
+            var inventoryItems = new List<InventoryItem>();
+            foreach (var product in availableProducts)
+            {
+                var inventoryItem = new InventoryItem(product.Id, faker.Random.Int(min: 100, max: 500));
+                inventoryItems.Add(inventoryItem);
+            }
+
+            await _dbContext.AddRangeAsync(inventoryItems);
         }
     }
 }

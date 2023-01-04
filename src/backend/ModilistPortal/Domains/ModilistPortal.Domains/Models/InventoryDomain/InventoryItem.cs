@@ -6,6 +6,12 @@ namespace ModilistPortal.Domains.Models.InventoryDomain
 {
     public class InventoryItem : BaseEntity
     {
+        public InventoryItem(int productId, int amount)
+        {
+            ProductId = productId;
+            Amount = amount;
+        }
+
         public int ProductId { get; private set; }
 
         public Product Product { get; private set; }

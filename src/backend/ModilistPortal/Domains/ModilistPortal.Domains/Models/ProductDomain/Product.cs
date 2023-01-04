@@ -46,6 +46,6 @@ namespace ModilistPortal.Domains.Models.ProductDomain
 
         public Tenant Tenant { get; private set; }
 
-        public InventoryItem? Inventory { get; set; }
+        public InventoryItem? Inventory { get; private set; }
     }
 }
