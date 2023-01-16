@@ -128,6 +128,17 @@ const injectedRtkApi = api.injectEndpoints({
         params: { "api-version": queryArg["api-version"] },
       }),
     }),
+    postApiV1ProductByProductIdAddImages: build.mutation<
+      PostApiV1ProductByProductIdAddImagesApiResponse,
+      PostApiV1ProductByProductIdAddImagesApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/api/v1/Product/${queryArg.productId}/AddImages`,
+        method: "POST",
+        body: queryArg.body,
+        params: { "api-version": queryArg["api-version"] },
+      }),
+    }),
     getApiV1TenantGet: build.query<
       GetApiV1TenantGetApiResponse,
       GetApiV1TenantGetApiArg
@@ -231,6 +242,15 @@ export type GetApiV1ProductGetByProductIdApiResponse =
 export type GetApiV1ProductGetByProductIdApiArg = {
   productId: number;
   "api-version"?: string;
+};
+export type PostApiV1ProductByProductIdAddImagesApiResponse =
+  /** status 200 Success */ ProductImageDto[];
+export type PostApiV1ProductByProductIdAddImagesApiArg = {
+  productId: number;
+  "api-version"?: string;
+  body: {
+    files?: Blob[];
+  };
 };
 export type GetApiV1TenantGetApiResponse =
   /** status 200 Success */ TenantDtoResponseModel;
@@ -399,6 +419,13 @@ export type ProductDetailsDtoResponseModel = {
     [key: string]: string[];
   } | null;
 };
+export type ProductImageDto = {
+  productId?: number;
+  name?: string;
+  contentType?: string;
+  extension?: string;
+  url?: string;
+};
 export type TenantType =
   | "None"
   | "Individual"
@@ -450,6 +477,7 @@ export const {
   useGetApiV1ProductQueryUploadHistoryDetailsByProductExcelUploadIdQuery,
   useGetApiV1ProductQueryQuery,
   useGetApiV1ProductGetByProductIdQuery,
+  usePostApiV1ProductByProductIdAddImagesMutation,
   useGetApiV1TenantGetQuery,
   usePostApiV1TenantUpsertMutation,
 } = injectedRtkApi;

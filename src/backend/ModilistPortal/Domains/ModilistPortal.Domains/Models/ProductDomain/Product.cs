@@ -8,6 +8,8 @@ namespace ModilistPortal.Domains.Models.ProductDomain
 {
     public class Product : BaseEntity
     {
+        private readonly List<ProductImage> _images = new List<ProductImage>();
+
         public Product(string name, string sKU, string barcode, int brandId, string category, decimal price, decimal salesPrice, int taxRatio, int tenantId)
         {
             Name = name;
@@ -47,5 +49,15 @@ namespace ModilistPortal.Domains.Models.ProductDomain
         public Tenant Tenant { get; private set; }
 
         public InventoryItem? Inventory { get; private set; }
+
+        public IReadOnlyList<ProductImage> Images => _images;
+
+        public void AddImage(string name,
+            string contentType,
+            string url,
+            string extension)
+        {
+            _images.Add(new ProductImage(Id, name, contentType, url, extension));
+        }
     }
 }

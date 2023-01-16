@@ -82,5 +82,20 @@ namespace ModilistPortal.API.Area.API.Controllers
 
             return Ok(new ResponseModel<ProductDetailsDTO>(response));
         }
+
+        [HttpPost("{productId}/AddImages")]
+        [Authorize(nameof(AuthorizationPermissions.Products))]
+        [ProducesResponseType(typeof(IEnumerable<ProductImageDTO>), 200)]
+        public async Task<IActionResult> AddImages(int productId, [FromForm] IEnumerable<IFormFile> files, CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(new AddProductImages
+            {
+                AccountId = User.GetUserId(),
+                ProductId = productId,
+                Files = files
+            }, cancellationToken);
+
+            return Ok(response);
+        }
     }
 }

@@ -52,6 +52,8 @@ namespace ModilistPortal.Data.DataAccess
 
         public DbSet<Shipment> Shipments { get; set; }
 
+        public DbSet<ProductImage> ProductImages { get; set; }
+
         protected override void OnModelCreating(ModelBuilder builder)
         {
             var entityTypes = GetEntityTypes(builder).ToList();

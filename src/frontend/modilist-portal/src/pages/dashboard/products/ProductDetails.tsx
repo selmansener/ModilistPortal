@@ -2,6 +2,7 @@ import { Button, Grid } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import Loading from "../../../components/loading/loading";
 import { useGetApiV1ProductGetByProductIdQuery } from "../../../store/api";
+import { UploadProductImages } from "./components/UploadProductImages";
 
 export default function ProductDetails() {
     const navigate = useNavigate();
@@ -50,6 +51,9 @@ export default function ProductDetails() {
         </Grid>
         <Grid item xs={12}>
             CreatedAt: {product?.createdAt}
+        </Grid>
+        <Grid item xs={12}>
+            <UploadProductImages productId={product?.id ?? 0} />
         </Grid>
     </Grid>
 }
