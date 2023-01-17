@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+
+using ModilistPortal.Infrastructure.Shared.Enums;
 
 namespace ModilistPortal.Functions.EventHandlers.Models
 {
@@ -30,5 +28,11 @@ namespace ModilistPortal.Functions.EventHandlers.Models
         public string SalesPrice { get; set; }
 
         public string StockAmount { get; set; }
+
+        public string Gender { get; set; }
+
+        public string Size { get; set; }
+
+        public string Colors { get; set; }
     }
 }

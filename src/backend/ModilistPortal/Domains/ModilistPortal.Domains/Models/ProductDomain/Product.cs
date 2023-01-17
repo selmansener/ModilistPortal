@@ -9,8 +9,9 @@ namespace ModilistPortal.Domains.Models.ProductDomain
     public class Product : BaseEntity
     {
         private readonly List<ProductImage> _images = new List<ProductImage>();
+        private readonly List<string> _colors = new List<string>();
 
-        public Product(string name, string sKU, string barcode, int brandId, string category, decimal price, decimal salesPrice, int taxRatio, int tenantId)
+        public Product(string name, string sKU, string barcode, int brandId, string category, decimal price, decimal salesPrice, int taxRatio, int tenantId, Gender gender, string size)
         {
             Name = name;
             SKU = sKU;
@@ -22,6 +23,8 @@ namespace ModilistPortal.Domains.Models.ProductDomain
             TaxRatio = taxRatio;
             State = ProductState.InReview;
             TenantId = tenantId;
+            Gender = gender;
+            Size = size;
         }
 
         public string Name { get; private set; }
@@ -40,9 +43,13 @@ namespace ModilistPortal.Domains.Models.ProductDomain
 
         public decimal SalesPrice { get; private set; }
 
+        public string Size { get; private set; }
+
         public int TaxRatio { get; private set; }
 
         public ProductState State { get; private set; }
+
+        public Gender Gender { get; private set; }
 
         public int TenantId { get; private set; }
 
@@ -52,12 +59,24 @@ namespace ModilistPortal.Domains.Models.ProductDomain
 
         public IReadOnlyList<ProductImage> Images => _images;
 
+        public IReadOnlyList<string> Colors => _colors;
+
         public void AddImage(string name,
             string contentType,
             string url,
             string extension)
         {
             _images.Add(new ProductImage(Id, name, contentType, url, extension));
+        }
+
+        public void AddColor(string color)
+        {
+            if (string.IsNullOrEmpty(color))
+            {
+                throw new ArgumentNullException(nameof(color));
+            }
+
+            _colors.Add(color);
         }
     }
 }

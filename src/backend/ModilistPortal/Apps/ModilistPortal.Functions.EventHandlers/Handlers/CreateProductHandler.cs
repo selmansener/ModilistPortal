@@ -44,7 +44,10 @@ namespace ModilistPortal.Functions.EventHandlers.Handlers
                     productDataParsed.Category,
                     productDataParsed.Price,
                     productDataParsed.SalesPrice,
-                    productDataParsed.StockAmount), cancellationToken);
+                    productDataParsed.StockAmount,
+                    productDataParsed.Gender,
+                    productDataParsed.Size,
+                    productDataParsed.Colors), cancellationToken);
             }
             catch (Exception ex)
             {

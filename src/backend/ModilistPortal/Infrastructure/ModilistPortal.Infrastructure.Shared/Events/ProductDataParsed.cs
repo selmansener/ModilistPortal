@@ -4,11 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using ModilistPortal.Infrastructure.Shared.Enums;
+
 namespace ModilistPortal.Infrastructure.Shared.Events
 {
     public class ProductDataParsed : BaseEvent
     {
-        public ProductDataParsed(string publisherId, PublisherType publisherType, int productExcelUploadId, int tenantId, int rowId, string name, string sKU, string barcode, string brand, string category, string price, string salesPrice, string stockAmount)
+        public ProductDataParsed(string publisherId, PublisherType publisherType, int productExcelUploadId, int tenantId, int rowId, string name, string sKU, string barcode, string brand, string category, string price, string salesPrice, string stockAmount, string gender, string size, string colors)
             : base(publisherId, publisherType)
         {
             ProductExcelUploadId = productExcelUploadId;
@@ -22,6 +24,9 @@ namespace ModilistPortal.Infrastructure.Shared.Events
             Price = price;
             SalesPrice = salesPrice;
             StockAmount = stockAmount;
+            Gender = gender;
+            Size = size;
+            Colors = colors;
         }
 
         public int ProductExcelUploadId { get; set; }
@@ -45,6 +50,12 @@ namespace ModilistPortal.Infrastructure.Shared.Events
         public string SalesPrice { get; set; }
 
         public string StockAmount { get; set; }
+
+        public string Gender { get; set; }
+
+        public string Size { get; set; }
+
+        public string Colors { get; set; }
 
         public override string Version => "1.0";
     }

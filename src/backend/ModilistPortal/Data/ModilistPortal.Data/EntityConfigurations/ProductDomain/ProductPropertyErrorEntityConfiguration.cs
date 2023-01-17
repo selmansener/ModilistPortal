@@ -24,7 +24,7 @@ namespace ModilistPortal.Data.EntityConfigurations.ProductDomain
             builder.Property(x => x.Errors).IsRequired().HasConversion<string>(
                 v => v.Count > 0 ? string.Join(",", v) : string.Empty,
                 v => !string.IsNullOrEmpty(v) ? v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList() : new List<string>()
-            );
+            ).HasMaxLength(2500);
         }
     }
 }

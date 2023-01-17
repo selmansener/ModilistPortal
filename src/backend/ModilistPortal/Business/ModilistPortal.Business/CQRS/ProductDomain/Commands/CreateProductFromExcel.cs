@@ -14,7 +14,7 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.Commands
 {
     public class CreateProductFromExcel : IRequest
     {
-        public CreateProductFromExcel(int productExcelUploadId, int tenantId, int rowId, string name, string sKU, string barcode, string brand, string category, string price, string salesPrice, string stockAmount)
+        public CreateProductFromExcel(int productExcelUploadId, int tenantId, int rowId, string name, string sKU, string barcode, string brand, string category, string price, string salesPrice, string stockAmount, string gender, string size, string colors = null)
         {
             ProductExcelUploadId = productExcelUploadId;
             TenantId = tenantId;
@@ -27,6 +27,9 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.Commands
             Price = price;
             SalesPrice = salesPrice;
             StockAmount = stockAmount;
+            Gender = gender;
+            Size = size;
+            Colors = colors;
         }
 
         public int ProductExcelUploadId { get; set; }
@@ -50,6 +53,12 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.Commands
         public string SalesPrice { get; set; }
 
         public string StockAmount { get; set; }
+
+        public string Gender { get; set; }
+
+        public string Size { get; set; }
+
+        public string Colors { get; set; }
     }
 
     internal class CreateProductFromExcelValidator : AbstractValidator<CreateProductFromExcel>
@@ -129,7 +138,27 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.Commands
 
                 try
                 {
-                    var product = new Product(request.Name, request.SKU, request.Barcode, brand.Id, request.Category, decimal.Parse(request.Price), decimal.Parse(request.SalesPrice), 8, request.TenantId);
+                    var product = new Product(
+                        request.Name,
+                        request.SKU,
+                        request.Barcode,
+                        brand.Id,
+                        request.Category,
+                        decimal.Parse(request.Price),
+                        decimal.Parse(request.SalesPrice),
+                        8,
+                        request.TenantId,
+                        Enum.Parse<Gender>(request.Gender),
+                        request.Size);
+
+                    if (!string.IsNullOrWhiteSpace(request.Colors))
+                    {
+                        var parsedColors = request.Colors.Trim().Split(',');
+                        foreach (var color in parsedColors)
+                        {
+                            product.AddColor(color);
+                        }
+                    }
 
                     await _productRepository.AddAsync(product, cancellationToken);
                 }
@@ -249,6 +278,9 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.Commands
                     .Must(salesPrice => decimal.TryParse(salesPrice, out decimal parsedSalesPrice) && parsedSalesPrice > 0).WithErrorCode("InvalidDecimal");
                 RuleFor(x => x.StockAmount).NotEmpty()
                     .Must(stockAmount => int.TryParse(stockAmount, out int parsedStockAmount) && parsedStockAmount > 0).WithErrorCode("InvalidInteger");
+                RuleFor(x => x.Gender).NotEmpty()
+                    .Must(gender => Enum.TryParse<Gender>(gender, out _)).WithErrorCode("InvalidGender");
+                RuleFor(x => x.Size).NotEmpty();
             }
         }
     }

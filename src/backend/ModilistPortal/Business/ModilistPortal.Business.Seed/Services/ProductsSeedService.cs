@@ -33,14 +33,64 @@ namespace ModilistPortal.Business.Seed.Services
 
             var productStates = Enum.GetValues<ProductState>().Where(x => x != ProductState.None);
 
+            var colors = new List<string>
+            {
+                "Black",
+                "Silver",
+                "Gray",
+                "White",
+                "Maroon",
+                "Red",
+                "Purple",
+                "Fuchsia",
+                "Green",
+                "Lime",
+                "Olive",
+                "Yellow",
+                "Navy",
+                "Blue",
+                "Teal",
+                "Aqua",
+            };
+
+            var sizes = new List<string>
+            {
+                "3XS",
+                "XXS",
+                "XS",
+                "M",
+                "L",
+                "XXL",
+                "3XL",
+                "35",
+                "35.5",
+                "36",
+                "37",
+                "38",
+                "39",
+                "40",
+                "41",
+                "42",
+                "43",
+                "44",
+                "45",
+                "46",
+            };
+
             var products = new List<Product>();
             foreach (var productState in productStates)
             {
                 for (int i = 0; i < 50; i++)
                 {
-                    var product = new Product(faker.Commerce.ProductName(), faker.Random.Replace("##-###-###"), faker.Random.Replace("##-######"), faker.PickRandom(brandIds), faker.PickRandom(productCategories), decimal.Parse(faker.Commerce.Price()), decimal.Parse(faker.Commerce.Price()), 8, tenant.Id);
+                    var product = new Product(faker.Commerce.ProductName(), faker.Random.Replace("##-###-###"), faker.Random.Replace("##-######"), faker.PickRandom(brandIds), faker.PickRandom(productCategories), decimal.Parse(faker.Commerce.Price()), decimal.Parse(faker.Commerce.Price()), 8, tenant.Id, faker.PickRandom<Gender>(), faker.PickRandom(sizes));
 
                     product.GetType().GetProperty(nameof(product.State)).SetValue(product, productState);
+
+                    var colorCount = faker.Random.Int(1, 4);
+                    for (int j = 0; j < colorCount; j++)
+                    {
+                        product.AddColor(faker.PickRandom(colors));
+                    }
 
                     products.Add(product);
                 }

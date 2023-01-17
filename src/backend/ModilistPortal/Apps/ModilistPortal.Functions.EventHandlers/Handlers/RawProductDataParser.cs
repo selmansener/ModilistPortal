@@ -87,7 +87,23 @@ namespace ModilistPortal.Functions.EventHandlers.Handlers
                 var tasks = new List<Task>();
                 foreach (var rawProductData in tempProductData.Products)
                 {
-                    var productDataParsed = new ProductDataParsed(EventPublishers.EventHandlers, PublisherType.System, rawProductDataUploaded.ProductExcelUploadId, rawProductDataUploaded.TenantId, rawProductData.RowId, rawProductData.Name, rawProductData.SKU, rawProductData.Barcode, rawProductData.Brand, rawProductData.Category, rawProductData.Price, rawProductData.SalesPrice, rawProductData.StockAmount);
+                    var productDataParsed = new ProductDataParsed(
+                        EventPublishers.EventHandlers,
+                        PublisherType.System,
+                        rawProductDataUploaded.ProductExcelUploadId,
+                        rawProductDataUploaded.TenantId,
+                        rawProductData.RowId,
+                        rawProductData.Name,
+                        rawProductData.SKU,
+                        rawProductData.Barcode,
+                        rawProductData.Brand,
+                        rawProductData.Category,
+                        rawProductData.Price,
+                        rawProductData.SalesPrice,
+                        rawProductData.StockAmount,
+                        rawProductData.Gender,
+                        rawProductData.Size,
+                        rawProductData.Colors);
 
                     var productDataParsedEvent = new EventGridEvent(
                         nameof(ProductDataParsed),
