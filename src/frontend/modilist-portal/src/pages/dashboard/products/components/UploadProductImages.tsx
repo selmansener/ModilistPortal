@@ -4,6 +4,9 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import React from "react";
 import { usePostApiV1ProductByProductIdAddImagesMutation } from "../../../../store/api";
+import axios from "axios";
+import { config } from "../../../../config";
+import { useMsal } from "@azure/msal-react";
 
 export interface UploadProductImagesProps {
     productId: number;
@@ -13,7 +16,11 @@ export function UploadProductImages(props: UploadProductImagesProps) {
     const { productId } = props;
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [files, setFiles] = useState<File[]>();
-    const [addImages, result] = usePostApiV1ProductByProductIdAddImagesMutation();
+    const [isLoading, setIsLoading] = useState(false);
+    const [isSuccess, setIsSuccess] = useState<boolean | undefined>();
+    const { webApi, loginRequest } = config;
+    const { instance: msal } = useMsal();
+
 
     const reset = () => {
         if (fileInputRef?.current?.value) {
@@ -23,10 +30,10 @@ export function UploadProductImages(props: UploadProductImagesProps) {
     }
 
     useEffect(() => {
-        if (result.isSuccess) {
+        if (isSuccess) {
             reset();
         }
-    }, [result]);
+    }, [isSuccess]);
 
     return (productId !== 0 ? <Grid item container spacing={2}>
         <Grid item xs={1} sx={{
@@ -34,7 +41,7 @@ export function UploadProductImages(props: UploadProductImagesProps) {
             justifyContent: 'right'
         }}>
             <IconButton
-                disabled={result.isLoading}
+                disabled={isLoading}
                 color="primary" aria-label="upload picture" component="label">
                 <input
                     ref={fileInputRef}
@@ -52,7 +59,7 @@ export function UploadProductImages(props: UploadProductImagesProps) {
             </IconButton>
         </Grid>
         <Grid item container spacing={2} xs={8}>
-            {files && <SelectedFiles isLoading={result.isLoading} files={files} onRemove={(index) => {
+            {files && <SelectedFiles isLoading={isLoading} files={files} onRemove={(index) => {
                 files.splice(index, 1);
                 setFiles([
                     ...files
@@ -61,21 +68,51 @@ export function UploadProductImages(props: UploadProductImagesProps) {
         </Grid>
         <Grid item xs={3}>
             <Button
-                disabled={result.isLoading}
+                disabled={isLoading}
                 onClick={() => {
-                    addImages({
-                        // this request should be multipart formdata but there is an issue with rtk query
-                        body: {
-                            files: files
-                        },
+                    if (!files) {
+                        return;
+                    }
 
-                        productId: productId
-                    })
+                    const accounts = msal.getAllAccounts();
+                    const account = accounts.length > 0 ? accounts[0] : null;
+
+                    if (account === null) {
+                        return;
+                    }
+
+                    setIsLoading(true);
+
+                    msal.acquireTokenSilent({
+                        ...loginRequest,
+                        account: account
+                    }).then((tokenResponse) => {
+                        const formData = new FormData();
+                        for (let i = 0; i < files.length; i++) {
+                            const file = files[i];
+                            formData.append("files", file);
+                        }
+
+                        axios.post(`${webApi}/api/v1/Product/${productId}/AddImages`, formData, {
+                            headers: {
+                                contentType: "multipart/formdata",
+                                authorization: `Bearer ${tokenResponse.accessToken}`
+                            }
+                        }).then((response) => {
+                            console.log(response.data);
+                            setIsLoading(false);
+                            setIsSuccess(true);
+                        }).catch((err) => {
+                            setIsLoading(false);
+                        });
+                    }).catch(err => {
+                        setIsSuccess(false);
+                    });
                 }}>
                 Upload
             </Button>
             <Button
-                disabled={result.isLoading}
+                disabled={isLoading}
                 onClick={() => {
                     reset();
                 }}>
