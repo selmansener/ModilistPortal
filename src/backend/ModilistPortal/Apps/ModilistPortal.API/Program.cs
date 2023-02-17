@@ -4,11 +4,16 @@ using System.Net;
 
 using Mapster;
 
+using Microsoft.ApplicationInsights.AspNetCore;
+using Microsoft.ApplicationInsights.DependencyCollector;
+using Microsoft.ApplicationInsights.Extensibility.EventCounterCollector;
+using Microsoft.ApplicationInsights.Extensibility.PerfCounterCollector;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.AspNetCore.Mvc.Versioning;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
 
@@ -91,7 +96,7 @@ internal class Program
             options.HttpsPort = 443;
         });
 
-        Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = true;
+        Microsoft.IdentityModel.Logging.IdentityModelEventSource.ShowPII = false;
 
         builder.Services.AddAuthorization(options =>
         {
@@ -101,6 +106,62 @@ internal class Program
             {
                 options.AddPolicy(permission.Key, policy => policy.Requirements.Add(new ScopesRequirement(permission.Value)));
             }
+        });
+
+
+        builder.Services.AddApplicationInsightsTelemetry(options =>
+        {
+            options.ConnectionString = config.AppInsightsConnectionString;
+
+            if (environment.IsDevelopment())
+            {
+                options.DeveloperMode = true;
+            }
+        });
+
+        builder.Services.ConfigureTelemetryModule<DependencyTrackingTelemetryModule>((module, o) =>
+        {
+            module.EnableRequestIdHeaderInjectionInW3CMode = true;
+            module.EnableSqlCommandTextInstrumentation = true;
+            module.EnableAzureSdkTelemetryListener = true;
+            module.EnableSqlCommandTextInstrumentation = true;
+            module.EnableW3CHeadersInjection = true;
+        });
+
+        builder.Services.ConfigureTelemetryModule<PerformanceCollectorModule>((module, o) =>
+        {
+        });
+
+        builder.Services.ConfigureTelemetryModule<RequestTrackingTelemetryModule>((module, o) =>
+        {
+            module.CollectionOptions.InjectResponseHeaders = true;
+            module.CollectionOptions.TrackExceptions = true;
+            module.CollectionOptions.EnableW3CDistributedTracing = true;
+        });
+
+        builder.Services.ConfigureTelemetryModule<EventCounterCollectionModule>((module, o) =>
+        {
+            module.Counters.Add(new EventCounterCollectionRequest("System.Runtime", "time-in-gc"));
+            module.Counters.Add(new EventCounterCollectionRequest("System.Runtime", "alloc-rate"));
+            module.Counters.Add(new EventCounterCollectionRequest("System.Runtime", "cpu-usage"));
+            module.Counters.Add(new EventCounterCollectionRequest("System.Runtime", "exception-count"));
+            module.Counters.Add(new EventCounterCollectionRequest("System.Runtime", "gc-heap-size"));
+            module.Counters.Add(new EventCounterCollectionRequest("System.Runtime", "gen-0-gc-count"));
+            module.Counters.Add(new EventCounterCollectionRequest("System.Runtime", "gen-0-size"));
+            module.Counters.Add(new EventCounterCollectionRequest("System.Runtime", "gen-1-gc-count"));
+            module.Counters.Add(new EventCounterCollectionRequest("System.Runtime", "gen-1-size"));
+            module.Counters.Add(new EventCounterCollectionRequest("System.Runtime", "gen-2-gc-count"));
+            module.Counters.Add(new EventCounterCollectionRequest("System.Runtime", "gen-2-size"));
+            module.Counters.Add(new EventCounterCollectionRequest("System.Runtime", "loh-size"));
+            module.Counters.Add(new EventCounterCollectionRequest("System.Runtime", "poh-size"));
+            module.Counters.Add(new EventCounterCollectionRequest("System.Runtime", "gc-fragmentation"));
+            module.Counters.Add(new EventCounterCollectionRequest("System.Runtime", "monitor-lock-contention-count"));
+            module.Counters.Add(new EventCounterCollectionRequest("System.Runtime", "active-timer-count"));
+            module.Counters.Add(new EventCounterCollectionRequest("System.Runtime", "assembly-count"));
+            module.Counters.Add(new EventCounterCollectionRequest("System.Runtime", "threadpool-completed-items-count"));
+            module.Counters.Add(new EventCounterCollectionRequest("System.Runtime", "threadpool-queue-length"));
+            module.Counters.Add(new EventCounterCollectionRequest("System.Runtime", "threadpool-thread-count"));
+            module.Counters.Add(new EventCounterCollectionRequest("System.Runtime", "working-set"));
         });
 
         builder.Services.AddRepositories();
@@ -141,6 +202,8 @@ internal class Program
         app.UseSwagger();
         app.UseSwaggerUI(ConfigureSwaggerUI);
         app.UseStaticFiles();
+
+        app.UseMiddleware<TelemetryMiddleware>();
 
         app.UseExceptionHandlerMiddleware();
 

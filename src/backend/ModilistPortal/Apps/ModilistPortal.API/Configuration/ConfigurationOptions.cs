@@ -17,5 +17,7 @@ namespace ModilistPortal.API.Configuration
         public StorageConnectionStrings StorageConnectionStrings { get; set; }
 
         public SendGridOptions SendGridOptions { get; set; }
+
+        public string AppInsightsConnectionString { get; set; }
     }
 }

@@ -21,6 +21,8 @@ namespace ModilistPortal.Business.CQRS.AccountDomain.Commands
         public Guid Id { get; set; }
 
         public string Email { get; set; }
+
+        public string Password { get; set; }
     }
 
     internal class CreateAccountValidator : AbstractValidator<CreateAccount>
