@@ -1,6 +1,5 @@
 ﻿
 using ModilistPortal.Domains.Base;
-using ModilistPortal.Domains.Models.InventoryDomain;
 using ModilistPortal.Domains.Models.TenantDomain;
 using ModilistPortal.Infrastructure.Shared.Enums;
 
@@ -9,9 +8,8 @@ namespace ModilistPortal.Domains.Models.ProductDomain
     public class Product : BaseEntity
     {
         private readonly List<ProductImage> _images = new List<ProductImage>();
-        private readonly List<string> _colors = new List<string>();
 
-        public Product(string name, string sKU, string barcode, int brandId, string category, decimal price, decimal salesPrice, int taxRatio, int tenantId, Gender gender, string size)
+        public Product(string name, string sKU, string barcode, int brandId, string category, decimal price, decimal salesPrice, int taxRatio, int tenantId, Gender gender, string size, string color)
         {
             Name = name;
             SKU = sKU;
@@ -25,13 +23,18 @@ namespace ModilistPortal.Domains.Models.ProductDomain
             TenantId = tenantId;
             Gender = gender;
             Size = size;
+            Color = color;
         }
+
+        public Guid GroupId { get; private set; }
 
         public string Name { get; private set; }
 
         public string SKU { get; private set; }
 
         public string Barcode { get; private set; }
+
+        public int Amount { get; private set; }
 
         public int BrandId { get; private set; }
 
@@ -55,11 +58,9 @@ namespace ModilistPortal.Domains.Models.ProductDomain
 
         public Tenant Tenant { get; private set; }
 
-        public InventoryItem? Inventory { get; private set; }
-
         public IReadOnlyList<ProductImage> Images => _images;
 
-        public IReadOnlyList<string> Colors => _colors;
+        public string Color { get; private set; }
 
         public void AddImage(string name,
             string contentType,
@@ -69,14 +70,36 @@ namespace ModilistPortal.Domains.Models.ProductDomain
             _images.Add(new ProductImage(Id, name, contentType, url, extension));
         }
 
-        public void AddColor(string color)
+        /// <summary>
+        /// Decreases available stock amount and returns the missing amount if it's negative.
+        /// </summary>
+        /// <param name="amount">Amount to decrease</param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException">Throws if the amount parameter equal or less than zero.</exception>
+        public int DecreaseAmount(int amount)
         {
-            if (string.IsNullOrEmpty(color))
+            if (amount == default || amount < 0)
             {
-                throw new ArgumentNullException(nameof(color));
+                throw new ArgumentException($"amount must be greater than zero.", nameof(amount));
             }
 
-            _colors.Add(color);
+            var remainingAmount = Amount - amount;
+
+            if (remainingAmount > 0)
+            {
+                Amount = remainingAmount;
+            }
+            else
+            {
+                Amount = 0;
+            }
+
+            return remainingAmount < 0 ? Math.Abs(remainingAmount) : 0;
+        }
+
+        public void SetGroupId(Guid groupId)
+        {
+            this.GroupId = groupId;
         }
     }
 }

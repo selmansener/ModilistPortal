@@ -6,7 +6,6 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 using ModilistPortal.Domains.Base;
 using ModilistPortal.Domains.Models.AccountDomain;
-using ModilistPortal.Domains.Models.InventoryDomain;
 using ModilistPortal.Domains.Models.ProductDomain;
 using ModilistPortal.Domains.Models.SalesOrderDomain;
 using ModilistPortal.Domains.Models.ShipmentDomain;
@@ -39,8 +38,6 @@ namespace ModilistPortal.Data.DataAccess
         public DbSet<ProductExcelRow> ProductExcelRows { get; set; }
 
         public DbSet<ProductPropertyError> ProductPropertyErrors { get; set; }
-
-        public DbSet<InventoryItem> InventoryItems { get; set; }
 
         public DbSet<SalesOrder> SalesOrders { get; set; }
 

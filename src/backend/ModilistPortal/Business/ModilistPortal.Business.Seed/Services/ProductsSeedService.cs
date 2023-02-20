@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Globalization;
 
 using Bogus;
 
@@ -7,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using ModilistPortal.Business.Seed.Configuration;
 using ModilistPortal.Business.Seed.Services.Base;
 using ModilistPortal.Data.DataAccess;
-using ModilistPortal.Domains.Models.InventoryDomain;
 using ModilistPortal.Domains.Models.ProductDomain;
 using ModilistPortal.Infrastructure.Shared.Enums;
 
@@ -32,6 +32,13 @@ namespace ModilistPortal.Business.Seed.Services
             var productCategories = faker.Commerce.Categories(10);
 
             var productStates = Enum.GetValues<ProductState>().Where(x => x != ProductState.None);
+
+            Dictionary<int, Guid> productVariants = new Dictionary<int, Guid>();
+
+            for(int i = 1; i <= brandIds.Count; i++)
+            {
+                productVariants.Add(i, Guid.NewGuid());
+            }
 
             var colors = new List<string>
             {
@@ -82,31 +89,21 @@ namespace ModilistPortal.Business.Seed.Services
             {
                 for (int i = 0; i < 50; i++)
                 {
-                    var product = new Product(faker.Commerce.ProductName(), faker.Random.Replace("##-###-###"), faker.Random.Replace("##-######"), faker.PickRandom(brandIds), faker.PickRandom(productCategories), decimal.Parse(faker.Commerce.Price()), decimal.Parse(faker.Commerce.Price()), 8, tenant.Id, faker.PickRandom<Gender>(), faker.PickRandom(sizes));
+
+                    int randomIndex = faker.Random.Int(0, productVariants.Count-1);
+                    int randomBrandId = productVariants.Keys.ElementAt(randomIndex);
+
+                    var product = new Product(faker.Commerce.ProductName(), faker.Random.Replace("##-###-###"), faker.Random.Replace("##-######"), randomBrandId, faker.PickRandom(productCategories), decimal.Parse(faker.Commerce.Price()), decimal.Parse(faker.Commerce.Price()), 8, tenant.Id, faker.PickRandom<Gender>(), faker.PickRandom(sizes), faker.PickRandom(colors));
 
                     product.GetType().GetProperty(nameof(product.State)).SetValue(product, productState);
 
-                    var colorCount = faker.Random.Int(1, 4);
-                    for (int j = 0; j < colorCount; j++)
-                    {
-                        product.AddColor(faker.PickRandom(colors));
-                    }
+                    product.SetGroupId(productVariants[randomBrandId]);
 
                     products.Add(product);
                 }
             }
 
             await _dbContext.AddRangeAsync(products);
-
-            var availableProducts = products.Where(x => x.State == ProductState.Available).ToList();
-            var inventoryItems = new List<InventoryItem>();
-            foreach (var product in availableProducts)
-            {
-                var inventoryItem = new InventoryItem(product.Id, faker.Random.Int(min: 100, max: 500));
-                inventoryItems.Add(inventoryItem);
-            }
-
-            await _dbContext.AddRangeAsync(inventoryItems);
         }
     }
 }

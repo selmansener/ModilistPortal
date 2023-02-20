@@ -3,10 +3,11 @@ using FluentValidation;
 
 using MediatR;
 
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 using ModilistPortal.Business.Exceptions;
-using ModilistPortal.Data.Repositories.InventoryDomain;
+using ModilistPortal.Data.Repositories.ProductDomain;
 using ModilistPortal.Data.Repositories.SalesOrderDomain;
 using ModilistPortal.Data.Repositories.TenantDomain;
 using ModilistPortal.Domains.Models.SalesOrderDomain;
@@ -56,18 +57,18 @@ namespace ModilistPortal.Business.CQRS.SalesOrderDomain.Commands
     {
         private readonly ITenantRepository _tenantRepository;
         private readonly ISalesOrderRepository _salesOrderRepository;
-        private readonly IInventoryRepository _inventoryRepository;
+        private readonly IProductRepository _productRepository;
         private readonly ILogger<CreateSalesOrderHandler> _logger;
 
         public CreateSalesOrderHandler(
             ITenantRepository tenantRepository,
             ISalesOrderRepository salesOrderRepository,
-            IInventoryRepository inventoryRepository,
+            IProductRepository productRepository,
             ILogger<CreateSalesOrderHandler> logger)
         {
             _tenantRepository = tenantRepository;
             _salesOrderRepository = salesOrderRepository;
-            _inventoryRepository = inventoryRepository;
+            _productRepository = productRepository;
             _logger = logger;
         }
 
@@ -92,27 +93,29 @@ namespace ModilistPortal.Business.CQRS.SalesOrderDomain.Commands
 
             var salesOrder = new SalesOrder(request.TenantId, request.MarketplaceSalesOrderId, request.MarketplaceOrderCreatedAt);
 
-            var inventoryItems = await _inventoryRepository.GetAllByProductIdsAsync(request.TenantId, request.LineItems.Select(x => x.ProductId), cancellationToken);
-            foreach (var lineItem in salesOrder.LineItems)
+            IList<int> productIds = request.LineItems.Select(x => x.ProductId).ToList();
+
+            var products = await _productRepository.GetAll().Where(p => productIds.Any(id => id == p.Id)).ToListAsync(cancellationToken);
+
+            foreach (var lineItem in request.LineItems)
             {
                 salesOrder.AddLineItem(lineItem.ProductId, lineItem.Amount, lineItem.Price, lineItem.SalesPrice);
 
-                var inventoryItem = inventoryItems.FirstOrDefault(x => x.ProductId == lineItem.ProductId);
+                var product = products.FirstOrDefault(p => p.Id == lineItem.ProductId);
 
-                if (inventoryItem == null)
+                if(product == null)
                 {
-                    _logger.LogCritical($"InventoryItem not found with ProductId: {lineItem.ProductId} and TenantId: {request.TenantId}");
-                    // Don't break the loop but investigate why there isn't any InventoryItem for that product.
-                    continue;
+                    throw new ProductNotFoundException(lineItem.ProductId, request.TenantId);
                 }
 
-                var missingAmount = inventoryItem.DecreaseAmount(lineItem.Amount);
-
+                var missingAmount = product.DecreaseAmount(lineItem.Amount);
+                
                 if (missingAmount > 0)
                 {
                     // TODO: Throw by tenant configuration. We can implement tenant specific configurations, like don't create order if inventory is out of stock.
                 }
             }
+
 
             await _salesOrderRepository.AddAsync(salesOrder, cancellationToken, saveChanges: true);
 

@@ -33,6 +33,6 @@ namespace ModilistPortal.Functions.EventHandlers.Models
 
         public string Size { get; set; }
 
-        public string Colors { get; set; }
+        public string Color { get; set; }
     }
 }

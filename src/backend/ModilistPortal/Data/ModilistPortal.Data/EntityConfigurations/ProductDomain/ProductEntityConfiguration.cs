@@ -22,6 +22,9 @@ namespace ModilistPortal.Data.EntityConfigurations.ProductDomain
                 .IsUnique()
                 .IsClustered(false);
 
+            builder.HasIndex(x => new { x.GroupId })
+                .IsClustered(false);
+
             builder.Property(x => x.State).IsRequired().HasDefaultValue(ProductState.None).HasConversion<string>();
             builder.Property(x => x.Gender).IsRequired().HasDefaultValue(Gender.Unisex).HasConversion<string>();
 
@@ -30,11 +33,6 @@ namespace ModilistPortal.Data.EntityConfigurations.ProductDomain
                 .HasForeignKey(x => x.BrandId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.NoAction);
-
-            builder.Property(x => x.Colors).IsRequired().HasConversion<string>(
-               v => v.Count > 0 ? string.Join(",", v) : string.Empty,
-               v => !string.IsNullOrEmpty(v) ? v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList() : new List<string>()
-            ).HasMaxLength(1000);
         }
     }
 }

@@ -45,7 +45,7 @@ namespace ModilistPortal.Functions.EventHandlers.Handlers
                 { 4, _productDataType.GetProperty("Category").GetSetMethod() },
                 { 5, _productDataType.GetProperty("Gender").GetSetMethod() },
                 { 6, _productDataType.GetProperty("Size").GetSetMethod() },
-                { 7, _productDataType.GetProperty("Colors").GetSetMethod() },
+                { 7, _productDataType.GetProperty("Color").GetSetMethod() },
                 { 8, _productDataType.GetProperty("Price").GetSetMethod() },
                 { 9, _productDataType.GetProperty("SalesPrice").GetSetMethod() },
                 { 10, _productDataType.GetProperty("StockAmount").GetSetMethod() },

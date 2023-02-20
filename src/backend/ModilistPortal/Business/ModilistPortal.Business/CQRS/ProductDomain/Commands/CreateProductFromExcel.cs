@@ -14,7 +14,7 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.Commands
 {
     public class CreateProductFromExcel : IRequest
     {
-        public CreateProductFromExcel(int productExcelUploadId, int tenantId, int rowId, string name, string sKU, string barcode, string brand, string category, string price, string salesPrice, string stockAmount, string gender, string size, string colors = null)
+        public CreateProductFromExcel(int productExcelUploadId, int tenantId, int rowId, string name, string sKU, string barcode, string brand, string category, string price, string salesPrice, string stockAmount, string gender, string size, string color)
         {
             ProductExcelUploadId = productExcelUploadId;
             TenantId = tenantId;
@@ -29,7 +29,7 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.Commands
             StockAmount = stockAmount;
             Gender = gender;
             Size = size;
-            Colors = colors;
+            Color = color;
         }
 
         public int ProductExcelUploadId { get; set; }
@@ -58,7 +58,7 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.Commands
 
         public string Size { get; set; }
 
-        public string Colors { get; set; }
+        public string Color { get; set; }
     }
 
     internal class CreateProductFromExcelValidator : AbstractValidator<CreateProductFromExcel>
@@ -149,16 +149,10 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.Commands
                         8,
                         request.TenantId,
                         Enum.Parse<Gender>(request.Gender),
-                        request.Size);
+                        request.Size,
+                        request.Color);
 
-                    if (!string.IsNullOrWhiteSpace(request.Colors))
-                    {
-                        var parsedColors = request.Colors.Trim().Split(',');
-                        foreach (var color in parsedColors)
-                        {
-                            product.AddColor(color);
-                        }
-                    }
+                    product.SetGroupId(Guid.NewGuid());
 
                     await _productRepository.AddAsync(product, cancellationToken);
                 }
@@ -281,6 +275,7 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.Commands
                 RuleFor(x => x.Gender).NotEmpty()
                     .Must(gender => Enum.TryParse<Gender>(gender, out _)).WithErrorCode("InvalidGender");
                 RuleFor(x => x.Size).NotEmpty();
+                RuleFor(x => x.Color).NotEmpty();
             }
         }
     }
