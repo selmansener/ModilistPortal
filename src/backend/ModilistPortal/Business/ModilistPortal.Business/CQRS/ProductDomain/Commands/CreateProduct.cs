@@ -79,7 +79,7 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.Commands
         {
             var existingProduct = await _productRepository.DoesExistsWithSKU(request.TenantId, request.SKU, cancellationToken);
 
-            if (existingProduct != null)
+            if (existingProduct)
             {
                 throw new ProductAlreadyExistsException(request.TenantId, request.SKU);
             }
