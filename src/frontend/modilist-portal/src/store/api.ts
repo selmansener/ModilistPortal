@@ -402,7 +402,10 @@ export type ProductPropertyName =
   | "Category"
   | "Price"
   | "SalesPrice"
-  | "StockAmount";
+  | "StockAmount"
+  | "Size"
+  | "Color"
+  | "Gender";
 export type ProductErrorMappingsDto = {
   propertyName?: ProductPropertyName;
   errors?: string[];
@@ -508,7 +511,6 @@ export type ProductImageDto = {
   extension?: string;
   url?: string;
 };
-export type Gender = "Unisex" | "Male" | "Female";
 export type CreateProduct = {
   name?: string;
   sku?: string;

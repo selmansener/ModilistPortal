@@ -49,7 +49,7 @@ export default function UpdateProduct() {
     if (isLoading || isFetching || product === undefined) {
         return <Loading />
     }
-
+    //TODO: Add gender, color, size
     return <Grid item container spacing={2}>
         <Grid item xs={4}>
             <FormControl fullWidth>

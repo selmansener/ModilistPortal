@@ -11,5 +11,6 @@ namespace ModilistPortal.Infrastructure.Shared.Enums
         Unisex = 0,
         Male = 1,
         Female = 2
+        //TODO: None = 0?
     }
 }

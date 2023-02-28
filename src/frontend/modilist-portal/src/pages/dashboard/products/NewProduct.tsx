@@ -74,7 +74,7 @@ export default function NewProduct() {
             navigate("/dashboard/Products");
         }
     }, [isSuccess]);
-
+//TODO: Gender --> Dropdown, Size --> Dropdown (radio button?)
     return <Grid container spacing={2}>
         <Grid item xs={12}>
             <FormControl fullWidth>

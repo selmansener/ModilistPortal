@@ -35,7 +35,6 @@ const TenantPage = React.lazy(() => import("../../pages/dashboard/tenant/Tenant"
 const ProductListGridPage = React.lazy(() => import("../../pages/dashboard/products/components/ProductGrid"));
 const ProductDetailsPage = React.lazy(() => import("../../pages/dashboard/products/ProductDetails"));
 const NewProductPage = React.lazy(() => import("../../pages/dashboard/products/NewProduct"));
-const NewProductUploadPage = React.lazy(() => import("../../pages/dashboard/products/NewProductUpload"));
 const UpdateProductPage = React.lazy(() => import("../../pages/dashboard/products/UpdateProduct"));
 
 export const dashboardRoutes: RouteConfig = {
@@ -100,10 +99,6 @@ export const dashboardRoutes: RouteConfig = {
                 {
                     path: ":productId/update",
                     element: <UpdateProductPage />
-                },
-                {
-                    path: "new-upload",
-                    element: <NewProductUploadPage />
                 },
                 {
                     path: "product-upload-history",

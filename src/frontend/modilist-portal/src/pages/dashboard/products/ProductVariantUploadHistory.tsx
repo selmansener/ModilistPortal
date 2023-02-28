@@ -176,7 +176,7 @@ export default function ProductVariantUploadHistory() {
         }
     ];
 
-    const templateLink = `${excelTemplateBaseHost}/excel-import/Products.xlsx`;
+    const templateLink = `${excelTemplateBaseHost}/excel-import/BulkProductImport.xlsx`;
 
     return <Grid item container spacing={6}>
         <Grid item xs={12}>

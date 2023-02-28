@@ -18,9 +18,6 @@ export default function Products() {
             <Button variant="contained" color="secondary" onClick={() => navigate("/dashboard/products/new")}>
                 <Typography color="white" variant="h6"> New Product</Typography>
             </Button>
-            <Button variant="contained" color="secondary" onClick={() => navigate("/dashboard/products/new-upload")}>
-                <Typography color="white" variant="h6">New Upload</Typography>
-            </Button>
         </Grid>
         <Grid item xs={12}>
             <Outlet />
