@@ -14,7 +14,7 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.Commands
 {
     public class CreateProductFromExcel : IRequest
     {
-        public CreateProductFromExcel(int productExcelUploadId, int tenantId, int rowId, string name, string sKU, string barcode, string brand, string category, string price, string salesPrice, string stockAmount, string gender, string size, string color)
+        public CreateProductFromExcel(int productExcelUploadId, int tenantId, int rowId, string name, string sKU, string barcode, string brand, string category, string price, string salesPrice, string stockAmount, string gender, string size, string color, Guid? groupId)
         {
             ProductExcelUploadId = productExcelUploadId;
             TenantId = tenantId;
@@ -30,7 +30,10 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.Commands
             Gender = gender;
             Size = size;
             Color = color;
+            GroupId = groupId;
         }
+
+        public Guid? GroupId { get; set; }
 
         public int ProductExcelUploadId { get; set; }
 
@@ -90,7 +93,7 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.Commands
         public async Task<Unit> Handle(CreateProductFromExcel request, CancellationToken cancellationToken)
         {
             // We assume there is already a ProductExcelUpload and directly insert row.
-            var productExcelRow = new ProductExcelRow(request.ProductExcelUploadId, request.RowId, request.Name, request.SKU, request.Barcode, request.Brand, request.Category, request.Price, request.SalesPrice, request.StockAmount);
+            var productExcelRow = new ProductExcelRow(request.ProductExcelUploadId, request.RowId, request.Name, request.SKU, request.Barcode, request.Brand, request.Category, request.Gender, request.Color, request.Size, request.Price, request.SalesPrice, request.StockAmount);
 
             await _productExcelRowRepository.AddAsync(productExcelRow, cancellationToken, true);
 
@@ -152,7 +155,14 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.Commands
                         request.Size,
                         request.Color);
 
-                    product.SetGroupId(Guid.NewGuid());
+                    if(request.GroupId != null)
+                    {
+                        product.SetGroupId(request.GroupId ?? default(Guid));
+                    }
+                    else
+                    {
+                        product.SetGroupId(Guid.NewGuid());
+                    }
 
                     await _productRepository.AddAsync(product, cancellationToken);
                 }

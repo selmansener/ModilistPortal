@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+using ModilistPortal.Infrastructure.Shared.Enums;
+
 namespace ModilistPortal.Business.CQRS.ProductDomain.DTOs
 {
     public class ProductExcelRowDTO
@@ -21,6 +23,12 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.DTOs
         public string Brand { get; set; }
 
         public string Category { get; set; }
+
+        public Gender Gender { get; set; }
+
+        public string Color { get; set; }
+
+        public string Size { get; set; }
 
         public string Price { get; set; }
 

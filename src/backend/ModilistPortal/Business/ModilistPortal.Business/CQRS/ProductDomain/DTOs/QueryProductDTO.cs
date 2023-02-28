@@ -22,6 +22,12 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.DTOs
 
         public string Category { get; set; }
 
+        public Gender Gender { get; set; }
+
+        public string Color { get; set; }
+
+        public string Size { get; set; }
+
         public decimal Price { get; set; }
 
         public decimal SalesPrice { get; set; }

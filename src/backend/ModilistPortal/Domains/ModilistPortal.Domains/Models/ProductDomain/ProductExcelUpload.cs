@@ -15,7 +15,7 @@ namespace ModilistPortal.Domains.Models.ProductDomain
     {
         private readonly List<ProductExcelRow> _rows = new List<ProductExcelRow>();
 
-        public ProductExcelUpload(int tenantId, Guid blobId, string originalFileName, string extension, string url, string contentType, long fileSizeInBytes)
+        public ProductExcelUpload(int tenantId, Guid blobId, string originalFileName, string extension, string url, string contentType, long fileSizeInBytes, bool isVariantExcel = false)
         {
             TenantId = tenantId;
             BlobId = blobId;
@@ -25,6 +25,7 @@ namespace ModilistPortal.Domains.Models.ProductDomain
             ContentType = contentType;
             FileSizeInBytes = fileSizeInBytes;
             FileSize = FileSizeConverter.Convert(fileSizeInBytes);
+            IsVariantExcel = isVariantExcel;
         }
 
         public int TenantId { get; private set; }
@@ -47,18 +48,20 @@ namespace ModilistPortal.Domains.Models.ProductDomain
 
         public IReadOnlyList<ProductExcelRow> Rows => _rows;
 
-        public void UpsertRow(int rowId, string name, string sku, string barcode, string brand, string category, string price, string salesPrice, string stockAmount)
+        public bool IsVariantExcel { get; private set; }
+
+        public void UpsertRow(int rowId, string name, string sku, string barcode, string brand, string category, string gender, string color, string size, string price, string salesPrice, string stockAmount)
         {
             var row = _rows.FirstOrDefault(x => x.RowId == rowId);
 
             if (row == null)
             {
-                row = new ProductExcelRow(Id, rowId, name, sku, barcode, brand, category, price, salesPrice, stockAmount);
+                row = new ProductExcelRow(Id, rowId, name, sku, barcode, brand, category, gender, color, size, price, salesPrice, stockAmount);
                 _rows.Add(row);
             }
             else
             {
-                row.Update(rowId, name, sku, barcode, brand, category, price, salesPrice, stockAmount);
+                row.Update(rowId, name, sku, barcode, brand, category, gender, color, size, price, salesPrice, stockAmount);
             }
         }
 
@@ -72,6 +75,11 @@ namespace ModilistPortal.Domains.Models.ProductDomain
             }
 
             row.SetErrors(errors);
+        }
+
+        public void SetIsVariantExcel(bool isVariantExcel)
+        {
+            IsVariantExcel = isVariantExcel;
         }
     }
 }

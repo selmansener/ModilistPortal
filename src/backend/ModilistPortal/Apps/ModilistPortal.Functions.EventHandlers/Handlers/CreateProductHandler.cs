@@ -47,11 +47,12 @@ namespace ModilistPortal.Functions.EventHandlers.Handlers
                     productDataParsed.StockAmount,
                     productDataParsed.Gender,
                     productDataParsed.Size,
-                    productDataParsed.Color), cancellationToken);
+                    productDataParsed.Color,
+                    productDataParsed.GroupId), cancellationToken);
             }
             catch (Exception ex)
             {
-                logger.LogError(ex, "Creating product failed.");
+                logger.LogError(ex, $"Creating product failed with TenantId: {productDataParsed.TenantId} ProductExcelUploadId: {productDataParsed.ProductExcelUploadId} RowId: {productDataParsed.RowId}");
             }
         }
     }

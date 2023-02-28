@@ -1,30 +1,37 @@
 import { Box, Button, Grid, IconButton, Typography } from "@mui/material";
-import { DataGrid, GridCellParams, GridColDef, GridSortModel, GridValueGetterParams } from "@mui/x-data-grid";
-import { LogicalOperator, BooleanFilterOperation, Pagination, QueryBuilder, SortDirection, SortField, StringFilter, StringFilterOperation } from "dynamic-query-builder-client";
 import { useEffect, useRef, useState } from "react";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
-import Loading from "../../../components/loading/loading";
-import { api, QueryProductDto, useGetApiV1ProductGetByProductIdQuery, useGetApiV1ProductQueryProductVariantsByProductIdQuery } from "../../../store/api";
+import { api, ProductExcelUploadDto, useGetApiV1ProductQueryUploadHistoryQuery } from "../../../store/api";
+import { DataGrid, GridCellParams, GridColDef, GridSortModel, GridValueGetterParams } from '@mui/x-data-grid';
+import { Pagination, QueryBuilder, SortDirection, SortField, StringFilter, StringFilterOperation } from "dynamic-query-builder-client";
 import { useAppDispatch } from "../../../store/hooks";
-import { UploadProductImages } from "./components/UploadProductImages";
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import format from "date-fns/format";
 import { tr } from "date-fns/locale";
-import { t } from "i18next";
+import { useNavigate } from "react-router-dom";
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import { useMsal } from "@azure/msal-react";
 import { config } from "../../../config";
-import { useTranslation } from "react-i18next";
 import axios from "axios";
+import { useTranslation } from "react-i18next";
 
-export default function ProductDetails() {
+export default function ProductUploadHistory() {
     const { t } = useTranslation();
     const navigate = useNavigate();
     const dispatch = useAppDispatch();
     const [queryString, setQueryString] = useState("");
-    const location = useLocation();
+    const { data: queryResult, error, isLoading, isFetching } = api.endpoints.getApiV1ProductQueryUploadHistory.useQueryState({
+        dqb: queryString
+    });
     const [totalCount, setTotalCount] = useState(0);
     const [pageSize, setPageSize] = useState(25);
     const [currentPage, setCurrentPage] = useState(0);
+    const [sortModel, setSortModel] = useState<GridSortModel>([
+        {
+            field: "createdAt",
+            sort: "desc"
+        }
+    ]);
+
+    const [data, setData] = useState<ProductExcelUploadDto[]>([]);
     const fileInputRef = useRef<HTMLInputElement>(null);
     const [file, setFile] = useState<File | undefined>();
     const { instance: msal } = useMsal();
@@ -33,59 +40,6 @@ export default function ProductDetails() {
     const { webApi, loginRequest } = config;
     const { cdnExcelTemplates: excelTemplateBaseHost } = config;
     const i18nBase = "Pages.Dashboard.Products.ProductUploadHistory";
-    const [sortModel, setSortModel] = useState<GridSortModel>([
-        {
-            field: "createdAt",
-            sort: "desc"
-        }
-    ]);
-    const { productId } = useParams();
-    const { data, isLoading, isFetching, error } = useGetApiV1ProductGetByProductIdQuery({
-        productId: productId ? parseInt(productId) : 0
-    });
-    const product = data?.data;
-    const { data: variantsData, isLoading: isLoadingVariants, isFetching: isFetchingVariants, error: errorVariants } = useGetApiV1ProductQueryProductVariantsByProductIdQuery({
-        productId: productId ? parseInt(productId) : 0
-    });
-
-    const [dataVariants, setDataVariants] = useState<QueryProductDto[]>([]);
-
-    const productStates = [
-        "",
-        "active",
-        "in-review",
-        "out-of-stock",
-        "missing-info",
-        "rejected",
-        "passive",
-    ];
-
-    const productStateMaps = {
-        "active": "Available",
-        "in-review": "InReview",
-        "out-of-stock": "OutOfStock",
-        "missing-info": "MissingInfo",
-        "rejected": "Rejected",
-        "passive": "Passive",
-    };
-
-    const pathVariables = location.pathname.split('/');
-    const last = pathVariables[pathVariables.length - 1];
-    const productState = productStates.indexOf(last) > -1 ? last : "";
-    const templateLink = `${excelTemplateBaseHost}/excel-import/SingleProductVariantImport.xlsx`;
-
-    useEffect(() => {
-        if (variantsData?.data) {
-            const { count, data } = variantsData.data;
-            if (count) {
-                setTotalCount(count);
-            }
-
-            if (data) {
-                setDataVariants(data);
-            }
-        }
-    }, [variantsData]);
 
     useEffect(() => {
         var sortBy = sortModel.map(x => {
@@ -95,16 +49,8 @@ export default function ProductDetails() {
             })
         });
 
-        const filters = productState === "" || productState === undefined ? [] : [
-            new StringFilter({
-                op: StringFilterOperation.Equals,
-                property: "state",
-                value: productStateMaps[productState as keyof typeof productStateMaps],
-            })
-        ]
-
         const queryBuilder = new QueryBuilder({
-            filters: filters,
+            filters: [],
             pagination: new Pagination({
                 offset: currentPage * pageSize,
                 count: pageSize,
@@ -112,14 +58,27 @@ export default function ProductDetails() {
             sortBy: sortBy,
         });
 
-        var queryString = `&${queryBuilder.build()}`;
+        var queryString = queryBuilder.build();
         setQueryString(queryString);
 
-        dispatch(api.endpoints.getApiV1ProductQuery.initiate({
+        dispatch(api.endpoints.getApiV1ProductQueryUploadHistory.initiate({
             dqb: queryString
         }));
 
-    }, [currentPage, pageSize, sortModel, productState]);
+    }, [currentPage, pageSize, sortModel]);
+
+    useEffect(() => {
+        if (queryResult?.data) {
+            const { count, data } = queryResult.data;
+            if (count) {
+                setTotalCount(count);
+            }
+
+            if (data) {
+                setData(data);
+            }
+        }
+    }, [queryResult]);
 
     const reset = () => {
         if (fileInputRef?.current?.value) {
@@ -159,7 +118,7 @@ export default function ProductDetails() {
 
             formData.append("file", file);
             console.log("file to upload", file)
-            axios.post(`${webApi}/api/v1/Product/UploadProductVariantByProductIdExcel/${productId}`, formData, {
+            axios.post(`${webApi}/api/v1/Product/UploadProductExcel`, formData, {
                 headers: {
                     contentType: "multipart/formdata",
                     authorization: `Bearer ${tokenResponse.accessToken}`
@@ -178,124 +137,54 @@ export default function ProductDetails() {
     }
 
     const columns: GridColDef[] = [
+        { field: 'id', headerName: 'ID', width: 90 },
         {
-            field: 'id',
-            headerName: 'ID',
-            renderCell: (params: GridCellParams) => {
-                return <Link to={`/dashboard/products/${params.row.id}`}>
-                    {params.row.id}
-                </Link>
+            field: 'originalFileName',
+            headerName: 'File Name',
+            width: 150,
+            valueGetter: (params: GridValueGetterParams) => {
+                return `${params.row.originalFileName}.${params.row.extension}`
             }
         },
         {
-            field: 'name',
-            headerName: 'Ürün Adı',
-
-        },
-        {
-            field: 'sku',
-            headerName: 'Stok Kodu',
-
-        },
-        {
-            field: 'barcode',
-            headerName: 'Barkod',
-
-        },
-        {
-            field: 'brand',
-            headerName: 'Marka',
-
-        },
-        {
-            field: 'category',
-            headerName: 'Kategori',
-
-        },
-        {
-            field: 'gender',
-            headerName: 'Cinsiyet',
-        },
-        {
-            field: 'color',
-            headerName: 'Renk',
-        },
-        {
-            field: 'size',
-            headerName: 'Beden',
-        },
-        {
-            field: 'state',
-            headerName: 'Durum',
-        },
-        {
-            field: 'price',
-            headerName: 'Fiyat',
-        },
-        {
-            field: 'salesPrice',
-            headerName: 'Satış Fiyatı',
+            field: 'fileSize',
+            headerName: 'File Size',
+            width: 250,
         },
         {
             field: 'createdAt',
-            headerName: 'Oluşturulma Tarihi',
-
+            headerName: 'Upload Date',
+            width: 250,
             valueGetter: (params: GridValueGetterParams) => {
                 return format(new Date(params?.row.createdAt), 'dd.MM.yyyy', { locale: tr })
             }
         },
+        {
+            field: 'details',
+            headerName: 'Actions',
+            width: 150,
+            renderCell: (params: GridCellParams) => {
+                return <Button onClick={() => {
+                    navigate(`/dashboard/products/product-upload-history/${params.row.id}`);
+                }}>
+                    Details
+                </Button>
+            },
+            valueGetter: (params: GridValueGetterParams) => {
+                return params.row.id;
+            }
+        }
     ];
 
+    const templateLink = `${excelTemplateBaseHost}/excel-import/Products.xlsx`;
 
-    if (isLoading || isFetching) {
-        return <Loading />
-    }
-
-    return <Grid item container spacing={2}>
-        <Grid item xs={12}>
-            <Button onClick={() => navigate(`/dashboard/products/${product?.id}/update`)}>
-                Update
-            </Button>
-        </Grid>
-        <Grid item xs={12}>
-            Id: {product?.id}
-        </Grid>
-        <Grid item xs={12}>
-            ProductName: {product?.name}
-        </Grid>
-        <Grid item xs={12}>
-            SKU: {product?.sku}
-        </Grid>
-        <Grid item xs={12}>
-            Barcode: {product?.barcode}
-        </Grid>
-        <Grid item xs={12}>
-            Brand: {product?.brand}
-        </Grid>
-        <Grid item xs={12}>
-            Category: {product?.category}
-        </Grid>
-        <Grid item xs={12}>
-            State: {product?.state}
-        </Grid>
-        <Grid item xs={12}>
-            Price: {product?.price}
-        </Grid>
-        <Grid item xs={12}>
-            SalesPrice: {product?.salesPrice}
-        </Grid>
-        <Grid item xs={12}>
-            CreatedAt: {product?.createdAt}
-        </Grid>
-        <Grid item xs={12}>
-            <UploadProductImages productId={product?.id ?? 0} />
-        </Grid>
+    return <Grid item container spacing={6}>
         <Grid item xs={12}>
             <Box sx={{ height: 400, width: '100%' }}>
                 <DataGrid
                     loading={isLoading || isFetching}
                     rowCount={totalCount}
-                    rows={dataVariants}
+                    rows={data}
                     columns={columns}
                     pageSize={pageSize}
                     onPageChange={(newPage) => setCurrentPage(newPage)}

@@ -130,7 +130,19 @@ export default function ProductGrid() {
         {
             field: 'category',
             headerName: 'Kategori',
-
+            
+        },
+        {
+            field: 'gender',
+            headerName: 'Cinsiyet',
+        },
+        {
+            field: 'color',
+            headerName: 'Renk',
+        },
+        {
+            field: 'size',
+            headerName: 'Beden',
         },
         {
             field: 'state',

@@ -13,7 +13,7 @@ namespace ModilistPortal.Domains.Models.ProductDomain
     {
         private readonly List<ProductPropertyError> _errorMappings = new List<ProductPropertyError>();
 
-        public ProductExcelRow(int productExcelUploadId, int rowId, string name, string sKU, string barcode, string brand, string category, string price, string salesPrice, string stockAmount)
+        public ProductExcelRow(int productExcelUploadId, int rowId, string name, string sKU, string barcode, string brand, string category, string gender, string color, string size, string price, string salesPrice, string stockAmount)
         {
             ProductExcelUploadId = productExcelUploadId;
             RowId = rowId;
@@ -22,6 +22,9 @@ namespace ModilistPortal.Domains.Models.ProductDomain
             Barcode = barcode;
             Brand = brand;
             Category = category;
+            Gender = gender;
+            Color = color;
+            Size = size;
             Price = price;
             SalesPrice = salesPrice;
             StockAmount = stockAmount;
@@ -44,6 +47,12 @@ namespace ModilistPortal.Domains.Models.ProductDomain
 
         public string? Category { get; private set; }
 
+        public string Gender { get; private set; }
+
+        public string Color { get; private set; }
+
+        public string Size { get; private set; }
+
         public string? Price { get; private set; }
 
         public string? SalesPrice { get; private set; }
@@ -54,7 +63,7 @@ namespace ModilistPortal.Domains.Models.ProductDomain
 
         public IReadOnlyList<ProductPropertyError> ErrorMappings => _errorMappings;
 
-        public void Update(int rowId, string name, string sKU, string barcode, string brand, string category, string price, string salesPrice, string stockAmount)
+        public void Update(int rowId, string name, string sKU, string barcode, string brand, string category, string gender, string color, string size, string price, string salesPrice, string stockAmount)
         {
             RowId = rowId;
             Name = name;
@@ -62,6 +71,9 @@ namespace ModilistPortal.Domains.Models.ProductDomain
             Barcode = barcode;
             Brand = brand;
             Category = category;
+            Gender = gender;
+            Color = color;
+            Size = size;
             Price = price;
             SalesPrice = salesPrice;
             StockAmount = stockAmount;

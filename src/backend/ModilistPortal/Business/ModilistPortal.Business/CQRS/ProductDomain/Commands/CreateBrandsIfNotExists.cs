@@ -44,7 +44,7 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.Commands
             var newBrands = new List<Brand>();
             foreach (var brand in request.Brands)
             {
-                if (!existingBrands.Any(x => x.Name == brand))
+                if (!existingBrands.Any(x => x.Name.Equals(brand, StringComparison.OrdinalIgnoreCase)))
                 {
                     newBrands.Add(new Brand(brand));
                 }

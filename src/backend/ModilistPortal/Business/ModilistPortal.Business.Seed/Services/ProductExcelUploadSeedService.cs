@@ -13,6 +13,7 @@ using ModilistPortal.Business.Seed.Configuration;
 using ModilistPortal.Business.Seed.Services.Base;
 using ModilistPortal.Data.DataAccess;
 using ModilistPortal.Domains.Models.ProductDomain;
+using ModilistPortal.Infrastructure.Shared.Enums;
 
 namespace ModilistPortal.Business.Seed.Services
 {
@@ -43,6 +44,50 @@ namespace ModilistPortal.Business.Seed.Services
 
             await _dbContext.AddRangeAsync(excels);
 
+            var colors = new List<string>
+            {
+                "Black",
+                "Silver",
+                "Gray",
+                "White",
+                "Maroon",
+                "Red",
+                "Purple",
+                "Fuchsia",
+                "Green",
+                "Lime",
+                "Olive",
+                "Yellow",
+                "Navy",
+                "Blue",
+                "Teal",
+                "Aqua",
+            };
+
+            var sizes = new List<string>
+            {
+                "3XS",
+                "XXS",
+                "XS",
+                "M",
+                "L",
+                "XXL",
+                "3XL",
+                "35",
+                "35.5",
+                "36",
+                "37",
+                "38",
+                "39",
+                "40",
+                "41",
+                "42",
+                "43",
+                "44",
+                "45",
+                "46",
+            };
+
             var categories = faker.Commerce.Categories(10);
 
             var productExcelRows = new List<ProductExcelRow>();
@@ -50,7 +95,7 @@ namespace ModilistPortal.Business.Seed.Services
             {
                 for (int i = 0; i < 25; i++)
                 {
-                    var productExcelRow = new ProductExcelRow(productExcelUpload.Id, i + 2, faker.Commerce.ProductName(), faker.Random.Replace("##-###-###"), faker.Random.Replace("##-#####"), "Mavi", faker.PickRandom(categories), faker.Commerce.Price(), faker.Commerce.Price(), faker.Random.Int(min: 10, max: 500).ToString());
+                    var productExcelRow = new ProductExcelRow(productExcelUpload.Id, i + 2, faker.Commerce.ProductName(), faker.Random.Replace("##-###-###"), faker.Random.Replace("##-#####"), "Mavi", faker.PickRandom(categories), faker.PickRandom<Gender>().ToString(), faker.PickRandom(sizes), faker.PickRandom(colors), faker.Commerce.Price(), faker.Commerce.Price(), faker.Random.Int(min: 10, max: 500).ToString());
 
                     productExcelRows.Add(productExcelRow);
                 }

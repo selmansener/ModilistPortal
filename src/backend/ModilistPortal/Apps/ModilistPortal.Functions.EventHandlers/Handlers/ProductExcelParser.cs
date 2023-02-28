@@ -65,7 +65,7 @@ namespace ModilistPortal.Functions.EventHandlers.Handlers
         public async Task RunAsync([EventGridTrigger] EventGridEvent eventGridEvent, ILogger log, CancellationToken cancellationToken)
         {
             var productExcelUploaded = JsonConvert.DeserializeObject<ProductExcelUploaded>(eventGridEvent.Data.ToString());
-
+            
             try
             {
                 var containerClient = _blobServiceClient.GetBlobContainerClient(productExcelUploaded.ContainerName);
@@ -90,13 +90,10 @@ namespace ModilistPortal.Functions.EventHandlers.Handlers
                     NullValueHandling = NullValueHandling.Ignore,
                 });
 
-                BlobContainerClient container = _blobServiceClient.GetBlobContainerClient(StorageContainerNames.PRODUCT_EXCEL_UPLOADS);
-                await container.CreateIfNotExistsAsync(publicAccessType: Azure.Storage.Blobs.Models.PublicAccessType.None);
-
                 var fullBlobPath = productExcelUploaded.BlobFullPath.Replace(productExcelUploaded.FileExtension, "json");
                 var blobName = fullBlobPath.Split("/").LastOrDefault();
 
-                BlobClient jsonBlobClient = container.GetBlobClient(fullBlobPath);
+                BlobClient jsonBlobClient = containerClient.GetBlobClient(fullBlobPath);
                 await jsonBlobClient.UploadAsync(BinaryData.FromString(productDataJson), cancellationToken);
                 jsonBlobClient.SetHttpHeaders(new BlobHttpHeaders
                 {
@@ -114,7 +111,8 @@ namespace ModilistPortal.Functions.EventHandlers.Handlers
                     blobName,
                     fullBlobPath,
                     "json",
-                    productExcelUploaded.Timestamp);
+                    productExcelUploaded.Timestamp,
+                    productExcelUploaded.GroupId);
 
                 var rawProductDataUploadedEvent = new EventGridEvent(
                     nameof(RawProductDataUploaded),

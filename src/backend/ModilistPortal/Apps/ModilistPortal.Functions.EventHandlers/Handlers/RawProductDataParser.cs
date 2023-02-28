@@ -103,7 +103,8 @@ namespace ModilistPortal.Functions.EventHandlers.Handlers
                         rawProductData.StockAmount,
                         rawProductData.Gender,
                         rawProductData.Size,
-                        rawProductData.Color);
+                        rawProductData.Color,
+                        rawProductDataUploaded.GroupId);
 
                     var productDataParsedEvent = new EventGridEvent(
                         nameof(ProductDataParsed),

@@ -33,6 +33,10 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.Commands
         public Guid AccountId { get; set; }
 
         public IFormFile File { get; set; }
+
+        public int? ProductId { get; set; }
+
+        public bool IsVariantExcel { get; set; } = false;
     }
 
     internal class UploadProductExcelValidator : AbstractValidator<UploadProductExcel>
@@ -56,6 +60,7 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.Commands
         private readonly BlobServiceClient _blobServiceClient;
         private readonly IProductExcelUploadRepository _productExcelUploadRepository;
         private readonly EventGridPublisherClient _eventGridPublisherClient;
+        private readonly IProductRepository _productRepository;
 
         public UploadProductExcelHandler(
             ITenantRepository tenantRepository,
@@ -63,12 +68,14 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.Commands
             IOptions<StorageConnectionStrings> options,
             IProductExcelUploadRepository productExcelUploadRepository,
             IEventGridPublisherClientFactory eventGridPublisherClientFactory,
-            IOptions<EventGridClientOptions> eventGridOptions)
+            IOptions<EventGridClientOptions> eventGridOptions,
+            IProductRepository productRepository)
         {
             _tenantRepository = tenantRepository;
             _blobServiceClient = blobClientFactory.GetClient(options.Value.AppStorage);
             _eventGridPublisherClient = eventGridPublisherClientFactory.GetClient(eventGridOptions.Value);
             _productExcelUploadRepository = productExcelUploadRepository;
+            _productRepository = productRepository;
         }
 
         public async Task<Unit> Handle(UploadProductExcel request, CancellationToken cancellationToken)
@@ -78,6 +85,20 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.Commands
             if (tenant == null)
             {
                 throw new TenantNotFoundException(request.AccountId);
+            }
+
+            Guid? groupId = null;
+
+            if(request.ProductId != 0)
+            {
+                var product = await _productRepository.GetByIdAsync(request.ProductId ?? default(int), cancellationToken);
+
+                if (product == null)
+                {
+                    throw new ProductNotFoundException(request.ProductId ?? default(int), tenant.Id);
+                }
+
+                groupId = product.GroupId;
             }
 
             BlobContainerClient container = _blobServiceClient.GetBlobContainerClient(StorageContainerNames.PRODUCT_EXCEL_UPLOADS);
@@ -95,7 +116,7 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.Commands
 
             await blobClient.UploadAsync(request.File.OpenReadStream(), cancellationToken);
 
-            var productExcelUpload = new ProductExcelUpload(tenant.Id, blobId, fileName, extension, blobClient.Uri.AbsoluteUri, request.File.ContentType, request.File.Length);
+            var productExcelUpload = new ProductExcelUpload(tenant.Id, blobId, fileName, extension, blobClient.Uri.AbsoluteUri, request.File.ContentType, request.File.Length, request.IsVariantExcel);
             
             await _productExcelUploadRepository.AddAsync(productExcelUpload, cancellationToken);
 
@@ -109,7 +130,8 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.Commands
                 blobName,
                 blobFullPath,
                 extension,
-                timestamp);
+                timestamp,
+                groupId);
 
             var productExcelUploadedEvent = new EventGridEvent(
                 nameof(ProductExcelUploaded),

@@ -1,3 +1,89 @@
 {
-    
+    "FormValidation": {
+        "RequiredField": "*Gerekli Alan",
+        "MinCharacters": "*Lütfen başında 0 olmadan 10 haneli bir telefon numarası giriniz",
+        "MustBeInteger": "*Lütfen bir tamsayı giriniz",
+        "MustBeGreaterThanZero": "*Lütfen sıfırdan büyük bir tamsayı giriniz",
+        "MustBeNumber": "*Lütfen bir sayı giriniz",
+        "Email": "*Lütfen geçerli bir email adresi giriniz.",
+        "CardNumber": "*Lütfen geçerli bir kart numarası giriniz",
+        "OverMaxCharLimit": "*Maksimum karakter sayısını aştınız",
+        "InvalidTaxNumber": "Geçersiz Vergi No",
+        "InvalidIdNumber": "Geçersiz TC Kimlik No"
+    },
+    "Generic": {
+        "Forms": {
+            "Other": "Diğer",
+            "Message": "Mesajınız",
+            "Select": "Seçiniz",
+            "Close": "Kapat",
+            "Submit": "Kaydet",
+            "Edit": "Düzenle",
+            "Success": "İşlem başarılı!",
+            "Error": "Beklenmedik bir hata oluştu. Lütfen daha sonra tekrar deneyiniz.",
+            "Send": "Gönder",
+            "SentMessageSuccess": "Mesajınız başarıyla gönderildi!",
+            "SentMessageFailed": "Mesajınız gönderilirken bir hata oluştu.",
+            "CareersApply": "Başvur",
+            "SelectFile": "Dosya Seç",
+            "FilesSelected": "{{count}} dosya seçildi.",
+            "Delete": "Kaldır",
+            "CharactersLeft": "karakter kaldı",
+            "Add": "Ekle",
+            "UnexpectedError": "Beklenmedik bir hatayla karşılaştık."
+        },
+        "PersonalInfo": {
+            "Address": "Adres",
+            "IdNumber": "TC Kimlik Numarası",
+            "FullName": "Ad Soyad",
+            "FirstName": "Ad",
+            "LastName": "Soyad",
+            "BirthDate": "Doğum Tarihi",
+            "PhoneNumber": "Telefon",
+            "Department": "Departman",
+            "JobTitle": "Pozisyon/Görev",
+            "Job": "Mesleğin Nedir? (Opsiyonel)",
+            "Gender": {
+                "Gender": "Cinsiyet",
+                "Male": "Erkek",
+                "Female": "Kadın"
+            },
+            "Email": "E-Posta"
+        },
+        "Address": {
+            "FirstName": "Ad",
+            "LastName": "Soyad",
+            "Phone": "Telefon",
+            "City": "İl",
+            "District": "İlçe",
+            "Address": "Adres",
+            "ZipCode": "Posta Kodu (Opsiyonel)"
+        },
+        "TenantTypes": {
+            "Title": "Şirket Türü",
+            "Individual": "Şahıs Şirketi",
+            "LimitedLiability": "Limited Şirket",
+            "IncorporatedCompany": "Anonim Şirket"
+        },
+        "Tenant": {
+            "Name": "Ticari Ünvan",
+            "TaxNumber": "Vergi Numarası",
+            "Phone": "Telefon Numarası",
+            "Email": "E-Posta",
+            "City": "İl",
+            "District": "İlçe",
+            "TaxOffice": "Vergi Dairesi"
+        }
+    },
+    "Pages": {
+        "Dashboard": {
+            "Products": {
+                "ProductUploadHistory": {
+                    "UploadDescription1": "Ürün tanımlarınızı içeren excel dosyasını ",
+                    "UploadDescription2": "Gönderi Şablonu",
+                    "UploadDescription3": "'nu doldurduktan sonra bulut ikonuna tıklayıp yükleyerek \"Upload\" butonu ile tanımlayabilirsiniz."
+                }
+            }
+        }
+    }
 }

@@ -10,9 +10,10 @@ namespace ModilistPortal.Infrastructure.Shared.Events
 {
     public class ProductDataParsed : BaseEvent
     {
-        public ProductDataParsed(string publisherId, PublisherType publisherType, int productExcelUploadId, int tenantId, int rowId, string name, string sKU, string barcode, string brand, string category, string price, string salesPrice, string stockAmount, string gender, string size, string color)
+        public ProductDataParsed(string publisherId, PublisherType publisherType, int productExcelUploadId, int tenantId, int rowId, string name, string sKU, string barcode, string brand, string category, string price, string salesPrice, string stockAmount, string gender, string size, string color, Guid? groupId)
             : base(publisherId, publisherType)
         {
+            GroupId= groupId;
             ProductExcelUploadId = productExcelUploadId;
             TenantId = tenantId;
             RowId = rowId;
@@ -28,6 +29,8 @@ namespace ModilistPortal.Infrastructure.Shared.Events
             Size = size;
             Color = color;
         }
+
+        public Guid? GroupId { get; set; }
 
         public int ProductExcelUploadId { get; set; }
 

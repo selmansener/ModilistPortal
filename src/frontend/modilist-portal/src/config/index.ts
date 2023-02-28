@@ -16,6 +16,7 @@ export interface AppConfig extends ApiConfig, EnvConfig {
     loginRequest: RedirectRequest;
     resetRequest: RedirectRequest;
     cdnImg: string;
+    cdnExcelTemplates: string;
     cdn: string;
 }
 
@@ -37,5 +38,6 @@ export const config: AppConfig = {
     resetRequest,
     msalConfig,
     cdnImg: "https://cdn.modilist.com/img",
+    cdnExcelTemplates: "https://cdn.modilist.com/excel-templates",
     cdn: "https://cdn.modilist.com"
 };

@@ -27,14 +27,15 @@ const MainPage = React.lazy(() => import("../../pages/dashboard/main/Main"));
 const SalesOrdersPage = React.lazy(() => import("../../pages/dashboard/salesOrders/SalesOrders"));
 const ProductsPage = React.lazy(() => import("../../pages/dashboard/products/Products"));
 const ProductListPage = React.lazy(() => import("../../pages/dashboard/products/ProductList"));
-const ProductUploadHistoryPage = React.lazy(() => import("../../pages/dashboard/products/UploadHistory"));
-const ProductUploadHistoryDetailsPage = React.lazy(() => import("../../pages/dashboard/products/UploadHistoryDetails"));
+const ProductUploadHistoryPage = React.lazy(() => import("../../pages/dashboard/products/ProductUploadHistory"));
+const ProductUploadHistoryDetailsPage = React.lazy(() => import("../../pages/dashboard/products/ProductUploadHistoryDetails"));
+const ProductVariantUploadHistoryPage = React.lazy(() => import("../../pages/dashboard/products/ProductVariantUploadHistory"));
 const ReturnsPage = React.lazy(() => import("../../pages/dashboard/returns/Returns"));
 const TenantPage = React.lazy(() => import("../../pages/dashboard/tenant/Tenant"));
 const ProductListGridPage = React.lazy(() => import("../../pages/dashboard/products/components/ProductGrid"));
 const ProductDetailsPage = React.lazy(() => import("../../pages/dashboard/products/ProductDetails"));
 const NewProductPage = React.lazy(() => import("../../pages/dashboard/products/NewProduct"));
-const NewProductUploadPage = React.lazy(() => import("../../pages/dashboard/products/NewUpload"));
+const NewProductUploadPage = React.lazy(() => import("../../pages/dashboard/products/NewProductUpload"));
 const UpdateProductPage = React.lazy(() => import("../../pages/dashboard/products/UpdateProduct"));
 
 export const dashboardRoutes: RouteConfig = {
@@ -105,12 +106,16 @@ export const dashboardRoutes: RouteConfig = {
                     element: <NewProductUploadPage />
                 },
                 {
-                    path: "upload-history",
+                    path: "product-upload-history",
                     element: <ProductUploadHistoryPage />
                 },
                 {
-                    path: "upload-history/:productExcelUploadId",
+                    path: "product-upload-history/:productExcelUploadId",
                     element: <ProductUploadHistoryDetailsPage />
+                },
+                {
+                    path: "product-variant-upload-history",
+                    element: <ProductVariantUploadHistoryPage />
                 }
             ]
         },

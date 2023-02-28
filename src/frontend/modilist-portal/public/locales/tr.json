@@ -89,6 +89,11 @@
                     "Gender": "Cinsiyet",
                     "Size": "Boyut",
                     "Color": "Renk"
+                },
+                "ProductUploadHistory": {
+                    "UploadDescription1": "Ürün tanımlarınızı içeren excel dosyasını ",
+                    "UploadDescription2": "Gönderi Şablonu",
+                    "UploadDescription3": "'nu doldurduktan sonra bulut ikonuna tıklayıp yükleyerek \"Upload\" butonu ile tanımlayabilirsiniz."
                 }
             }
         }

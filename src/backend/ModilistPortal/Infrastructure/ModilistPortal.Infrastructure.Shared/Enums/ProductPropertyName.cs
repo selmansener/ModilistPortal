@@ -11,5 +11,8 @@
         Price = 6,
         SalesPrice = 7,
         StockAmount = 8,
+        Size = 9,
+        Color = 10,
+        Gender = 11,
     }
 }

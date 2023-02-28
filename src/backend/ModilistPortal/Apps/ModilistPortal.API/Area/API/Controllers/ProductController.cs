@@ -42,6 +42,42 @@ namespace ModilistPortal.API.Area.API.Controllers
         }
 
         [Authorize(nameof(AuthorizationPermissions.Products))]
+        [HttpPost("UploadProductVariantByProductIdExcel/{productId}")]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> UploadProductVariantByProductIdExcel(int productId, IFormFile file, CancellationToken cancellationToken)
+        {
+            await _mediator.Send(new UploadProductExcel
+            {
+                AccountId = User.GetUserId(),
+                File = file,
+                ProductId = productId,
+                IsVariantExcel = true,
+            }, cancellationToken);
+
+            return Ok();
+        }
+
+        [Authorize(nameof(AuthorizationPermissions.Products))]
+        [HttpGet("QueryVariantUploadHistory")]
+        [DynamicQuery]
+        [ProducesResponseType(typeof(ResponseModel<DQBResultDTO<ProductExcelUploadDTO>>), 200)]
+        public async Task<IActionResult> QueryVariantUploadHistory([FromQuery] DynamicQueryOptions dqb, CancellationToken cancellationToken)
+        {
+            var result = await _mediator.Send(new QueryProductVariantsExcelUploadHistory(User.GetUserId(), dqb), cancellationToken);
+
+            return Ok(new ResponseModel<DQBResultDTO<ProductExcelUploadDTO>>(result));
+        }
+
+        //[Authorize(nameof(AuthorizationPermissions.Products))]
+        //[HttpPost("CreateExcelTemplate")]
+        //[ProducesResponseType(200)]
+        //public async Task<IActionResult> CreateExcelTemplate(CancellationToken cancellationToken)
+        //{
+        //    await _mediator.Send(new CreateProductVariantExcelTemplate(User.GetUserId()), cancellationToken);
+        //    return Ok();
+        //}
+
+        [Authorize(nameof(AuthorizationPermissions.Products))]
         [HttpGet("QueryUploadHistory")]
         [DynamicQuery]
         [ProducesResponseType(typeof(ResponseModel<DQBResultDTO<ProductExcelUploadDTO>>), 200)]
@@ -70,6 +106,17 @@ namespace ModilistPortal.API.Area.API.Controllers
         public async Task<IActionResult> Query([FromQuery] DynamicQueryOptions dqb, CancellationToken cancellationToken)
         {
             var response = await _mediator.Send(new QueryProducts(User.GetUserId(), dqb), cancellationToken);
+
+            return Ok(new ResponseModel<DQBResultDTO<QueryProductDTO>>(response));
+        }
+
+        [Authorize(nameof(AuthorizationPermissions.Products))]
+        [HttpGet("QueryProductVariants/{productId}")]
+        [DynamicQuery]
+        [ProducesResponseType(typeof(ResponseModel<DQBResultDTO<QueryProductDTO>>), 200)]
+        public async Task<IActionResult> QueryProductVariants([FromQuery] DynamicQueryOptions dqb, int productId, CancellationToken cancellationToken)
+        {
+            var response = await _mediator.Send(new QueryProductVariantsByProductId(productId, User.GetUserId(), dqb), cancellationToken);
 
             return Ok(new ResponseModel<DQBResultDTO<QueryProductDTO>>(response));
         }

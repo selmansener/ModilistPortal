@@ -92,6 +92,27 @@ const injectedRtkApi = api.injectEndpoints({
         params: { "api-version": queryArg["api-version"] },
       }),
     }),
+    postApiV1ProductUploadProductVariantByProductIdExcelByProductId:
+      build.mutation<
+        PostApiV1ProductUploadProductVariantByProductIdExcelByProductIdApiResponse,
+        PostApiV1ProductUploadProductVariantByProductIdExcelByProductIdApiArg
+      >({
+        query: (queryArg) => ({
+          url: `/api/v1/Product/UploadProductVariantByProductIdExcel/${queryArg.productId}`,
+          method: "POST",
+          body: queryArg.body,
+          params: { "api-version": queryArg["api-version"] },
+        }),
+      }),
+    getApiV1ProductQueryVariantUploadHistory: build.query<
+      GetApiV1ProductQueryVariantUploadHistoryApiResponse,
+      GetApiV1ProductQueryVariantUploadHistoryApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/api/v1/Product/QueryVariantUploadHistory`,
+        params: { "api-version": queryArg["api-version"], dqb: queryArg.dqb },
+      }),
+    }),
     getApiV1ProductQueryUploadHistory: build.query<
       GetApiV1ProductQueryUploadHistoryApiResponse,
       GetApiV1ProductQueryUploadHistoryApiArg
@@ -116,6 +137,15 @@ const injectedRtkApi = api.injectEndpoints({
     >({
       query: (queryArg) => ({
         url: `/api/v1/Product/Query`,
+        params: { "api-version": queryArg["api-version"], dqb: queryArg.dqb },
+      }),
+    }),
+    getApiV1ProductQueryProductVariantsByProductId: build.query<
+      GetApiV1ProductQueryProductVariantsByProductIdApiResponse,
+      GetApiV1ProductQueryProductVariantsByProductIdApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/api/v1/Product/QueryProductVariants/${queryArg.productId}`,
         params: { "api-version": queryArg["api-version"], dqb: queryArg.dqb },
       }),
     }),
@@ -225,6 +255,23 @@ export type PostApiV1ProductUploadProductExcelApiArg = {
     file?: Blob;
   };
 };
+export type PostApiV1ProductUploadProductVariantByProductIdExcelByProductIdApiResponse =
+  unknown;
+export type PostApiV1ProductUploadProductVariantByProductIdExcelByProductIdApiArg =
+  {
+    productId: number;
+    "api-version"?: string;
+    body: {
+      file?: Blob;
+    };
+  };
+export type GetApiV1ProductQueryVariantUploadHistoryApiResponse =
+  /** status 200 Success */ ProductExcelUploadDtodqbResultDtoResponseModel;
+export type GetApiV1ProductQueryVariantUploadHistoryApiArg = {
+  "api-version"?: string;
+  /** DynamicQuery */
+  dqb?: string;
+};
 export type GetApiV1ProductQueryUploadHistoryApiResponse =
   /** status 200 Success */ ProductExcelUploadDtodqbResultDtoResponseModel;
 export type GetApiV1ProductQueryUploadHistoryApiArg = {
@@ -244,6 +291,14 @@ export type GetApiV1ProductQueryUploadHistoryDetailsByProductExcelUploadIdApiArg
 export type GetApiV1ProductQueryApiResponse =
   /** status 200 Success */ QueryProductDtodqbResultDtoResponseModel;
 export type GetApiV1ProductQueryApiArg = {
+  "api-version"?: string;
+  /** DynamicQuery */
+  dqb?: string;
+};
+export type GetApiV1ProductQueryProductVariantsByProductIdApiResponse =
+  /** status 200 Success */ QueryProductDtodqbResultDtoResponseModel;
+export type GetApiV1ProductQueryProductVariantsByProductIdApiArg = {
+  productId: number;
   "api-version"?: string;
   /** DynamicQuery */
   dqb?: string;
@@ -337,6 +392,7 @@ export type ProductExcelUploadDtodqbResultDtoResponseModel = {
     [key: string]: string[];
   } | null;
 };
+export type Gender = "Unisex" | "Male" | "Female";
 export type ProductPropertyName =
   | "None"
   | "Name"
@@ -359,6 +415,9 @@ export type QueryProductExcelRowDto = {
   barcode?: string;
   brand?: string;
   category?: string;
+  gender?: Gender;
+  color?: string;
+  size?: string;
   price?: string;
   salesPrice?: string;
   stockAmount?: string;
@@ -394,6 +453,9 @@ export type QueryProductDto = {
   brandId?: number;
   brand?: string;
   category?: string;
+  gender?: Gender;
+  color?: string;
+  size?: string;
   price?: number;
   salesPrice?: number;
   taxRatio?: number;
@@ -421,6 +483,9 @@ export type ProductDetailsDto = {
   brandId?: number;
   brand?: string;
   category?: string;
+  gender?: Gender;
+  color?: string;
+  size?: string;
   price?: number;
   salesPrice?: number;
   taxRatio?: number;
@@ -504,9 +569,12 @@ export const {
   usePostDevV1SeedMutation,
   useGetDevV1GetClientIpQuery,
   usePostApiV1ProductUploadProductExcelMutation,
+  usePostApiV1ProductUploadProductVariantByProductIdExcelByProductIdMutation,
+  useGetApiV1ProductQueryVariantUploadHistoryQuery,
   useGetApiV1ProductQueryUploadHistoryQuery,
   useGetApiV1ProductQueryUploadHistoryDetailsByProductExcelUploadIdQuery,
   useGetApiV1ProductQueryQuery,
+  useGetApiV1ProductQueryProductVariantsByProductIdQuery,
   useGetApiV1ProductGetByProductIdQuery,
   usePostApiV1ProductByProductIdAddImagesMutation,
   usePostApiV1ProductCreateProductMutation,
