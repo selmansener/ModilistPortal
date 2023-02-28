@@ -74,5 +74,23 @@
             "District": "İlçe",
             "TaxOffice": "Vergi Dairesi"
         }
+    },
+    "Pages": {
+        "Dashboard": {
+            "Products": {
+                "NewProduct": {
+                    "Name": "Ad",
+                    "SKU": "SKU",
+                    "Barcode": "Barkod",
+                    "Brand": "Marka",
+                    "Category": "Kategori",
+                    "Price": "Fiyat",
+                    "SalesPrice": "Satış Fiyatı",
+                    "Gender": "Cinsiyet",
+                    "Size": "Boyut",
+                    "Color": "Renk"
+                }
+            }
+        }
     }
 }
