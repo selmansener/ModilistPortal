@@ -139,6 +139,17 @@ const injectedRtkApi = api.injectEndpoints({
         params: { "api-version": queryArg["api-version"] },
       }),
     }),
+    postApiV1ProductCreateProduct: build.mutation<
+      PostApiV1ProductCreateProductApiResponse,
+      PostApiV1ProductCreateProductApiArg
+    >({
+      query: (queryArg) => ({
+        url: `/api/v1/Product/CreateProduct`,
+        method: "POST",
+        body: queryArg.createProduct,
+        params: { "api-version": queryArg["api-version"] },
+      }),
+    }),
     getApiV1TenantGet: build.query<
       GetApiV1TenantGetApiResponse,
       GetApiV1TenantGetApiArg
@@ -252,6 +263,11 @@ export type PostApiV1ProductByProductIdAddImagesApiArg = {
     files?: Blob[];
   };
 };
+export type PostApiV1ProductCreateProductApiResponse = unknown;
+export type PostApiV1ProductCreateProductApiArg = {
+  "api-version"?: string;
+  createProduct: CreateProduct;
+};
 export type GetApiV1TenantGetApiResponse =
   /** status 200 Success */ TenantDtoResponseModel;
 export type GetApiV1TenantGetApiArg = {
@@ -278,6 +294,7 @@ export type AccountDtoResponseModel = {
 export type CreateAccount = {
   id?: string;
   email?: string;
+  password?: string;
 };
 export type City = {
   name?: string;
@@ -426,6 +443,20 @@ export type ProductImageDto = {
   extension?: string;
   url?: string;
 };
+export type Gender = "Unisex" | "Male" | "Female";
+export type CreateProduct = {
+  name?: string;
+  sku?: string;
+  barcode?: string;
+  brandName?: string;
+  category?: string;
+  price?: number;
+  salesPrice?: number;
+  accountId?: string;
+  gender?: Gender;
+  size?: string;
+  color?: string;
+};
 export type TenantType =
   | "None"
   | "Individual"
@@ -478,6 +509,7 @@ export const {
   useGetApiV1ProductQueryQuery,
   useGetApiV1ProductGetByProductIdQuery,
   usePostApiV1ProductByProductIdAddImagesMutation,
+  usePostApiV1ProductCreateProductMutation,
   useGetApiV1TenantGetQuery,
   usePostApiV1TenantUpsertMutation,
 } = injectedRtkApi;
