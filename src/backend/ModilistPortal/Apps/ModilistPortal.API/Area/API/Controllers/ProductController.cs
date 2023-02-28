@@ -5,12 +5,14 @@ using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web;
 
 using ModilistPortal.API.Configuration;
 using ModilistPortal.API.Models;
 using ModilistPortal.Business.CQRS.ProductDomain.Commands;
 using ModilistPortal.Business.CQRS.ProductDomain.DTOs;
 using ModilistPortal.Business.CQRS.ProductDomain.Queries;
+
 using ModilistPortal.Business.DTOs;
 using ModilistPortal.Infrastructure.Shared.Exntensions;
 
@@ -97,5 +99,19 @@ namespace ModilistPortal.API.Area.API.Controllers
 
             return Ok(response);
         }
+
+        [HttpPost("CreateProduct")]
+        [Authorize(nameof(AuthorizationPermissions.Products))]
+        [ProducesResponseType(200)]
+        public async Task<IActionResult> Create(CreateProduct command, CancellationToken cancellationToken)
+        {
+
+            command.AccountId = User.GetUserId();
+
+            await _mediator.Send(command, cancellationToken);
+
+            return Ok();
+        }
+
     }
 }

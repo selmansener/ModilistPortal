@@ -13,6 +13,8 @@ namespace ModilistPortal.Data.Repositories.ProductDomain
         Task<bool> DoesExistsWithBarcode(int tenantId, string barcode, CancellationToken cancellationToken);
 
         Task<Product?> GetByIdAsync(int productId, int tenantId, CancellationToken cancellationToken);
+
+     
     }
 
     internal class ProductRepository : BaseRepository<Product>, IProductRepository
@@ -38,5 +40,7 @@ namespace ModilistPortal.Data.Repositories.ProductDomain
                 .Include(x => x.Brand)
                 .FirstOrDefaultAsync(x => x.Id == productId && x.TenantId == tenantId, cancellationToken);
         }
+
+
     }
 }

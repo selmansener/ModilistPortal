@@ -35,9 +35,9 @@ namespace ModilistPortal.Business.Seed.Services
 
             Dictionary<int, Guid> productVariants = new Dictionary<int, Guid>();
 
-            for(int i = 1; i <= brandIds.Count; i++)
+            for(int i = 0; i < brandIds.Count; i++)
             {
-                productVariants.Add(i, Guid.NewGuid());
+                productVariants.Add(brandIds.ElementAt(i), Guid.NewGuid());
             }
 
             var colors = new List<string>

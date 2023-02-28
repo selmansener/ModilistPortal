@@ -8,7 +8,7 @@ namespace ModilistPortal.Data.Repositories.ProductDomain
 {
     public interface IBrandRepository : IBaseRepository<Brand>
     {
-        Task<Brand?> GetByName(string name, CancellationToken cancellationToken);
+        Task<Brand?> GetByNameAsync(string name, CancellationToken cancellationToken);
     }
 
     internal class BrandRepository : BaseRepository<Brand>, IBrandRepository
@@ -18,7 +18,7 @@ namespace ModilistPortal.Data.Repositories.ProductDomain
         {
         }
 
-        public async Task<Brand?> GetByName(string name, CancellationToken cancellationToken)
+        public async Task<Brand?> GetByNameAsync(string name, CancellationToken cancellationToken)
         {
             return await _baseDb.Brands.FirstOrDefaultAsync(x => x.Name == name, cancellationToken);
         }
