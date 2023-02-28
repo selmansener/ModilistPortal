@@ -5,6 +5,7 @@ using MediatR;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Web;
 
 using ModilistPortal.API.Configuration;
 using ModilistPortal.API.Models;
@@ -104,6 +105,9 @@ namespace ModilistPortal.API.Area.API.Controllers
         [ProducesResponseType(200)]
         public async Task<IActionResult> Create(CreateProduct command, CancellationToken cancellationToken)
         {
+
+            command.AccountId = User.GetUserId();
+
             await _mediator.Send(command, cancellationToken);
 
             return Ok();
