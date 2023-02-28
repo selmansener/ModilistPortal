@@ -107,7 +107,7 @@ namespace ModilistPortal.Business.CQRS.ProductDomain.Commands
             }
             else
             {
-                var brand = await _brandRepository.GetByName(request.Brand, cancellationToken);
+                var brand = await _brandRepository.GetByNameAsync(request.Brand, cancellationToken);
 
                 if (brand == null)
                 {
