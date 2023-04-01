@@ -7,6 +7,7 @@ import { useEffect, useState } from "react";
 import { useAppDispatch } from "../../../../store/hooks";
 import format from "date-fns/format";
 import { tr } from "date-fns/locale";
+import { Filters, ModelDefinition, QueryFilter } from "../../../../components/filters/Filters";
 
 export default function ProductGrid() {
     const dispatch = useAppDispatch();
@@ -21,6 +22,7 @@ export default function ProductGrid() {
             sort: "desc"
         }
     ]);
+    const [queryFilters, setQueryFilters] = useState<QueryFilter[]>([]);
     const { data: queryResult, error, isLoading, isFetching } = api.endpoints.getApiV1ProductQuery.useQueryState({
         dqb: queryString
     });
@@ -54,20 +56,12 @@ export default function ProductGrid() {
         var sortBy = sortModel.map(x => {
             return new SortField({
                 property: x.field,
-                by: x.sort == "asc" ? SortDirection.ASC : (x.sort === "desc" ? SortDirection.DESC : SortDirection.NONE)
+                by: x.sort === "asc" ? SortDirection.ASC : (x.sort === "desc" ? SortDirection.DESC : SortDirection.NONE)
             })
         });
 
-        const filters = productState === "" || productState === undefined ? [] : [
-            new StringFilter({
-                op: StringFilterOperation.Equals,
-                property: "state",
-                value: productStateMaps[productState as keyof typeof productStateMaps],
-            })
-        ]
-
         const queryBuilder = new QueryBuilder({
-            filters: filters,
+            filters: queryFilters,
             pagination: new Pagination({
                 offset: currentPage * pageSize,
                 count: pageSize,
@@ -76,13 +70,13 @@ export default function ProductGrid() {
         });
 
         var queryString = `&${queryBuilder.build()}`;
-        setQueryString(queryString);
+        setQueryString(encodeURI(queryString));
 
         dispatch(api.endpoints.getApiV1ProductQuery.initiate({
             dqb: queryString
         }));
 
-    }, [currentPage, pageSize, sortModel, productState]);
+    }, [currentPage, pageSize, sortModel, productState, queryFilters]);
 
     useEffect(() => {
         if (queryResult?.data) {
@@ -130,7 +124,7 @@ export default function ProductGrid() {
         {
             field: 'category',
             headerName: 'Kategori',
-            
+
         },
         {
             field: 'gender',
@@ -166,7 +160,73 @@ export default function ProductGrid() {
         },
     ];
 
+    const handleFiltersChange = (queryFilters: QueryFilter[]) => {
+        setQueryFilters(queryFilters);
+    }
+
+    const productModel: ModelDefinition = {
+        properties: [
+            {
+                name: "name",
+                title: "Ürün Adı",
+                type: "string"
+            },
+            {
+                name: "sku",
+                title: "Stok Kodu",
+                type: "string"
+            },
+            {
+                name: "barcode",
+                title: "Barkod",
+                type: "string"
+            },
+            {
+                name: "brand",
+                title: "Marka",
+                type: "string"
+            },
+            {
+                name: "category",
+                title: "Kategori",
+                type: "string"
+            },
+            {
+                name: "gender",
+                title: "Cinsiyet",
+                type: "enum",
+                enumValues: [
+                    {
+                        title: "Erkek",
+                        value: "Male"
+                    },
+                    {
+                        title: "Kadın",
+                        value: "Female"
+                    },
+                    {
+                        title: "Unisex",
+                        value: "Unisex"
+                    }
+                ]
+            },
+            {
+                name: "size",
+                title: "Beden",
+                type: "string"
+            },
+            {
+                name: "price",
+                title: "Fiyat",
+                type: "number"
+            },
+        ]
+    }
+
     return <Grid item container spacing={2}>
+        <Grid item xs={12}>
+            <Filters model={productModel} onApply={handleFiltersChange} />
+        </Grid>
         <Grid item xs={12}>
             <Box sx={{ height: 400 }}>
                 <DataGrid

@@ -97,5 +97,55 @@
                 }
             }
         }
+    },
+    "Filters": {
+        "PropertyName": "Kolon Adı",
+        "OperationName": "Filte Seçeneği",
+        "FilterValue": "Filtre Değeri",
+        "Operations": {
+            "string": {
+                "In": "İçinde Geçer",
+                "Equals": "Eşittir",
+                "Contains": "İçerir",
+                "NotEqual": "Eşit Değildir",
+                "EndsWith": "İle Biter",
+                "StartsWith": "İle Başlar"
+            },
+            "number": {
+                "In": "İçinde Geçer",
+                "Equals": "Eşittir",
+                "NotEqual": "Eşit Değildir",
+                "LessThan": "Küçüktür",
+                "LessThanOrEqual": "Küçük Eşittir",
+                "GreaterThan": "Büyüktür",
+                "GreaterThanOrEqual": "Büyük Eşittir"
+            },
+            "date": {
+                "Equals": "Eşittir",
+                "NotEqual": "Eşit Değildir",
+                "GreaterThan": "Büyüktür",
+                "GreaterThanOrEqual": "Büyük Eşittir",
+                "LessThan": "Küçüktür",
+                "LessThanOrEqual": "Küçük Eşittir"
+            },
+            "boolean": {
+                "Equals": "Eşittir",
+                "NotEqual": "Eşit Değildir"
+            },
+            "enum": {
+                "In": "İçinde Geçer",
+                "Equals": "Eşittir",
+                "NotEqual": "Eşit Değildir"
+            },
+            "float": {
+                "In": "İçinde Geçer",
+                "Equals": "Eşittir",
+                "NotEqual": "Eşit Değildir",
+                "LessThan": "Küçüktür",
+                "LessThanOrEqual": "Küçük Eşittir",
+                "GreaterThan": "Büyüktür",
+                "GreaterThanOrEqual": "Büyük Eşittir"
+            }
+        }
     }
 }
