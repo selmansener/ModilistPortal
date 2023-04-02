@@ -2,6 +2,8 @@
 using System.Globalization;
 using System.Net;
 
+using DynamicQueryBuilder.Models;
+
 using Mapster;
 
 using Microsoft.ApplicationInsights.AspNetCore;
@@ -58,6 +60,11 @@ internal class Program
             configuration.AllowedOrigins = config.AllowedOrigins;
             configuration.AzureAdB2COptions = config.AzureAdB2COptions;
             configuration.ModilistDbConnectionOptions = config.ModilistDbConnectionOptions;
+        });
+
+        builder.Services.AddSingleton(new DynamicQueryBuilderSettings
+        {
+            UsesCaseInsensitiveSource = true
         });
 
         builder.Services.Configure<IyzicoAPIOptions>(builder.Configuration.GetSection("AppSettings:IyzicoAPIOptions"));

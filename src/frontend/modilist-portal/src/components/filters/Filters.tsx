@@ -70,11 +70,11 @@ const typeOperationMapping = {
 
 function FilterElement(props: FilterElementProps) {
     const { t } = useTranslation();
-    const { id, properties, onChange, onRemove } = props;
+    const { id, properties, queryFilter, onChange, onRemove } = props;
     const [availableOperations, setAvailableOperations] = useState<string[]>([]);
     const [selectedProperty, setSelectedProperty] = useState<PropertyDefinition>();
-    const [selectedOperation, setSelectedOperation] = useState<string>("");
-    const [filterValue, setFilterValue] = useState<string>("");
+    const [selectedOperation, setSelectedOperation] = useState<string>(queryFilter?.op ?? "");
+    const [filterValue, setFilterValue] = useState<string | number | boolean | string[] | number[] | moment.Moment>(queryFilter?.value ?? "");
 
     const handlePropertyChange = (event: SelectChangeEvent) => {
         const selected = event.target.value;
@@ -113,28 +113,28 @@ function FilterElement(props: FilterElementProps) {
                     onChange(id, new StringFilter({
                         property: selectedProperty.name,
                         op: selectedOperation as StringFilterOperation,
-                        value: filterValue
+                        value: filterValue as string | string[]
                     }))
                     break;
                 case "number":
                     onChange(id, new NumericFilter({
                         property: selectedProperty.name,
                         op: selectedOperation as NumericFilterOperation,
-                        value: parseInt(filterValue)
+                        value: parseInt(filterValue as string)
                     }))
                     break;
                 case "float":
                     onChange(id, new NumericFilter({
                         property: selectedProperty.name,
                         op: selectedOperation as NumericFilterOperation,
-                        value: parseFloat(filterValue)
+                        value: parseFloat(filterValue as string)
                     }))
                     break;
                 case "date":
                     onChange(id, new DateFilter({
                         property: selectedProperty.name,
                         op: selectedOperation as DateFilterOperation,
-                        value: filterValue
+                        value: filterValue as string
                     }))
                     break;
                 case "boolean":
@@ -193,7 +193,7 @@ function FilterElement(props: FilterElementProps) {
                             disabled={!selectedOperation}
                             labelId={`${id}-enum-label`}
                             id={`${id}-enum`}
-                            value={filterValue}
+                            value={filterValue as string}
                             label={t("Filters.FilterValue")}
                             onChange={handleEnumValueChange}
                         >
@@ -226,11 +226,12 @@ export interface ModelDefinition {
 
 export interface FilterProps {
     model: ModelDefinition;
+    filters: QueryFilter[];
     onApply: (queryFilters: QueryFilter[]) => void;
 }
 
 export function Filters(props: FilterProps) {
-    const { model, onApply } = props;
+    const { model, filters, onApply } = props;
     const [queryFilters, setQueryFilters] = useState<QueryFilter[]>([]);
     // const [properties, setProperties] = useState<PropertyDefinition[]>([]);
     const [filterElements, setFilterElements] = useState<FilterElementProps[]>([]);
@@ -253,13 +254,25 @@ export function Filters(props: FilterProps) {
     // }, [model, properties]);
 
     useEffect(() => {
+        if (filters.length > 0) {
+            setFilterElements(filters.map((filter, i) => {
+                return {
+                    id: i,
+                    properties: model.properties,
+                    queryFilter: filter
+                } as FilterElementProps
+            }));
+        }
+        else {
         setFilterElements([
             {
                 id: 0,
                 properties: model.properties,
             } as FilterElementProps
         ])
-    }, [model]);
+        }
+
+    }, [model, filters]);
 
     const handleAddFilter = () => {
         const currentLength = filterElements.length;
